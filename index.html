@@ -352,6 +352,25 @@ body.dark .review-card { background:#1c1c1c; }
     </div>
     <p style="font-size:12px;color:var(--grey);margin-top:12px;text-align:center;">📍 Tocca un giorno per aprire la mappa e navigare fino al mercato</p>
   </div>
+  <div class="contact-card">
+    <h3>📍 Modifica Posizione Bancarella</h3>
+    <p>Seleziona il giorno e inserisci le coordinate esatte della tua bancarella.</p>
+    <select class="ai" id="mapDaySelect">
+      <option value="0">Lunedì – San Vito dei Normanni</option>
+      <option value="1">Martedì – Crispiano</option>
+      <option value="2">Mercoledì – Fasano</option>
+      <option value="3">Giovedì – Brindisi</option>
+      <option value="4">Venerdì – Avetrana</option>
+      <option value="5">Sabato – Francavilla Fontana</option>
+    </select>
+    <div style="display:flex;gap:8px;">
+      <input class="ai" id="mapLat" placeholder="Latitudine es: 40.6557" type="number" step="0.0001" style="flex:1;">
+      <input class="ai" id="mapLng" placeholder="Longitudine es: 17.7119" type="number" step="0.0001" style="flex:1;">
+    </div>
+    <p style="font-size:12px;color:var(--grey);margin-bottom:10px;">💡 Apri Google Maps, tieni premuto sulla tua posizione esatta e copia le coordinate.</p>
+    <button class="big-btn btn-gold" id="saveMapPos">✅ Salva posizione</button>
+    <div id="mapPreviewLink" style="margin-top:8px;"></div>
+  </div>
 </div>
 
 <!-- SALDI -->
@@ -422,12 +441,9 @@ body.dark .review-card { background:#1c1c1c; }
     <img id="adminPreview" class="preview-img" src="" alt="" style="display:none">
     <input type="file" id="adminFile" accept="image/*" multiple style="display:none">
     <button class="big-btn btn-grey" id="adminPickPhoto">📷 Scegli Foto (anche più di una)</button>
-    <input type="file" id="adminVideoFile" accept="video/*" style="display:none">
-    <button class="video-upload-btn" id="adminPickVideo">🎬 Aggiungi Video (opzionale)</button>
-    <div id="adminVideoPreviewWrap" style="display:none;">
-      <div class="video-wrap"><video id="adminVideoPreview" controls></video></div>
-      <button onclick="document.getElementById('adminVideoFile').value='';document.getElementById('adminVideoPreviewWrap').style.display='none';adminVideo=null;" style="background:none;border:none;color:#e74c3c;font-size:12px;cursor:pointer;margin-bottom:8px;">❌ Rimuovi video</button>
-    </div>
+    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--grey);margin-bottom:8px;font-weight:600;">🎬 Video prodotto (opzionale)</div>
+    <input class="ai" id="adminVideoUrl" placeholder="Link YouTube es: https://youtube.com/shorts/xxx" type="url">
+    <input class="ai" id="adminVideoUrl2" placeholder="Link Instagram Reels es: https://instagram.com/reel/xxx" type="url">
     <div id="adminThumbsWrap" style="display:none;margin-bottom:10px;">
       <div style="font-size:12px;color:var(--grey);margin-bottom:6px;">Foto selezionate:</div>
       <div id="adminThumbs" style="display:flex;gap:8px;overflow-x:auto;"></div>
@@ -450,6 +466,11 @@ body.dark .review-card { background:#1c1c1c; }
       <input type="checkbox" id="adminIsSale" style="accent-color:#e74c3c;width:16px;height:16px;"> <span>In <strong style="color:#e74c3c;">SALDO</strong></span>
     </label>
     <input class="ai" id="adminOldPrice" placeholder="Prezzo originale (es. 49.90) — solo se in saldo" type="number" step="0.01" min="0" style="display:none;">
+    <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--grey);margin-bottom:8px;font-weight:600;">Tipo taglie</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <button class="filter-btn active" id="sizeModeAbiti" onclick="setSizeMode('abiti',this)">👕 Abiti (S-XXXL)</button>
+      <button class="filter-btn" id="sizeModeNumeri" onclick="setSizeMode('numeri',this)">👖 Pantaloni (42-54)</button>
+    </div>
     <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--grey);margin-bottom:8px;font-weight:600;">Taglie disponibili</div>
     <div class="check-group" id="adminSizeGrid">
       <label class="check-label"><input type="checkbox" value="S" style="accent-color:var(--gold);"> S</label>
@@ -515,13 +536,17 @@ body.dark .review-card { background:#1c1c1c; }
     <div class="handle"></div>
     <img id="pmImgMain" class="gallery-main" src="" alt="">
     <div class="gallery-thumbs" id="pmThumbs"></div>
-    <div id="pmVideoWrap" style="display:none;" class="video-wrap"><video id="pmVideo" controls style="width:100%;border-radius:12px;margin-bottom:12px;"></video></div>
+    <div id="pmVideoWrap" style="margin-bottom:12px;"></div>
   <div style="font-family:serif;font-size:18px;font-weight:700;margin-bottom:4px;color:var(--text);" id="pmName"></div>
     <div style="font-size:22px;color:var(--gold);font-family:serif;font-weight:700;margin-bottom:6px;" id="pmPrice"></div>
     <div id="pmStock" style="font-size:12px;color:#e67e22;margin-bottom:14px;"></div>
-    <div style="display:flex;gap:8px;margin-bottom:16px;">
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
       <a href="tel:+393711267591" class="big-btn btn-gold" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:0;text-decoration:none;">📞 Chiama</a>
       <a href="sms:+393711267591" class="big-btn" style="flex:1;background:#0084ff;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:0;text-decoration:none;">💬 SMS</a>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--grey);margin-bottom:8px;font-weight:600;">Condividi su</div>
+      <div style="display:flex;gap:8px;" id="pmSocialBtns"></div>
     </div>
     <div class="pm-label">Taglia</div>
     <div class="size-grid" id="pmSizes"></div>
@@ -569,7 +594,9 @@ let selectedStars=0;
 let isDark=localStorage.getItem('mu_dark')==='1';
 let adminVideo=null;
 let cart={}, cartMeta={}, selProduct=null, selSize=null, selColor=null;
-let adminLogged=false, adminPhotos=[];adminVideo=null;
+let adminLogged=false, adminPhotos=[];
+  document.getElementById('adminVideoUrl').value='';
+  document.getElementById('adminVideoUrl2').value='';
   document.getElementById('adminIsSale').checked=false;
   document.getElementById('adminOldPrice').style.display='none';
   document.getElementById('adminOldPrice').value='';
@@ -707,6 +734,7 @@ function openProduct(id){
   });
   // Share btn
   // share handled by tel/sms buttons
+  renderSocialBtns(p);
   document.getElementById('productOverlay').classList.add('open');
 }
 document.getElementById('pmAddBtn').addEventListener('click',function(){
@@ -795,20 +823,10 @@ document.getElementById('pwdCancelBtn').addEventListener('click',function(){docu
 
 // ADMIN - PHOTO (multiple)
 document.getElementById('adminPickPhoto').addEventListener('click',function(){document.getElementById('adminFile').click();});
-document.getElementById('adminPickVideo').addEventListener('click',function(){document.getElementById('adminVideoFile').click();});
-document.getElementById('adminVideoFile').addEventListener('change',function(){
-  var file=this.files[0]; if(!file)return;
-  var reader=new FileReader();
-  reader.onload=function(e){
-    adminVideo=e.target.result;
-    document.getElementById('adminVideoPreview').src=adminVideo;
-    document.getElementById('adminVideoPreviewWrap').style.display='block';
-  };
-  reader.readAsDataURL(file);
-});
-
 document.getElementById('adminFile').addEventListener('change',function(){
-  adminPhotos=[];adminVideo=null;
+  adminPhotos=[];
+  document.getElementById('adminVideoUrl').value='';
+  document.getElementById('adminVideoUrl2').value='';
   document.getElementById('adminIsSale').checked=false;
   document.getElementById('adminOldPrice').style.display='none';
   document.getElementById('adminOldPrice').value='';
@@ -846,9 +864,11 @@ document.getElementById('adminSaveBtn').addEventListener('click',function(){
   if(!adminPhotos.length){showToast('⚠️ Aggiungi almeno una foto!');return;}
   if(!sizes.length){showToast('⚠️ Seleziona almeno una taglia!');return;}
   if(!colors.length){showToast('⚠️ Seleziona almeno un colore!');return;}
+  var videoUrl=document.getElementById('adminVideoUrl').value.trim()||null;
+  var videoUrl2=document.getElementById('adminVideoUrl2').value.trim()||null;
   var isSale=document.getElementById('adminIsSale').checked;
   var oldPrice=isSale?parseFloat(document.getElementById('adminOldPrice').value)||null:null;
-  customProducts.push({id:Date.now(),name,price,oldPrice,stock,cat,isNew,isSale,imgs:adminPhotos,video:adminVideo||null,sizes,colors});
+  customProducts.push({id:Date.now(),name,price,oldPrice,stock,cat,isNew,isSale,imgs:adminPhotos,videoUrl,videoUrl2,sizes,colors});
   localStorage.setItem('mu_p',JSON.stringify(customProducts));
   // Reset
   document.getElementById('adminName').value='';
@@ -859,7 +879,9 @@ document.getElementById('adminSaveBtn').addEventListener('click',function(){
   document.getElementById('adminThumbsWrap').style.display='none';
   document.getElementById('adminIsNew').checked=false;
   document.querySelectorAll('#adminSizeGrid input,#adminColorGrid input').forEach(i=>i.checked=false);
-  adminPhotos=[];adminVideo=null;
+  adminPhotos=[];
+  document.getElementById('adminVideoUrl').value='';
+  document.getElementById('adminVideoUrl2').value='';
   document.getElementById('adminIsSale').checked=false;
   document.getElementById('adminOldPrice').style.display='none';
   document.getElementById('adminOldPrice').value='';
@@ -1068,6 +1090,77 @@ if('Notification' in window && Notification.permission === 'default'){
     }
   }, 3000);
 }
+
+
+// SIZE MODE TOGGLE
+function setSizeMode(mode, btn) {
+  document.querySelectorAll('#sizeModeAbiti,#sizeModeNumeri').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  var grid = document.getElementById('adminSizeGrid');
+  if(mode==='abiti'){
+    grid.innerHTML = ['S','M','L','XL','XXL','XXXL'].map(function(s){
+      return '<label class="check-label"><input type="checkbox" value="'+s+'" style="accent-color:var(--gold);"> '+s+'</label>';
+    }).join('');
+  } else {
+    grid.innerHTML = ['42','44','46','48','50','52','54'].map(function(s){
+      return '<label class="check-label"><input type="checkbox" value="'+s+'" style="accent-color:var(--gold);"> '+s+'</label>';
+    }).join('');
+  }
+}
+
+// SOCIAL SHARING in product sheet
+function renderSocialBtns(p) {
+  var url = encodeURIComponent('https://modauomopuglia65.github.io/Moda-uomo');
+  var text = encodeURIComponent('👕 '+p.name+' – €'+p.price.toFixed(2)+' da Moda Uomo Puglia!');
+  var btns = document.getElementById('pmSocialBtns');
+  if(!btns) return;
+  btns.innerHTML = [
+    {name:'Facebook', icon:'📘', color:'#1877f2', url:'https://www.facebook.com/sharer/sharer.php?u='+url},
+    {name:'WhatsApp', icon:'💬', color:'#25D366', url:'https://api.whatsapp.com/send?text='+text+'%20'+url},
+    {name:'Telegram', icon:'✈️', color:'#2CA5E0', url:'https://t.me/share/url?url='+url+'&text='+text},
+  ].map(function(s){
+    return '<a href="'+s.url+'" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:'+s.color+';color:#fff;border-radius:10px;padding:10px 6px;text-decoration:none;font-size:11px;font-weight:600;">'+s.icon+'<span>'+s.name+'</span></a>';
+  }).join('');
+}
+
+// MAP POSITION EDITOR
+var mapPositions = JSON.parse(localStorage.getItem('mu_mappos')||'null') || [
+  {lat:40.6557, lng:17.7119},
+  {lat:40.6053, lng:17.2312},
+  {lat:40.8351, lng:17.3589},
+  {lat:40.6172, lng:17.9259},
+  {lat:40.3553, lng:17.7276},
+  {lat:40.5307, lng:17.5832}
+];
+
+var mapDays = ['San Vito dei Normanni','Crispiano','Fasano','Brindisi','Avetrana','Francavilla Fontana'];
+
+function updateScheduleLinks(){
+  var rows = document.querySelectorAll('.schedule-row');
+  rows.forEach(function(row, i){
+    if(mapPositions[i]){
+      row.href = 'https://maps.google.com/?q='+mapPositions[i].lat+','+mapPositions[i].lng;
+    }
+  });
+}
+
+document.getElementById('saveMapPos').addEventListener('click',function(){
+  var day = parseInt(document.getElementById('mapDaySelect').value);
+  var lat = parseFloat(document.getElementById('mapLat').value);
+  var lng = parseFloat(document.getElementById('mapLng').value);
+  if(!lat||!lng){showToast('⚠️ Inserisci latitudine e longitudine!');return;}
+  mapPositions[day] = {lat:lat, lng:lng};
+  localStorage.setItem('mu_mappos', JSON.stringify(mapPositions));
+  updateScheduleLinks();
+  var preview = document.getElementById('mapPreviewLink');
+  preview.innerHTML = '<a href="https://maps.google.com/?q='+lat+','+lng+'" target="_blank" style="color:var(--gold);font-size:13px;">📍 Verifica posizione su Google Maps</a>';
+  showToast('✅ Posizione salvata per '+mapDays[day]+'!');
+  document.getElementById('mapLat').value='';
+  document.getElementById('mapLng').value='';
+});
+
+// Init map links
+updateScheduleLinks();
 
 // INIT
 renderProducts();
