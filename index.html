@@ -710,12 +710,12 @@ function renderProducts(){
   var grid=document.getElementById('productGrid');
   if(!list.length){grid.innerHTML='<div class="no-results" style="grid-column:1/-1"><div>🔍</div><p>Nessun prodotto trovato</p></div>';return;}
   grid.innerHTML=list.map(function(p){
-    var stockBadge=p.stock&&p.stock<=3?`<div class="badge-last">Ultimi ${p.stock}!</div>`:'';
-    var newBadge=p.isNew?`<div class="badge-new">NEW</div>`:'';
-    var stockText=p.stock&&p.stock<=5&&p.stock>3?`<div class="product-stock">⚠️ Solo ${p.stock} disponibili</div>`:'';
+    var stockBadge=p.stock&&p.stock<=3?'<div class="badge-last">Ultimi '+p.stock+'!</div>':'';
+    var newBadge=p.isNew?'<div class="badge-new">NEW</div>':'';
+    var stockText=p.stock&&p.stock<=5&&p.stock>3?'<div class="product-stock">⚠️ Solo '+p.stock+' disponibili</div>':'';
     var isWished=wishlist.includes(p.id);
-    var saleBadge=p.isSale?`<div class="badge-sale">-SALDO</div>`:'';
-    var priceHtml=p.isSale&&p.oldPrice?`<span class="price-old">€${p.oldPrice.toFixed(2)}</span><span class="price-sale">€${p.price.toFixed(2)}</span>`:`€${p.price.toFixed(2)}`;
+    var saleBadge=p.isSale?'<div class="badge-sale">-SALDO</div>':'';
+    var priceHtml=p.isSale&&p.oldPrice?'<span class="price-old">€'+p.oldPrice.toFixed(2)+'</span><span class="price-sale">€'+p.price.toFixed(2)+'</span>':'€'+p.price.toFixed(2);
     return `<div class="product-card" data-id="${p.id}">
       <div class="product-img-wrap">
         <img src="${(p.imgs&&p.imgs[0])||p.img||''}" alt="${p.name}" onerror="this.style.background='#f0ede8'">
