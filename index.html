@@ -232,6 +232,20 @@ body.dark .review-card { background:#1c1c1c; }
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gold);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:20px;z-index:9999;transition:transform 0.3s ease;white-space:nowrap;pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 </style>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    var swCode = `
+const CACHE='mu-v1';
+const ASSETS=['/Moda-uomo/'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
+self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match('/Moda-uomo/')))));
+`;
+    var blob=new Blob([swCode],{type:'application/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+  });
+}
+</script>
 </head>
 <body>
 
@@ -239,6 +253,13 @@ body.dark .review-card { background:#1c1c1c; }
   <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMTYwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjE2MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdvbGRHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2M5YTg0YztzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojOEI2OTE0O3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgCiAgPCEtLSBCYWNrZ3JvdW5kIGNpcmNsZSBmb3IgTVUgbW9ub2dyYW0gLS0+CiAgPGNpcmNsZSBjeD0iNjAiIGN5PSI4MCIgcj0iNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNnb2xkR3JhZCkiIHN0cm9rZS13aWR0aD0iMiIvPgogIAogIDwhLS0gTSBsZXR0ZXJmb3JtIC0tPgogIDxwYXRoIGQ9Ik0zMCAxMDUgTDMwIDU1IEw2MCA4MCBMOTAgNTUgTDkwIDEwNSIgCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIzLjUiIAogICAgICAgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDwhLS0gVGhpbiBkZWNvcmF0aXZlIGxpbmUgLS0+CiAgPGxpbmUgeDE9IjEyMCIgeTE9IjgwIiB4Mj0iMTI1IiB5Mj0iODAiIHN0cm9rZT0iI2M5YTg0YyIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgCiAgPCEtLSBNT0RBIHRleHQgLS0+CiAgPHRleHQgeD0iMTM1IiB5PSI2OCIgCiAgICAgICAgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiAKICAgICAgICBmb250LXNpemU9IjM4IiAKICAgICAgICBmb250LXdlaWdodD0iNzAwIgogICAgICAgIGxldHRlci1zcGFjaW5nPSI4IgogICAgICAgIGZpbGw9IiMxYTFhMWEiPk1PREE8L3RleHQ+CiAgCiAgPCEtLSBVT01PIHRleHQgLS0+CiAgPHRleHQgeD0iMTM1IiB5PSIxMDUiIAogICAgICAgIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgCiAgICAgICAgZm9udC1zaXplPSIzOCIKICAgICAgICBmb250LXdlaWdodD0iNzAwIiAKICAgICAgICBsZXR0ZXItc3BhY2luZz0iOCIKICAgICAgICBmaWxsPSJ1cmwoI2dvbGRHcmFkKSI+VU9NTzwvdGV4dD4KICAKICA8IS0tIEJvdHRvbSBkZWNvcmF0aXZlIGxpbmUgLS0+CiAgPGxpbmUgeDE9IjEzNSIgeTE9IjExNSIgeDI9IjM4NSIgeTI9IjExNSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgCiAgPCEtLSBQdWdsaWEgdGFnbGluZSAtLT4KICA8dGV4dCB4PSIxMzUiIHk9IjEzMiIgCiAgICAgICAgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiAKICAgICAgICBmb250LXNpemU9IjExIgogICAgICAgIGxldHRlci1zcGFjaW5nPSI1IgogICAgICAgIGZpbGw9IiM4ODgiPlBVR0xJQSDCtyBBQkJJR0xJQU1FTlRPIFVPTU88L3RleHQ+Cjwvc3ZnPg==" alt="Moda Uomo" style="height:44px;width:auto;">
   <div class="header-right">
     <button id="themeBtn" style="background:none;border:none;font-size:20px;cursor:pointer;padding:4px;">🌙</button>
+    <select id="langSelect" style="background:none;border:1px solid var(--border);color:var(--text);font-size:11px;padding:3px 6px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;">
+      <option value="it">🇮🇹 IT</option>
+      <option value="en">🇬🇧 EN</option>
+      <option value="de">🇩🇪 DE</option>
+      <option value="fr">🇫🇷 FR</option>
+      <option value="ar">🇸🇦 AR</option>
+    </select>
     <button class="cart-btn" id="cartBtn">🛒<span class="cart-count" id="cartCount">0</span></button>
   </div>
 </header>
@@ -275,6 +296,7 @@ body.dark .review-card { background:#1c1c1c; }
   <button class="tab" id="tabPromo">Promo</button>
   <button class="tab" id="tabChiSiamo">👤</button>
   <button class="tab" id="tabContatti">Contatti</button>
+  <button class="tab" id="tabMeteo" style="font-size:16px;max-width:44px;">🌤️</button>
   <button class="tab" id="tabAdmin" style="font-size:18px;max-width:44px;">⚙️</button>
 </div>
 
@@ -434,6 +456,12 @@ body.dark .review-card { background:#1c1c1c; }
   </div>
 </div>
 
+<!-- METEO -->
+<div class="page" id="pageMeteo">
+  <div class="section-title" style="margin-top:4px;">Meteo <span>Mercati</span></div>
+  <div id="meteoGrid" style="display:flex;flex-direction:column;gap:12px;"></div>
+</div>
+
 <!-- ADMIN -->
 <div class="page" id="pageAdmin">
   <div class="admin-card">
@@ -504,6 +532,29 @@ body.dark .review-card { background:#1c1c1c; }
     <h3>📦 Tutti i Prodotti</h3>
     <div id="adminList"></div>
   </div>
+  <div class="admin-card">
+    <h3>♻️ Ripristina</h3>
+    <button class="big-btn btn-grey" id="restoreBtn">↩️ Ripristina prodotti eliminati</button>
+  </div>
+  <div class="admin-card">
+    <h3>🏷️ Gestisci Coupon</h3>
+    <p style="font-size:13px;color:var(--grey);margin-bottom:10px;">Crea codici sconto per i tuoi clienti.</p>
+    <input class="ai" id="couponCode" placeholder="Codice es: ESTATE10" type="text" style="text-transform:uppercase;">
+    <input class="ai" id="couponDiscount" placeholder="Sconto % es: 10" type="number" min="1" max="100">
+    <button class="big-btn btn-gold" id="saveCouponBtn">✅ Salva Coupon</button>
+    <div id="couponList" style="margin-top:10px;"></div>
+  </div>
+
+  <div class="admin-card">
+    <h3>📊 Statistiche App</h3>
+    <div id="statsBox"></div>
+  </div>
+
+  <div class="admin-card">
+    <h3>📦 Storico Ordini</h3>
+    <div id="ordersBox"></div>
+  </div>
+
   <div class="admin-card">
     <h3>♻️ Ripristina</h3>
     <button class="big-btn btn-grey" id="restoreBtn">↩️ Ripristina prodotti eliminati</button>
@@ -593,7 +644,9 @@ let reviews=JSON.parse(localStorage.getItem('mu_reviews')||'[]');
 let selectedStars=0;
 let isDark=localStorage.getItem('mu_dark')==='1';
 let adminVideo=null;
-let cart={}, cartMeta={}, selProduct=null, selSize=null, selColor=null;
+let cart=JSON.parse(localStorage.getItem('mu_cart')||'{}');
+let cartMeta=JSON.parse(localStorage.getItem('mu_cartmeta')||'{}');
+let selProduct=null, selSize=null, selColor=null;
 let adminLogged=false, adminPhotos=[];
   document.getElementById('adminVideoUrl').value='';
   document.getElementById('adminVideoUrl2').value='';
@@ -751,12 +804,18 @@ document.getElementById('pmCloseBtn').addEventListener('click',function(){docume
 document.getElementById('productOverlay').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
 
 // CART
-function updateCartCount(){var n=Object.values(cart).reduce((a,b)=>a+b,0);document.getElementById('cartCount').textContent=n;}
+function updateCartCount(){
+  var n=Object.values(cart).reduce((a,b)=>a+b,0);
+  document.getElementById('cartCount').textContent=n;
+  localStorage.setItem('mu_cart',JSON.stringify(cart));
+  localStorage.setItem('mu_cartmeta',JSON.stringify(cartMeta));
+}
 document.getElementById('cartBtn').addEventListener('click',function(){renderCart();document.getElementById('cartOverlay').classList.add('open');});
 document.getElementById('cartOverlay').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
 function renderCart(){
   var items=Object.entries(cart);
   var iDiv=document.getElementById('cartItems'),fDiv=document.getElementById('cartFooter');
+  var appliedCoupon=JSON.parse(localStorage.getItem('mu_applied_coupon')||'null');
   if(!items.length){iDiv.innerHTML='<div class="empty-cart"><div>🛒</div><p>Il carrello è vuoto</p></div>';fDiv.innerHTML='';return;}
   var total=0;
   iDiv.innerHTML=items.map(function(e){
@@ -785,7 +844,16 @@ function renderCart(){
   });
   var waMsg=buildWA(total);
   var ppUrl='https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business='+encodeURIComponent(PAYPAL)+'&item_name='+encodeURIComponent('Moda Uomo Ordine')+'&amount='+total.toFixed(2)+'&currency_code=EUR&no_shipping=2';
-  fDiv.innerHTML=`<div class="cart-total"><span style="color:var(--grey)">Totale</span><span class="cart-total-price">€${total.toFixed(2)}</span></div>
+  var discount=0;
+  if(appliedCoupon){discount=Math.round(total*appliedCoupon.pct/100*100)/100;}
+  var finalTotal=(total-discount).toFixed(2);
+  fDiv.innerHTML=`
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <input id="couponInput" class="ai" placeholder="Hai un codice sconto?" style="flex:1;margin-bottom:0;" value="${appliedCoupon?appliedCoupon.code:''}">
+      <button onclick="applyCoupon()" class="big-btn btn-gold" style="width:80px;margin-bottom:0;padding:10px;">✅</button>
+    </div>
+    ${appliedCoupon?'<div style="color:#27ae60;font-size:13px;margin-bottom:8px;">🎉 Sconto '+appliedCoupon.pct+'% applicato! -€'+discount.toFixed(2)+'</div>':''}
+    <div class="cart-total"><span style="color:var(--grey)">Totale</span><span class="cart-total-price">€${finalTotal}</span></div>
     <a href="${ppUrl}" class="big-btn btn-paypal" target="_blank">💳 Paga con PayPal</a>
     <a href="https://api.whatsapp.com/send?phone=${PHONE}&text=${encodeURIComponent(waMsg)}" class="big-btn btn-green" target="_blank">💬 Ordina via WhatsApp</a>`;
 }
@@ -1162,9 +1230,193 @@ document.getElementById('saveMapPos').addEventListener('click',function(){
 // Init map links
 updateScheduleLinks();
 
+
+// VISIT COUNTER
+var visits = parseInt(localStorage.getItem('mu_visits')||'0') + 1;
+localStorage.setItem('mu_visits', visits);
+
+// TRANSLATIONS
+var translations = {
+  it: {catalog:'Catalogo',promo:'Promo',contacts:'Contatti',search:'Cerca prodotto...',addCart:'🛒 Aggiungi al carrello',cancel:'Annulla',size:'Taglia',color:'Colore',total:'Totale',call:'📞 Chiama per ordinare',pay:'💳 Paga con PayPal'},
+  en: {catalog:'Catalog',promo:'Promo',contacts:'Contacts',search:'Search product...',addCart:'🛒 Add to cart',cancel:'Cancel',size:'Size',color:'Color',total:'Total',call:'📞 Call to order',pay:'💳 Pay with PayPal'},
+  de: {catalog:'Katalog',promo:'Angebote',contacts:'Kontakt',search:'Produkt suchen...',addCart:'🛒 In den Warenkorb',cancel:'Abbrechen',size:'Größe',color:'Farbe',total:'Gesamt',call:'📞 Anrufen',pay:'💳 Mit PayPal zahlen'},
+  fr: {catalog:'Catalogue',promo:'Promo',contacts:'Contacts',search:'Chercher...',addCart:'🛒 Ajouter au panier',cancel:'Annuler',size:'Taille',color:'Couleur',total:'Total',call:'📞 Appeler',pay:'💳 Payer PayPal'},
+  ar: {catalog:'كتالوج',promo:'عروض',contacts:'اتصال',search:'ابحث عن منتج...',addCart:'🛒 أضف للسلة',cancel:'إلغاء',size:'المقاس',color:'اللون',total:'المجموع',call:'📞 اتصل للطلب',pay:'💳 ادفع بـ PayPal'}
+};
+var currentLang='it';
+
+function applyLang(lang){
+  currentLang=lang;
+  var t=translations[lang]||translations.it;
+  document.getElementById('tabCatalogo').textContent=t.catalog;
+  document.getElementById('tabPromo').textContent=t.promo;
+  document.getElementById('tabContatti').textContent=t.contacts;
+  document.getElementById('searchInput').placeholder=t.search;
+  if(document.getElementById('pmAddBtn')) document.getElementById('pmAddBtn').textContent=t.addCart;
+  if(document.getElementById('pmCloseBtn')) document.getElementById('pmCloseBtn').textContent=t.cancel;
+  if(lang==='ar'){document.body.style.direction='rtl';}
+  else{document.body.style.direction='ltr';}
+  localStorage.setItem('mu_lang',lang);
+}
+
+document.getElementById('langSelect').addEventListener('change',function(){applyLang(this.value);});
+var savedLang=localStorage.getItem('mu_lang')||'it';
+document.getElementById('langSelect').value=savedLang;
+applyLang(savedLang);
+
+// SAVE ORDER
+function saveOrder(total){
+  var orders=JSON.parse(localStorage.getItem('mu_orders')||'[]');
+  var items=Object.entries(cart).map(function(e){
+    var m=cartMeta[e[0]],p=allProducts().find(x=>x.id==m.id);
+    return p.name+' ('+m.size+'/'+m.color+') x'+e[1];
+  });
+  orders.unshift({date:new Date().toLocaleDateString('it-IT'),items:items,total:'€'+total.toFixed(2)});
+  if(orders.length>20) orders=orders.slice(0,20);
+  localStorage.setItem('mu_orders',JSON.stringify(orders));
+  // Clear cart
+  cart={};cartMeta={};
+  localStorage.setItem('mu_cart','{}');
+  localStorage.setItem('mu_cartmeta','{}');
+  updateCartCount();
+}
+
+// COUPON SYSTEM
+function applyCoupon(){
+  var code=document.getElementById('couponInput').value.trim().toUpperCase();
+  var coupons=JSON.parse(localStorage.getItem('mu_coupons')||'[]');
+  var found=coupons.find(function(c){return c.code===code;});
+  if(found){
+    localStorage.setItem('mu_applied_coupon',JSON.stringify(found));
+    showToast('🎉 Sconto '+found.pct+'% applicato!');
+    renderCart();
+  } else {
+    showToast('❌ Codice non valido');
+    localStorage.removeItem('mu_applied_coupon');
+  }
+}
+
+document.getElementById('saveCouponBtn').addEventListener('click',function(){
+  var code=document.getElementById('couponCode').value.trim().toUpperCase();
+  var pct=parseInt(document.getElementById('couponDiscount').value);
+  if(!code||!pct||pct<1||pct>100){showToast('⚠️ Inserisci codice e sconto valido!');return;}
+  var coupons=JSON.parse(localStorage.getItem('mu_coupons')||'[]');
+  coupons=coupons.filter(function(c){return c.code!==code;});
+  coupons.push({code:code,pct:pct});
+  localStorage.setItem('mu_coupons',JSON.stringify(coupons));
+  document.getElementById('couponCode').value='';
+  document.getElementById('couponDiscount').value='';
+  renderCouponList();
+  showToast('✅ Coupon '+code+' salvato!');
+});
+
+function renderCouponList(){
+  var coupons=JSON.parse(localStorage.getItem('mu_coupons')||'[]');
+  var list=document.getElementById('couponList');
+  if(!list) return;
+  if(!coupons.length){list.innerHTML='<p style="color:var(--grey);font-size:13px;">Nessun coupon attivo.</p>';return;}
+  list.innerHTML=coupons.map(function(c){
+    return '<div style="display:flex;justify-content:space-between;align-items:center;background:#f8f6f2;padding:8px 12px;border-radius:8px;margin-bottom:6px;">'
+      +'<span style="font-weight:700;color:var(--gold);">'+c.code+'</span>'
+      +'<span style="font-size:13px;color:var(--grey);">-'+c.pct+'%</span>'
+      +'<button onclick="deleteCoupon(''+c.code+'')" style="background:#c0392b;border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;">×</button>'
+      +'</div>';
+  }).join('');
+}
+
+function deleteCoupon(code){
+  var coupons=JSON.parse(localStorage.getItem('mu_coupons')||'[]');
+  coupons=coupons.filter(function(c){return c.code!==code;});
+  localStorage.setItem('mu_coupons',JSON.stringify(coupons));
+  renderCouponList();
+  showToast('🗑️ Coupon eliminato');
+}
+
+// STATS
+function renderStats(){
+  var box=document.getElementById('statsBox');
+  if(!box) return;
+  var orders=JSON.parse(localStorage.getItem('mu_orders')||'[]');
+  var wishlistCount=JSON.parse(localStorage.getItem('mu_wish')||'[]').length;
+  var reviews=JSON.parse(localStorage.getItem('mu_reviews')||'[]').length;
+  box.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+    +'<div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:28px;font-weight:900;color:var(--gold);">'+visits+'</div><div style="font-size:12px;color:var(--grey);">Visite app</div></div>'
+    +'<div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:28px;font-weight:900;color:var(--gold);">'+orders.length+'</div><div style="font-size:12px;color:var(--grey);">Ordini</div></div>'
+    +'<div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:28px;font-weight:900;color:var(--gold);">'+wishlistCount+'</div><div style="font-size:12px;color:var(--grey);">Preferiti</div></div>'
+    +'<div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:28px;font-weight:900;color:var(--gold);">'+reviews+'</div><div style="font-size:12px;color:var(--grey);">Recensioni</div></div>'
+    +'</div>';
+}
+
+// ORDERS HISTORY
+function renderOrders(){
+  var box=document.getElementById('ordersBox');
+  if(!box) return;
+  var orders=JSON.parse(localStorage.getItem('mu_orders')||'[]');
+  if(!orders.length){box.innerHTML='<p style="color:var(--grey);font-size:13px;">Nessun ordine ancora.</p>';return;}
+  box.innerHTML=orders.map(function(o){
+    return '<div style="background:#f8f6f2;border-radius:10px;padding:12px;margin-bottom:8px;">'
+      +'<div style="display:flex;justify-content:space-between;"><span style="font-size:12px;font-weight:700;">'+o.date+'</span><span style="font-size:13px;color:var(--gold);font-weight:700;">'+o.total+'</span></div>'
+      +'<div style="font-size:12px;color:var(--grey);margin-top:4px;">'+o.items.join(', ')+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// METEO
+document.getElementById('tabMeteo').addEventListener('click',function(){showPage('pageMeteo',this);loadMeteo();});
+
+var mercatiMeteo=[
+  {nome:'San Vito dei Normanni',lat:40.6557,lng:17.7119,giorno:'Lunedì'},
+  {nome:'Crispiano',lat:40.6053,lng:17.2312,giorno:'Martedì'},
+  {nome:'Fasano',lat:40.8351,lng:17.3589,giorno:'Mercoledì'},
+  {nome:'Brindisi',lat:40.6172,lng:17.9259,giorno:'Giovedì'},
+  {nome:'Avetrana',lat:40.3553,lng:17.7276,giorno:'Venerdì'},
+  {nome:'Francavilla Fontana',lat:40.5307,lng:17.5832,giorno:'Sabato'}
+];
+
+function loadMeteo(){
+  var grid=document.getElementById('meteoGrid');
+  grid.innerHTML='<p style="color:var(--grey);font-size:13px;text-align:center;">⏳ Caricamento meteo...</p>';
+  var loaded=0;
+  var results=[];
+  mercatiMeteo.forEach(function(m,i){
+    fetch('https://api.open-meteo.com/v1/forecast?latitude='+m.lat+'&longitude='+m.lng+'&current=temperature_2m,weathercode,windspeed_10m&timezone=Europe/Rome')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var temp=data.current.temperature_2m;
+      var wind=data.current.windspeed_10m;
+      var code=data.current.weathercode;
+      var icon=code<=1?'☀️':code<=3?'⛅':code<=67?'🌧️':code<=77?'🌨️':'⛈️';
+      var desc=code<=1?'Sereno':code<=3?'Nuvoloso':code<=67?'Pioggia':code<=77?'Neve':'Temporale';
+      results[i]='<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);">'
+        +'<div><div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;">'+m.giorno+'</div>'
+        +'<div style="font-size:15px;font-weight:600;color:var(--text);margin-top:2px;">'+m.nome+'</div>'
+        +'<div style="font-size:12px;color:var(--grey);margin-top:2px;">💨 Vento: '+wind+' km/h · '+desc+'</div></div>'
+        +'<div style="text-align:center;"><div style="font-size:36px;">'+icon+'</div>'
+        +'<div style="font-family:serif;font-size:20px;font-weight:700;color:var(--gold);">'+temp+'°C</div></div>'
+        +'</div>';
+      loaded++;
+      if(loaded===mercatiMeteo.length){
+        grid.innerHTML=results.join('');
+      }
+    })
+    .catch(function(){
+      results[i]='<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;color:var(--grey);font-size:13px;">⚠️ '+m.giorno+' – '+m.nome+': meteo non disponibile</div>';
+      loaded++;
+      if(loaded===mercatiMeteo.length) grid.innerHTML=results.join('');
+    });
+  });
+}
+
+// RENDER ADMIN extras when admin opens
+var origShowAdmin=document.getElementById('tabAdmin').onclick;
+document.getElementById('tabAdmin').addEventListener('click',function(){
+  setTimeout(function(){renderCouponList();renderStats();renderOrders();},100);
+});
+
 // INIT
 renderProducts();
 renderReviews();
+updateCartCount();
 </script>
 </body>
 </html>
