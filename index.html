@@ -534,4 +534,451 @@ function renderGrid(list,gridId){
       +'<div class="product-img-wrap">'
       +'<img src="'+src+'" alt="'+p.name+'">'
       +newBadge+lastBadge+saleBadge
-      +'<but
+      +'<button class="wish-btn" data-wid="'+p.id+'">'+wishIcon+'</button>'
+      +'</div>'
+      +'<div class="product-info">'
+      +'<div class="product-cat">'+p.cat+'</div>'
+      +'<div class="product-name">'+p.name+'</div>'
+      +stockText
+      +'<div class="product-footer">'
+      +'<div class="product-price">'+priceHtml+'</div>'
+      +'<button class="add-btn">+</button>'
+      +'</div></div></div>';
+  }
+  grid.innerHTML=html;
+  grid.querySelectorAll(".product-card").forEach(function(card){
+    card.addEventListener("click",function(e){
+      if(e.target.classList.contains("wish-btn")||e.target.classList.contains("add-btn"))return;
+      openProduct(parseInt(this.dataset.id));
+    });
+  });
+  grid.querySelectorAll(".wish-btn").forEach(function(btn){
+    btn.addEventListener("click",function(e){
+      e.stopPropagation();
+      var id=parseInt(this.dataset.wid);
+      var idx=wishlist.indexOf(id);
+      if(idx>-1){wishlist.splice(idx,1);this.textContent="🤍";showToast("💔 Rimosso dai preferiti");}
+      else{wishlist.push(id);this.textContent="❤️";showToast("❤️ Aggiunto ai preferiti!");}
+      localStorage.setItem("mu_wish",JSON.stringify(wishlist));
+    });
+  });
+  grid.querySelectorAll(".add-btn").forEach(function(btn){
+    btn.addEventListener("click",function(e){
+      e.stopPropagation();
+      var id=parseInt(this.closest(".product-card").dataset.id);
+      openProduct(id);
+    });
+  });
+}
+
+function renderSaldi(){
+  var all=allProducts().filter(function(p){return p.isSale;});
+  if(!all.length){document.getElementById("saldiGrid").innerHTML="";document.getElementById("noSaldi").style.display="block";return;}
+  document.getElementById("noSaldi").style.display="none";
+  renderGrid(all,"saldiGrid");
+}
+
+function renderWishlist(){
+  var all=allProducts().filter(function(p){return wishlist.indexOf(p.id)>-1;});
+  if(!all.length){document.getElementById("wishlistGrid").innerHTML="";document.getElementById("noWishlist").style.display="block";return;}
+  document.getElementById("noWishlist").style.display="none";
+  renderGrid(all,"wishlistGrid");
+}
+
+// PRODUCT SHEET
+function openProduct(id){
+  var p=allProducts().find(function(x){return x.id===id;});
+  if(!p)return;
+  selProduct=p;selSize=null;selColor=null;
+  var imgs=(p.imgs&&p.imgs.length)?p.imgs:(p.img?[p.img]:[]);
+  document.getElementById("pmImgMain").src=imgs[0]||"";
+  var thumbsEl=document.getElementById("pmThumbs");
+  if(imgs.length>1){
+    var th="";
+    for(var i=0;i<imgs.length;i++){th+='<img class="gallery-thumb'+(i===0?" sel-thumb":"")+'" src="'+imgs[i]+'" data-idx="'+i+'" alt="">';}
+    thumbsEl.innerHTML=th;thumbsEl.style.display="flex";
+    thumbsEl.querySelectorAll(".gallery-thumb").forEach(function(t){
+      t.addEventListener("click",function(){
+        document.getElementById("pmImgMain").src=this.src;
+        thumbsEl.querySelectorAll(".gallery-thumb").forEach(function(x){x.classList.remove("sel-thumb");});
+        this.classList.add("sel-thumb");
+      });
+    });
+  }else{thumbsEl.style.display="none";}
+  // Video
+  var vw=document.getElementById("pmVideoWrap");vw.innerHTML="";vw.style.display="none";
+  if(p.videoUrl){
+    var ytId=p.videoUrl.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([\w-]+)/);
+    if(ytId){vw.innerHTML='<iframe width="100%" height="190" src="https://www.youtube.com/embed/'+ytId[1]+'" frameborder="0" allowfullscreen style="border-radius:10px;display:block;"></iframe>';vw.style.display="block";}
+  }
+  if(p.videoUrl2){
+    vw.innerHTML+='<a href="'+p.videoUrl2+'" target="_blank" class="big-btn btn-grey" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;margin-top:8px;">📸 Guarda su Instagram</a>';
+    vw.style.display="block";
+  }
+  document.getElementById("pmName").textContent=p.name;
+  document.getElementById("pmPrice").innerHTML=(p.isSale&&p.oldPrice)?('<span class="price-old">€'+p.oldPrice.toFixed(2)+'</span> <span class="price-sale">€'+p.price.toFixed(2)+'</span>'):'€'+p.price.toFixed(2);
+  var stockEl=document.getElementById("pmStock");
+  if(p.stock&&p.stock<=5){stockEl.textContent="⚠️ Solo "+p.stock+" pezzi disponibili!";stockEl.style.display="block";}
+  else{stockEl.style.display="none";}
+  // Social
+  var url=encodeURIComponent("https://modauomopuglia65.github.io/Moda-uomo");
+  var txt=encodeURIComponent("👕 "+p.name+" – €"+p.price.toFixed(2)+" da Moda Uomo Puglia!");
+  document.getElementById("pmSocialBtns").innerHTML=
+    '<a href="https://www.facebook.com/sharer/sharer.php?u='+url+'" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:#1877f2;color:#fff;border-radius:10px;padding:8px 4px;text-decoration:none;font-size:11px;font-weight:600;">📘<span>Facebook</span></a>'
+    +'<a href="https://api.whatsapp.com/send?text='+txt+'%20'+url+'" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:#25D366;color:#fff;border-radius:10px;padding:8px 4px;text-decoration:none;font-size:11px;font-weight:600;">💬<span>WhatsApp</span></a>'
+    +'<a href="https://t.me/share/url?url='+url+'&text='+txt+'" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:#2CA5E0;color:#fff;border-radius:10px;padding:8px 4px;text-decoration:none;font-size:11px;font-weight:600;">✈️<span>Telegram</span></a>';
+  var availSizes=(p.sizes&&p.sizes.length)?p.sizes:SIZES_ABITI;
+  var availColors=(p.colors&&p.colors.length)?p.colors:COLORS;
+  var szHtml="";for(var i=0;i<availSizes.length;i++){szHtml+='<button class="size-btn" data-size="'+availSizes[i]+'">'+availSizes[i]+'</button>';}
+  var clHtml="";for(var i=0;i<availColors.length;i++){clHtml+='<button class="color-btn" data-color="'+availColors[i]+'">'+availColors[i]+'</button>';}
+  document.getElementById("pmSizes").innerHTML=szHtml;
+  document.getElementById("pmColors").innerHTML=clHtml;
+  document.getElementById("pmSizes").querySelectorAll(".size-btn").forEach(function(b){
+    b.addEventListener("click",function(){selSize=this.dataset.size;document.querySelectorAll(".size-btn").forEach(function(x){x.classList.remove("sel");});this.classList.add("sel");});
+  });
+  document.getElementById("pmColors").querySelectorAll(".color-btn").forEach(function(b){
+    b.addEventListener("click",function(){selColor=this.dataset.color;document.querySelectorAll(".color-btn").forEach(function(x){x.classList.remove("sel");});this.classList.add("sel");});
+  });
+  document.getElementById("productOverlay").classList.add("open");
+}
+
+document.getElementById("pmAddBtn").addEventListener("click",function(){
+  if(!selSize){showToast("⚠️ Scegli la taglia!");return;}
+  if(!selColor){showToast("⚠️ Scegli il colore!");return;}
+  var key=selProduct.id+"_"+selSize+"_"+selColor;
+  cart[key]=(cart[key]||0)+1;
+  cartMeta[key]={id:selProduct.id,size:selSize,color:selColor};
+  saveCart();updateCartCount();
+  document.getElementById("productOverlay").classList.remove("open");
+  showToast("✅ Aggiunto al carrello!");
+});
+document.getElementById("pmCloseBtn").addEventListener("click",function(){document.getElementById("productOverlay").classList.remove("open");});
+document.getElementById("productOverlay").addEventListener("click",function(e){if(e.target===this)this.classList.remove("open");});
+
+// CART
+function saveCart(){localStorage.setItem("mu_cart",JSON.stringify(cart));localStorage.setItem("mu_cartmeta",JSON.stringify(cartMeta));}
+function updateCartCount(){var n=Object.values(cart).reduce(function(a,b){return a+b;},0);document.getElementById("cartCount").textContent=n;}
+document.getElementById("cartBtn").addEventListener("click",function(){renderCart();document.getElementById("cartOverlay").classList.add("open");});
+document.getElementById("cartOverlay").addEventListener("click",function(e){if(e.target===this)this.classList.remove("open");});
+
+function renderCart(){
+  var items=Object.entries(cart);
+  var iDiv=document.getElementById("cartItems"),fDiv=document.getElementById("cartFooter");
+  if(!items.length){iDiv.innerHTML='<div class="empty-cart"><div>🛒</div><p>Il carrello è vuoto</p></div>';fDiv.innerHTML="";return;}
+  var total=0;
+  var html="";
+  for(var i=0;i<items.length;i++){
+    var k=items[i][0],q=items[i][1];
+    var m=cartMeta[k];if(!m)continue;
+    var p=allProducts().find(function(x){return x.id==m.id;});if(!p)continue;
+    total+=p.price*q;
+    html+='<div class="cart-item">'
+      +'<div style="flex:1"><div class="cart-item-name">'+p.name.substring(0,28)+'...</div>'
+      +'<div class="cart-item-sub">Taglia: <b style="color:var(--gold)">'+m.size+'</b> · Colore: <b style="color:var(--gold)">'+m.color+'</b></div>'
+      +'<div class="cart-item-price">€'+p.price.toFixed(2)+' × '+q+' = €'+(p.price*q).toFixed(2)+'</div></div>'
+      +'<div class="qty-control">'
+      +'<button class="qty-btn" data-key="'+k+'" data-d="-1">−</button>'
+      +'<span class="qty-num">'+q+'</span>'
+      +'<button class="qty-btn" data-key="'+k+'" data-d="1">+</button>'
+      +'</div></div>';
+  }
+  iDiv.innerHTML=html;
+  iDiv.querySelectorAll(".qty-btn").forEach(function(b){
+    b.addEventListener("click",function(){
+      var k=this.dataset.key,d=parseInt(this.dataset.d);
+      cart[k]=(cart[k]||0)+d;
+      if(cart[k]<=0){delete cart[k];delete cartMeta[k];}
+      saveCart();updateCartCount();renderCart();
+    });
+  });
+  // Coupon
+  var coupon=JSON.parse(localStorage.getItem("mu_applied_coupon")||"null");
+  var discount=coupon?Math.round(total*coupon.pct/100*100)/100:0;
+  var finalTotal=(total-discount).toFixed(2);
+  var couponVal=coupon?coupon.code:"";
+  var couponMsg=coupon?'<div style="color:#27ae60;font-size:13px;margin-bottom:8px;">🎉 Sconto '+coupon.pct+'% applicato! -€'+discount.toFixed(2)+'</div>':"";
+  var ppUrl="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business="+encodeURIComponent(PAYPAL)+"&item_name="+encodeURIComponent("Moda Uomo Ordine")+"&amount="+finalTotal+"&currency_code=EUR&no_shipping=2";
+  fDiv.innerHTML='<div style="display:flex;gap:8px;margin-bottom:10px;">'
+    +'<input id="couponInput" class="ai" placeholder="Codice sconto?" style="flex:1;margin-bottom:0;" value="'+couponVal+'">'
+    +'<button id="applyCouponBtn" class="big-btn btn-gold" style="width:80px;margin-bottom:0;padding:10px;">✅</button>'
+    +'</div>'
+    +couponMsg
+    +'<div class="cart-total"><span style="color:#666">Totale</span><span class="cart-total-price">€'+finalTotal+'</span></div>'
+    +'<a href="'+ppUrl+'" class="big-btn btn-paypal" target="_blank" style="display:block;margin-bottom:8px;">💳 Paga con PayPal</a>'
+    +'<a href="tel:+393711267591" class="big-btn btn-green" onclick="saveOrder('+total+')" style="display:block;">📞 Chiama per ordinare</a>';
+  document.getElementById("applyCouponBtn").addEventListener("click",function(){
+    var code=document.getElementById("couponInput").value.trim().toUpperCase();
+    var coupons=JSON.parse(localStorage.getItem("mu_coupons")||"[]");
+    var found=coupons.find(function(c){return c.code===code;});
+    if(found){localStorage.setItem("mu_applied_coupon",JSON.stringify(found));showToast("🎉 Sconto "+found.pct+"% applicato!");renderCart();}
+    else{showToast("❌ Codice non valido");localStorage.removeItem("mu_applied_coupon");}
+  });
+}
+
+function saveOrder(total){
+  var orders=JSON.parse(localStorage.getItem("mu_orders")||"[]");
+  var items=Object.entries(cart).map(function(e){var m=cartMeta[e[0]];var p=allProducts().find(function(x){return x.id==m.id;});return p?p.name+" ("+m.size+"/"+m.color+") x"+e[1]:"";});
+  orders.unshift({date:new Date().toLocaleDateString("it-IT"),items:items,total:"€"+total.toFixed(2)});
+  if(orders.length>20)orders=orders.slice(0,20);
+  localStorage.setItem("mu_orders",JSON.stringify(orders));
+  cart={};cartMeta={};saveCart();updateCartCount();
+}
+
+// PASSWORD
+document.getElementById("pwdEntraBtn").addEventListener("click",function(){
+  if(document.getElementById("pwdInput").value===PWD){
+    adminLogged=true;
+    document.getElementById("pwdOverlay").classList.remove("open");
+    showPage("pageAdmin",document.getElementById("tabAdmin"));
+    renderAdminList();renderCouponList();renderStats();renderOrders();
+    showToast("✅ Benvenuto nel pannello admin!");
+  }else{document.getElementById("pwdErr").style.display="block";document.getElementById("pwdInput").value="";}
+});
+document.getElementById("pwdInput").addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("pwdEntraBtn").click();});
+document.getElementById("pwdCancelBtn").addEventListener("click",function(){document.getElementById("pwdOverlay").classList.remove("open");});
+
+// ADMIN
+document.getElementById("adminPickPhoto").addEventListener("click",function(){document.getElementById("adminFile").click();});
+document.getElementById("adminFile").addEventListener("change",function(){
+  adminPhotos=[];
+  var files=Array.from(this.files);
+  if(!files.length)return;
+  document.getElementById("adminPreview").src=URL.createObjectURL(files[0]);
+  document.getElementById("adminPreview").style.display="block";
+  document.getElementById("adminThumbsWrap").style.display="block";
+  document.getElementById("adminThumbs").innerHTML="";
+  files.forEach(function(file){
+    var reader=new FileReader();
+    reader.onload=function(e){
+      adminPhotos.push(e.target.result);
+      var t=document.createElement("img");
+      t.src=e.target.result;t.style.cssText="width:48px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #ddd;flex-shrink:0;";
+      document.getElementById("adminThumbs").appendChild(t);
+    };
+    reader.readAsDataURL(file);
+  });
+});
+document.getElementById("adminIsSale").addEventListener("change",function(){
+  document.getElementById("adminOldPrice").style.display=this.checked?"block":"none";
+});
+function setSizeMode(mode,btn){
+  document.getElementById("sizeModeAbiti").classList.remove("active");
+  document.getElementById("sizeModeNumeri").classList.remove("active");
+  btn.classList.add("active");
+  var sizes=mode==="abiti"?SIZES_ABITI:SIZES_NUMERI;
+  var html="";
+  for(var i=0;i<sizes.length;i++){html+='<label class="check-label"><input type="checkbox" value="'+sizes[i]+'" style="accent-color:var(--gold);"> '+sizes[i]+'</label>';}
+  document.getElementById("adminSizeGrid").innerHTML=html;
+}
+document.getElementById("adminSaveBtn").addEventListener("click",function(){
+  var name=document.getElementById("adminName").value.trim();
+  var price=parseFloat(document.getElementById("adminPrice").value);
+  var stock=parseInt(document.getElementById("adminStock").value)||null;
+  var cat=document.getElementById("adminCat").value;
+  var isNew=document.getElementById("adminIsNew").checked;
+  var isSale=document.getElementById("adminIsSale").checked;
+  var oldPrice=isSale?parseFloat(document.getElementById("adminOldPrice").value)||null:null;
+  var videoUrl=document.getElementById("adminVideoUrl").value.trim()||null;
+  var videoUrl2=document.getElementById("adminVideoUrl2").value.trim()||null;
+  var sizes=Array.from(document.querySelectorAll("#adminSizeGrid input:checked")).map(function(i){return i.value;});
+  var colors=Array.from(document.querySelectorAll("#adminColorGrid input:checked")).map(function(i){return i.value;});
+  if(!name){showToast("⚠️ Inserisci il nome!");return;}
+  if(!price||price<=0){showToast("⚠️ Inserisci il prezzo!");return;}
+  if(!adminPhotos.length){showToast("⚠️ Aggiungi almeno una foto!");return;}
+  if(!sizes.length){showToast("⚠️ Seleziona almeno una taglia!");return;}
+  if(!colors.length){showToast("⚠️ Seleziona almeno un colore!");return;}
+  customProducts.push({id:Date.now(),name:name,price:price,oldPrice:oldPrice,stock:stock,cat:cat,isNew:isNew,isSale:isSale,imgs:adminPhotos,videoUrl:videoUrl,videoUrl2:videoUrl2,sizes:sizes,colors:colors});
+  localStorage.setItem("mu_p",JSON.stringify(customProducts));
+  document.getElementById("adminName").value="";document.getElementById("adminPrice").value="";
+  document.getElementById("adminStock").value="";document.getElementById("adminFile").value="";
+  document.getElementById("adminPreview").style.display="none";
+  document.getElementById("adminThumbsWrap").style.display="none";
+  document.getElementById("adminIsNew").checked=false;document.getElementById("adminIsSale").checked=false;
+  document.getElementById("adminOldPrice").style.display="none";document.getElementById("adminOldPrice").value="";
+  document.getElementById("adminVideoUrl").value="";document.getElementById("adminVideoUrl2").value="";
+  document.querySelectorAll("#adminSizeGrid input,#adminColorGrid input").forEach(function(i){i.checked=false;});
+  adminPhotos=[];
+  renderAdminList();renderProducts(currentFilter);showToast("✅ Prodotto aggiunto!");
+});
+document.getElementById("adminLogoutBtn").addEventListener("click",function(){adminLogged=false;showPage("pageCatalogo",document.getElementById("tabCatalogo"));renderProducts("tutti");});
+document.getElementById("restoreBtn").addEventListener("click",function(){localStorage.removeItem("mu_hidden");renderAdminList();renderProducts(currentFilter);showToast("✅ Prodotti ripristinati!");});
+function renderAdminList(){
+  var all=allProducts();
+  var html="";
+  var customIds=customProducts.map(function(p){return p.id;});
+  for(var i=0;i<all.length;i++){
+    var p=all[i];
+    var imgs=(p.imgs&&p.imgs.length)?p.imgs:(p.img?[p.img]:[]);
+    html+='<div class="admin-row">'
+      +'<img src="'+(imgs[0]||"")+'" alt="'+p.name+'">'
+      +'<div class="admin-row-info"><div class="admin-row-name">'+p.name+'</div>'
+      +'<div class="admin-row-price">€'+p.price.toFixed(2)+' · '+p.cat+(p.stock?' · '+p.stock+' pz':'')+(p.isNew?' · 🆕':'')+(p.isSale?' · 🏷️':'')+'</div></div>'
+      +'<button class="del-btn" data-id="'+p.id+'">×</button>'
+      +'</div>';
+  }
+  document.getElementById("adminList").innerHTML=html||'<p style="color:var(--grey);font-size:13px;">Nessun prodotto.</p>';
+  document.querySelectorAll("#adminList .del-btn").forEach(function(b){
+    b.addEventListener("click",function(){
+      var id=parseInt(this.dataset.id);
+      var isCustom=customIds.indexOf(id)>-1;
+      if(isCustom){customProducts=customProducts.filter(function(p){return p.id!==id;});localStorage.setItem("mu_p",JSON.stringify(customProducts));}
+      else{var hidden=JSON.parse(localStorage.getItem("mu_hidden")||"[]");hidden.push(id);localStorage.setItem("mu_hidden",JSON.stringify(hidden));}
+      renderAdminList();renderProducts(currentFilter);showToast("🗑️ Prodotto eliminato");
+    });
+  });
+}
+
+// COUPON
+document.getElementById("saveCouponBtn").addEventListener("click",function(){
+  var code=document.getElementById("couponCode").value.trim().toUpperCase();
+  var pct=parseInt(document.getElementById("couponDiscount").value);
+  if(!code||!pct||pct<1||pct>100){showToast("⚠️ Inserisci codice e sconto!");return;}
+  var coupons=JSON.parse(localStorage.getItem("mu_coupons")||"[]");
+  coupons=coupons.filter(function(c){return c.code!==code;});
+  coupons.push({code:code,pct:pct});
+  localStorage.setItem("mu_coupons",JSON.stringify(coupons));
+  document.getElementById("couponCode").value="";document.getElementById("couponDiscount").value="";
+  renderCouponList();showToast("✅ Coupon "+code+" salvato!");
+});
+function renderCouponList(){
+  var coupons=JSON.parse(localStorage.getItem("mu_coupons")||"[]");
+  var list=document.getElementById("couponList");if(!list)return;
+  if(!coupons.length){list.innerHTML='<p style="color:var(--grey);font-size:13px;">Nessun coupon attivo.</p>';return;}
+  var html="";
+  for(var i=0;i<coupons.length;i++){
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;background:#f8f6f2;padding:8px 12px;border-radius:8px;margin-bottom:6px;">'
+      +'<span style="font-weight:700;color:var(--gold);">'+coupons[i].code+'</span>'
+      +'<span style="font-size:13px;color:var(--grey);">-'+coupons[i].pct+'%</span>'
+      +'<button data-code="'+coupons[i].code+'" class="del-coupon" style="background:#c0392b;border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;">×</button>'
+      +'</div>';
+  }
+  list.innerHTML=html;
+  list.querySelectorAll(".del-coupon").forEach(function(b){
+    b.addEventListener("click",function(){
+      var code=this.dataset.code;
+      var coupons=JSON.parse(localStorage.getItem("mu_coupons")||"[]");
+      localStorage.setItem("mu_coupons",JSON.stringify(coupons.filter(function(c){return c.code!==code;})));
+      renderCouponList();showToast("🗑️ Coupon eliminato");
+    });
+  });
+}
+function renderStats(){
+  var box=document.getElementById("statsBox");if(!box)return;
+  var orders=JSON.parse(localStorage.getItem("mu_orders")||"[]");
+  box.innerHTML='<div class="stat-box"><div class="stat-num">'+visits+'</div><div class="stat-label">Visite app</div></div>'
+    +'<div class="stat-box"><div class="stat-num">'+orders.length+'</div><div class="stat-label">Ordini</div></div>'
+    +'<div class="stat-box"><div class="stat-num">'+wishlist.length+'</div><div class="stat-label">Preferiti</div></div>'
+    +'<div class="stat-box"><div class="stat-num">'+reviews.length+'</div><div class="stat-label">Recensioni</div></div>';
+}
+function renderOrders(){
+  var box=document.getElementById("ordersBox");if(!box)return;
+  var orders=JSON.parse(localStorage.getItem("mu_orders")||"[]");
+  if(!orders.length){box.innerHTML='<p style="color:var(--grey);font-size:13px;">Nessun ordine.</p>';return;}
+  var html="";
+  for(var i=0;i<orders.length;i++){
+    html+='<div style="background:#f8f6f2;border-radius:10px;padding:10px;margin-bottom:8px;">'
+      +'<div style="display:flex;justify-content:space-between;"><span style="font-size:12px;font-weight:700;">'+orders[i].date+'</span><span style="font-size:13px;color:var(--gold);font-weight:700;">'+orders[i].total+'</span></div>'
+      +'<div style="font-size:12px;color:var(--grey);margin-top:4px;">'+orders[i].items.join(", ")+'</div>'
+      +'</div>';
+  }
+  box.innerHTML=html;
+}
+
+// REVIEWS
+function renderReviews(){
+  var list=document.getElementById("reviewsList");if(!list)return;
+  if(!reviews.length){list.innerHTML='<p style="color:var(--grey);font-size:13px;margin-bottom:14px;">Nessuna recensione. Sii il primo!</p>';return;}
+  var html="";
+  for(var i=0;i<reviews.length;i++){
+    html+='<div class="review-card">'
+      +'<div style="font-size:13px;font-weight:700;color:var(--text);">'+reviews[i].name+'</div>'
+      +'<div style="font-size:13px;margin:4px 0;">'+("⭐").repeat(reviews[i].stars)+'</div>'
+      +'<div style="font-size:13px;color:var(--grey);line-height:1.5;">'+reviews[i].text+'</div>'
+      +'<div style="font-size:11px;color:#bbb;margin-top:4px;">'+reviews[i].date+'</div>'
+      +'</div>';
+  }
+  list.innerHTML=html;
+}
+document.querySelectorAll(".star-btn").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    selStars=parseInt(this.dataset.val);
+    document.querySelectorAll(".star-btn").forEach(function(b){b.style.opacity=parseInt(b.dataset.val)<=selStars?"1":"0.4";});
+  });
+});
+document.getElementById("submitReview").addEventListener("click",function(){
+  var name=document.getElementById("reviewName").value.trim();
+  var text=document.getElementById("reviewText").value.trim();
+  if(!name){showToast("⚠️ Inserisci il tuo nome!");return;}
+  if(!text){showToast("⚠️ Scrivi la tua recensione!");return;}
+  if(!selStars){showToast("⚠️ Scegli le stelle!");return;}
+  var d=new Date();
+  reviews.unshift({name:name,stars:selStars,text:text,date:d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()});
+  localStorage.setItem("mu_reviews",JSON.stringify(reviews));
+  document.getElementById("reviewName").value="";document.getElementById("reviewText").value="";
+  document.querySelectorAll(".star-btn").forEach(function(b){b.style.opacity="0.4";});selStars=0;
+  renderReviews();showToast("⭐ Grazie per la recensione!");
+});
+
+// METEO
+function loadMeteo(){
+  var grid=document.getElementById("meteoGrid");
+  grid.innerHTML='<p style="color:var(--grey);font-size:13px;text-align:center;">⏳ Caricamento meteo...</p>';
+  var loaded=0,results=new Array(MERCATI.length);
+  MERCATI.forEach(function(m,i){
+    fetch("https://api.open-meteo.com/v1/forecast?latitude="+m.lat+"&longitude="+m.lng+"&current=temperature_2m,weathercode,windspeed_10m&timezone=Europe%2FRome")
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var temp=data.current.temperature_2m;
+      var wind=data.current.windspeed_10m;
+      var code=data.current.weathercode;
+      var icon=code<=1?"☀️":code<=3?"⛅":code<=67?"🌧️":code<=77?"🌨️":"⛈️";
+      var desc=code<=1?"Sereno":code<=3?"Nuvoloso":code<=67?"Pioggia":code<=77?"Neve":"Temporale";
+      results[i]='<div class="meteo-card">'
+        +'<div><div class="meteo-day">'+m.giorno+'</div>'
+        +'<div class="meteo-city">'+m.nome+'</div>'
+        +'<div class="meteo-wind">💨 '+wind+' km/h · '+desc+'</div></div>'
+        +'<div style="text-align:center;"><div class="meteo-icon">'+icon+'</div>'
+        +'<div class="meteo-temp">'+temp+'°C</div></div>'
+        +'</div>';
+      loaded++;
+      if(loaded===MERCATI.length)grid.innerHTML=results.join("");
+    })
+    .catch(function(){
+      results[i]='<div class="meteo-card"><div><div class="meteo-day">'+m.giorno+'</div><div class="meteo-city">'+m.nome+'</div><div class="meteo-wind" style="color:#e74c3c;">⚠️ Non disponibile</div></div></div>';
+      loaded++;
+      if(loaded===MERCATI.length)grid.innerHTML=results.join("");
+    });
+  });
+}
+
+// MAP POSITION
+document.getElementById("saveMapBtn").addEventListener("click",function(){
+  var day=parseInt(document.getElementById("mapDaySel").value);
+  var lat=parseFloat(document.getElementById("mapLat").value);
+  var lng=parseFloat(document.getElementById("mapLng").value);
+  if(!lat||!lng){showToast("⚠️ Inserisci latitudine e longitudine!");return;}
+  var links=document.querySelectorAll("#scheduleGrid .schedule-row");
+  if(links[day])links[day].href="https://maps.google.com/?q="+lat+","+lng;
+  document.getElementById("mapPreview").innerHTML='<a href="https://maps.google.com/?q='+lat+','+lng+'" target="_blank" style="color:var(--gold);font-size:13px;display:block;margin-top:8px;">📍 Verifica su Google Maps</a>';
+  showToast("✅ Posizione salvata per "+MERCATI[day].nome+"!");
+  document.getElementById("mapLat").value="";document.getElementById("mapLng").value="";
+});
+
+// DARK MODE
+var isDark=localStorage.getItem("mu_dark")==="1";
+function applyTheme(){
+  if(isDark){document.body.classList.add("dark");document.getElementById("themeBtn").textContent="☀️";}
+  else{document.body.classList.remove("dark");document.getElementById("themeBtn").textContent="🌙";}
+}
+document.getElementById("themeBtn").addEventListener("click",function(){isDark=!isDark;localStorage.setItem("mu_dark",isDark?"1":"0");applyTheme();});
+applyTheme();
+
+// LANG
+document.getElementById("langSel").addEventListener("change",function(){showToast("🌍 Lingua: "+this.value.toUpperCase());});
+
+// INIT
+renderProducts("tutti");
+updateCartCount();
+</script>
+</body>
+</html>
