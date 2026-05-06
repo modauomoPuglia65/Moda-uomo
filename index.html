@@ -532,6 +532,6 @@ function renderGrid(list,gridId){
     var priceHtml=(p.isSale&&p.oldPrice)?('<span class="price-old">€'+p.oldPrice.toFixed(2)+'</span><span class="price-sale">€'+p.price.toFixed(2)+'</span>'):'€'+p.price.toFixed(2);
     html+='<div class="product-card" data-id="'+p.id+'">'
       +'<div class="product-img-wrap">'
-      +'<img src="'+src+'" alt="'+p.name+'" onerror="this.style.background='#eee'">'
+      +'<img src="'+src+'" alt="'+p.name+'">'
       +newBadge+lastBadge+saleBadge
       +'<but
