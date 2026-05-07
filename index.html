@@ -479,6 +479,10 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <div id="adminList"></div>
   </div>
   <div class="admin-card">
+    <h3>🚚 Gestisci Spedizioni</h3>
+    <div id="shippingAdmin"></div>
+  </div>
+  <div class="admin-card">
     <h3>♻️ Ripristina</h3>
     <button class="big-btn btn-grey" id="restoreBtn">↩️ Ripristina prodotti eliminati</button>
   </div>
@@ -596,7 +600,7 @@ document.getElementById("tabMeteo").addEventListener("click",function(){showPage
 document.getElementById("tabChiSiamo").addEventListener("click",function(){showPage("pageChiSiamo",this);renderReviews();});
 document.getElementById("tabContatti").addEventListener("click",function(){showPage("pageContatti",this);});
 document.getElementById("tabAdmin").addEventListener("click",function(){
-  if(adminLogged){showPage("pageAdmin",this);renderAdminList();renderCouponList();renderStats();renderOrders();}
+  if(adminLogged){showPage("pageAdmin",this);renderAdminList();renderCouponList();renderStats();renderOrders();renderShippingAdmin();}
   else{document.getElementById("pwdOverlay").classList.add("open");document.getElementById("pwdInput").value="";document.getElementById("pwdErr").style.display="none";setTimeout(function(){document.getElementById("pwdInput").focus();},300);}
 });
 
@@ -808,16 +812,56 @@ function renderCart(){
   // Coupon
   var coupon=JSON.parse(localStorage.getItem("mu_applied_coupon")||"null");
   var discount=coupon?Math.round(total*coupon.pct/100*100)/100:0;
-  var finalTotal=(total-discount).toFixed(2);
+  
+  // SHIPPING
+  var shippingSettings=JSON.parse(localStorage.getItem("mu_shipping")||'{"italy":8,"abroad":15,"freeThreshold":50,"enabled":true}');
+  var selectedShipping=localStorage.getItem("mu_selected_shipping")||"italy";
+  var shippingCost=0;
+  if(shippingSettings.enabled){
+    if(total>=shippingSettings.freeThreshold){
+      shippingCost=0;
+    } else {
+      shippingCost=selectedShipping==="italy"?shippingSettings.italy:shippingSettings.abroad;
+    }
+  }
+  
+  var finalTotal=(total-discount+shippingCost).toFixed(2);
   var couponVal=coupon?coupon.code:"";
   var couponMsg=coupon?'<div style="color:#27ae60;font-size:13px;margin-bottom:8px;">🎉 Sconto '+coupon.pct+'% applicato! -€'+discount.toFixed(2)+'</div>':"";
+  var shippingMsg="";
+  var shippingSelector="";
+  if(shippingSettings.enabled){
+    if(total>=shippingSettings.freeThreshold){
+      shippingMsg='<div style="color:#27ae60;font-size:13px;margin-bottom:8px;padding:8px;background:#f0fff4;border-radius:8px;">🚚 <strong>Spedizione GRATUITA!</strong> Hai speso più di €'+shippingSettings.freeThreshold+'</div>';
+    } else {
+      var remaining=(shippingSettings.freeThreshold-total).toFixed(2);
+      shippingSelector='<div style="background:#f8f6f2;border-radius:10px;padding:12px;margin-bottom:10px;">'
+        +'<div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;">🚚 Spedizione</div>'
+        +'<div style="display:flex;flex-direction:column;gap:6px;">'
+        +'<label style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:8px;background:'+(selectedShipping==="italy"?"#fff3cd":"#fff")+';border-radius:8px;border:1px solid '+(selectedShipping==="italy"?"var(--gold)":"#eee")+'">'
+        +'<div style="display:flex;align-items:center;gap:8px;"><input type="radio" name="shipping" value="italy" '+(selectedShipping==="italy"?"checked":"")+' style="accent-color:var(--gold);"> 🇮🇹 Italia</div>'
+        +'<span style="font-weight:700;color:var(--gold);">€'+shippingSettings.italy.toFixed(2)+'</span></label>'
+        +'<label style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:8px;background:'+(selectedShipping==="abroad"?"#fff3cd":"#fff")+';border-radius:8px;border:1px solid '+(selectedShipping==="abroad"?"var(--gold)":"#eee")+'">'
+        +'<div style="display:flex;align-items:center;gap:8px;"><input type="radio" name="shipping" value="abroad" '+(selectedShipping==="abroad"?"checked":"")+' style="accent-color:var(--gold);"> 🌍 Estero</div>'
+        +'<span style="font-weight:700;color:var(--gold);">€'+shippingSettings.abroad.toFixed(2)+'</span></label>'
+        +'</div>'
+        +'<div style="font-size:12px;color:var(--grey);margin-top:8px;text-align:center;">Spedizione gratuita sopra €'+shippingSettings.freeThreshold+' — mancano €'+remaining+'</div>'
+        +'</div>';
+      shippingMsg='<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:#666;">Spedizione</span><span style="color:var(--text);font-weight:600;">€'+shippingCost.toFixed(2)+'</span></div>';
+    }
+  }
+  
   var ppUrl="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business="+encodeURIComponent(PAYPAL)+"&item_name="+encodeURIComponent("Moda Uomo Ordine")+"&amount="+finalTotal+"&currency_code=EUR&no_shipping=2";
   fDiv.innerHTML='<div style="display:flex;gap:8px;margin-bottom:10px;">'
     +'<input id="couponInput" class="ai" placeholder="Codice sconto?" style="flex:1;margin-bottom:0;" value="'+couponVal+'">'
     +'<button id="applyCouponBtn" class="big-btn btn-gold" style="width:80px;margin-bottom:0;padding:10px;">✅</button>'
     +'</div>'
     +couponMsg
-    +'<div class="cart-total"><span style="color:#666">Totale</span><span class="cart-total-price">€'+finalTotal+'</span></div>'
+    +shippingSelector
+    +shippingMsg
+    +'<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span style="color:#666;">Subtotale</span><span>€'+total.toFixed(2)+'</span></div>'
+    +(discount>0?'<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span style="color:#27ae60;">Sconto</span><span style="color:#27ae60;">-€'+discount.toFixed(2)+'</span></div>':"")
+    +'<div class="cart-total"><span style="color:#666;font-weight:700;">Totale</span><span class="cart-total-price">€'+finalTotal+'</span></div>'
     +'<a href="'+ppUrl+'" class="big-btn btn-paypal" target="_blank" style="display:block;margin-bottom:8px;">💳 Paga con PayPal</a>'
     +'<a href="tel:+393711267591" class="big-btn btn-green" onclick="saveOrder('+total+')" style="display:block;">📞 Chiama per ordinare</a>';
   document.getElementById("applyCouponBtn").addEventListener("click",function(){
@@ -826,6 +870,14 @@ function renderCart(){
     var found=coupons.find(function(c){return c.code===code;});
     if(found){localStorage.setItem("mu_applied_coupon",JSON.stringify(found));showToast("🎉 Sconto "+found.pct+"% applicato!");renderCart();}
     else{showToast("❌ Codice non valido");localStorage.removeItem("mu_applied_coupon");}
+  });
+  // Shipping selector
+  var radios=fDiv.querySelectorAll("input[name='shipping']");
+  radios.forEach(function(r){
+    r.addEventListener("change",function(){
+      localStorage.setItem("mu_selected_shipping",this.value);
+      renderCart();
+    });
   });
 }
 
@@ -844,7 +896,7 @@ document.getElementById("pwdEntraBtn").addEventListener("click",function(){
     adminLogged=true;
     document.getElementById("pwdOverlay").classList.remove("open");
     showPage("pageAdmin",document.getElementById("tabAdmin"));
-    renderAdminList();renderCouponList();renderStats();renderOrders();
+    renderAdminList();renderCouponList();renderStats();renderOrders();renderShippingAdmin();
     showToast("✅ Benvenuto nel pannello admin!");
   }else{document.getElementById("pwdErr").style.display="block";document.getElementById("pwdInput").value="";}
 });
@@ -1406,6 +1458,45 @@ document.addEventListener("DOMContentLoaded", function(){
     }
   }, 500);
 });
+
+
+// ===== SHIPPING ADMIN =====
+function renderShippingAdmin(){
+  var box=document.getElementById("shippingAdmin");
+  if(!box)return;
+  var s=JSON.parse(localStorage.getItem("mu_shipping")||'{"italy":8,"abroad":15,"freeThreshold":50,"enabled":true}');
+  box.innerHTML='<div style="margin-bottom:10px;">'
+    +'<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-bottom:12px;">'
+    +'<input type="checkbox" id="shippingEnabled" '+(s.enabled?"checked":"")+' style="accent-color:var(--gold);width:16px;height:16px;"> '
+    +'<span>Spedizione attiva</span></label>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">'
+    +'<div><div style="font-size:11px;color:var(--grey);margin-bottom:4px;">🇮🇹 Italia (€)</div>'
+    +'<input class="ai" id="shippingItaly" type="number" step="0.5" value="'+s.italy+'" style="margin-bottom:0;"></div>'
+    +'<div><div style="font-size:11px;color:var(--grey);margin-bottom:4px;">🌍 Estero (€)</div>'
+    +'<input class="ai" id="shippingAbroad" type="number" step="0.5" value="'+s.abroad+'" style="margin-bottom:0;"></div>'
+    +'<div><div style="font-size:11px;color:var(--grey);margin-bottom:4px;">🚚 Gratis da (€)</div>'
+    +'<input class="ai" id="shippingFree" type="number" step="1" value="'+s.freeThreshold+'" style="margin-bottom:0;"></div>'
+    +'</div>'
+    +'<button class="big-btn btn-gold" id="saveShippingBtn" style="margin-top:10px;">✅ Salva impostazioni</button>'
+    +'</div>';
+
+  document.getElementById("saveShippingBtn").addEventListener("click",function(){
+    var newSettings={
+      enabled:document.getElementById("shippingEnabled").checked,
+      italy:parseFloat(document.getElementById("shippingItaly").value)||8,
+      abroad:parseFloat(document.getElementById("shippingAbroad").value)||15,
+      freeThreshold:parseFloat(document.getElementById("shippingFree").value)||50
+    };
+    localStorage.setItem("mu_shipping",JSON.stringify(newSettings));
+    showToast("✅ Impostazioni spedizione salvate!");
+    renderShippingAdmin();
+  });
+}
+
+// Initialize shipping settings if not set
+if(!localStorage.getItem("mu_shipping")){
+  localStorage.setItem("mu_shipping",JSON.stringify({italy:8,abroad:15,freeThreshold:50,enabled:true}));
+}
 
 // INIT
 renderProducts("tutti");
