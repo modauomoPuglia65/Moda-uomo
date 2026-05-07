@@ -859,11 +859,43 @@ function renderCart(){
     +couponMsg
     +shippingSelector
     +shippingMsg
+    +'<div style="background:#f8f6f2;border-radius:10px;padding:12px;margin-bottom:10px;">'
+    +'<div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;">📦 Indirizzo di spedizione</div>'
+    +'<input id="shipName" class="ai" placeholder="Nome e Cognome" type="text" style="margin-bottom:6px;">'
+    +'<input id="shipAddress" class="ai" placeholder="Via e numero civico" type="text" style="margin-bottom:6px;">'
+    +'<div style="display:flex;gap:6px;">'
+    +'<input id="shipCity" class="ai" placeholder="Città" type="text" style="margin-bottom:6px;flex:2;">'
+    +'<input id="shipCap" class="ai" placeholder="CAP" type="text" style="margin-bottom:6px;flex:1;max-width:90px;">'
+    +'</div>'
+    +'<input id="shipPhone" class="ai" placeholder="Telefono" type="tel" style="margin-bottom:0;">'
+    +'</div>'
     +'<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span style="color:#666;">Subtotale</span><span>€'+total.toFixed(2)+'</span></div>'
     +(discount>0?'<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span style="color:#27ae60;">Sconto</span><span style="color:#27ae60;">-€'+discount.toFixed(2)+'</span></div>':"")
     +'<div class="cart-total"><span style="color:#666;font-weight:700;">Totale</span><span class="cart-total-price">€'+finalTotal+'</span></div>'
-    +'<a href="'+ppUrl+'" class="big-btn btn-paypal" target="_blank" style="display:block;margin-bottom:8px;">💳 Paga con PayPal</a>'
-    +'<a href="tel:+393711267591" class="big-btn btn-green" onclick="saveOrder('+total+')" style="display:block;">📞 Chiama per ordinare</a>';
+    +'<button id="checkoutPaypalBtn" class="big-btn btn-paypal" style="display:block;margin-bottom:8px;">💳 Paga con PayPal</button>'
+    +'<button id="checkoutCallBtn" class="big-btn btn-green" style="display:block;">📞 Chiama per ordinare</button>';
+  
+  // Checkout buttons with address validation
+  document.getElementById("checkoutPaypalBtn").addEventListener("click",function(){
+    var name=document.getElementById("shipName")?document.getElementById("shipName").value.trim():"";
+    var address=document.getElementById("shipAddress")?document.getElementById("shipAddress").value.trim():"";
+    var city=document.getElementById("shipCity")?document.getElementById("shipCity").value.trim():"";
+    var cap=document.getElementById("shipCap")?document.getElementById("shipCap").value.trim():"";
+    if(!name||!address||!city||!cap){showToast("⚠️ Compila l'indirizzo di spedizione!");return;}
+    saveShippingAddress();
+    window.open(ppUrl,"_blank");
+  });
+  
+  document.getElementById("checkoutCallBtn").addEventListener("click",function(){
+    var name=document.getElementById("shipName")?document.getElementById("shipName").value.trim():"";
+    var address=document.getElementById("shipAddress")?document.getElementById("shipAddress").value.trim():"";
+    var city=document.getElementById("shipCity")?document.getElementById("shipCity").value.trim():"";
+    var cap=document.getElementById("shipCap")?document.getElementById("shipCap").value.trim():"";
+    if(!name||!address||!city||!cap){showToast("⚠️ Compila l'indirizzo di spedizione!");return;}
+    saveShippingAddress();
+    saveOrder(total);
+    window.location.href="tel:+393711267591";
+  });
   document.getElementById("applyCouponBtn").addEventListener("click",function(){
     var code=document.getElementById("couponInput").value.trim().toUpperCase();
     var coupons=JSON.parse(localStorage.getItem("mu_coupons")||"[]");
@@ -871,6 +903,18 @@ function renderCart(){
     if(found){localStorage.setItem("mu_applied_coupon",JSON.stringify(found));showToast("🎉 Sconto "+found.pct+"% applicato!");renderCart();}
     else{showToast("❌ Codice non valido");localStorage.removeItem("mu_applied_coupon");}
   });
+  // Pre-fill saved address
+  var savedAddr=JSON.parse(localStorage.getItem("mu_last_address")||"null");
+  if(savedAddr){
+    setTimeout(function(){
+      if(document.getElementById("shipName"))document.getElementById("shipName").value=savedAddr.name||"";
+      if(document.getElementById("shipAddress"))document.getElementById("shipAddress").value=savedAddr.address||"";
+      if(document.getElementById("shipCity"))document.getElementById("shipCity").value=savedAddr.city||"";
+      if(document.getElementById("shipCap"))document.getElementById("shipCap").value=savedAddr.cap||"";
+      if(document.getElementById("shipPhone"))document.getElementById("shipPhone").value=savedAddr.phone||"";
+    },50);
+  }
+  
   // Shipping selector
   var radios=fDiv.querySelectorAll("input[name='shipping']");
   radios.forEach(function(r){
@@ -881,10 +925,31 @@ function renderCart(){
   });
 }
 
+function saveShippingAddress(){
+  var addr={
+    name:document.getElementById("shipName")?document.getElementById("shipName").value.trim():"",
+    address:document.getElementById("shipAddress")?document.getElementById("shipAddress").value.trim():"",
+    city:document.getElementById("shipCity")?document.getElementById("shipCity").value.trim():"",
+    cap:document.getElementById("shipCap")?document.getElementById("shipCap").value.trim():"",
+    phone:document.getElementById("shipPhone")?document.getElementById("shipPhone").value.trim():""
+  };
+  localStorage.setItem("mu_last_address",JSON.stringify(addr));
+}
+
 function saveOrder(total){
   var orders=JSON.parse(localStorage.getItem("mu_orders")||"[]");
   var items=Object.entries(cart).map(function(e){var m=cartMeta[e[0]];var p=allProducts().find(function(x){return x.id==m.id;});return p?p.name+" ("+m.size+"/"+m.color+") x"+e[1]:"";});
-  orders.unshift({date:new Date().toLocaleDateString("it-IT"),items:items,total:"€"+total.toFixed(2)});
+  var addr=JSON.parse(localStorage.getItem("mu_last_address")||"null");
+  var shippingType=localStorage.getItem("mu_selected_shipping")||"italy";
+  var shippingSettings=JSON.parse(localStorage.getItem("mu_shipping")||'{"italy":8,"abroad":15,"freeThreshold":50}');
+  var shippingCost=total>=shippingSettings.freeThreshold?0:(shippingType==="italy"?shippingSettings.italy:shippingSettings.abroad);
+  orders.unshift({
+    date:new Date().toLocaleDateString("it-IT"),
+    items:items,
+    total:"€"+(total+shippingCost).toFixed(2),
+    address:addr?addr.name+", "+addr.address+", "+addr.city+" "+addr.cap:"",
+    shipping:"€"+shippingCost.toFixed(2)
+  });
   if(orders.length>20)orders=orders.slice(0,20);
   localStorage.setItem("mu_orders",JSON.stringify(orders));
   cart={};cartMeta={};saveCart();updateCartCount();
@@ -1045,6 +1110,8 @@ function renderOrders(){
     html+='<div style="background:#f8f6f2;border-radius:10px;padding:10px;margin-bottom:8px;">'
       +'<div style="display:flex;justify-content:space-between;"><span style="font-size:12px;font-weight:700;">'+orders[i].date+'</span><span style="font-size:13px;color:var(--gold);font-weight:700;">'+orders[i].total+'</span></div>'
       +'<div style="font-size:12px;color:var(--grey);margin-top:4px;">'+orders[i].items.join(", ")+'</div>'
+      +(orders[i].address?'<div style="font-size:12px;color:var(--text);margin-top:4px;">📦 '+orders[i].address+'</div>':"")
+      +(orders[i].shipping?'<div style="font-size:12px;color:var(--grey);margin-top:2px;">🚚 Spedizione: '+orders[i].shipping+'</div>':"")
       +'</div>';
   }
   box.innerHTML=html;
