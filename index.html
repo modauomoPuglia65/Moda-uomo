@@ -224,6 +224,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
   <button class="tab" id="tabMeteo">🌤️</button>
   <button class="tab" id="tabChiSiamo">👤</button>
   <button class="tab" id="tabContatti">Contatti</button>
+  <button class="tab" id="tabFedelta">⭐</button>
   <button class="tab" id="tabAdmin">⚙️</button>
 </div>
 <!-- CATALOGO -->
@@ -325,6 +326,82 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <div id="mapPreview"></div>
   </div>
 </div>
+<!-- FEDELTA -->
+<div class="page" id="pageFedelta">
+  <div class="section-title" style="margin-top:4px;">Tessera <span>Fedeltà</span></div>
+
+  <div class="contact-card" style="text-align:center;">
+    <div style="font-size:50px;margin-bottom:8px;">🏆</div>
+    <div style="font-family:serif;font-size:22px;font-weight:900;color:var(--text);">La tua tessera</div>
+    <div style="font-size:13px;color:var(--grey);margin-top:4px;margin-bottom:16px;">Accumula punti ad ogni acquisto</div>
+
+    <!-- TESSERA CARD -->
+    <div style="background:linear-gradient(135deg,#1a1a1a,#2a2010);border-radius:16px;padding:24px 20px;margin-bottom:16px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(201,168,76,0.2),transparent);border-radius:50%;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-family:serif;font-size:18px;font-weight:900;color:#c9a84c;">Moda Uomo</div>
+        <div style="font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase;">Fedeltà</div>
+      </div>
+      <div id="loyaltyStamps" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;">Punti</div>
+          <div style="font-family:serif;font-size:28px;font-weight:900;color:#c9a84c;" id="loyaltyPoints">0</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;">Al prossimo omaggio</div>
+          <div style="font-family:serif;font-size:20px;font-weight:700;color:#fff;" id="loyaltyNext">10</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div style="background:#f0ede8;border-radius:10px;height:8px;margin-bottom:8px;overflow:hidden;">
+      <div id="loyaltyBar" style="height:100%;background:var(--gold);border-radius:10px;transition:width 0.5s;width:0%;"></div>
+    </div>
+    <div style="font-size:12px;color:var(--grey);margin-bottom:16px;" id="loyaltyMsg">Fai il tuo primo acquisto per iniziare!</div>
+
+    <a href="tel:+393711267591" class="big-btn btn-gold" style="display:block;text-decoration:none;">📞 Chiama per aggiungere punti</a>
+  </div>
+
+  <!-- STORICO PUNTI -->
+  <div class="section-title">Storico <span>Punti</span></div>
+  <div id="loyaltyHistory"></div>
+
+  <!-- PREMI -->
+  <div class="section-title">I tuoi <span>Premi</span></div>
+  <div class="contact-card">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+      <div style="font-size:36px;">🎁</div>
+      <div>
+        <div style="font-weight:700;font-size:14px;color:var(--text);">Articolo omaggio</div>
+        <div style="font-size:12px;color:var(--grey);">Ogni 10 acquisti ricevi un articolo a scelta!</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+      <div style="font-size:36px;">🏷️</div>
+      <div>
+        <div style="font-weight:700;font-size:14px;color:var(--text);">Sconto 10%</div>
+        <div style="font-size:12px;color:var(--grey);">Ogni 5 acquisti ottieni uno sconto del 10%!</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div style="font-size:36px;">⚡</div>
+      <div>
+        <div style="font-weight:700;font-size:14px;color:var(--text);">Anteprima novità</div>
+        <div style="font-size:12px;color:var(--grey);">Dopo 3 acquisti ricevi le novità in anteprima su WhatsApp!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODICE CLIENTE -->
+  <div class="contact-card" style="text-align:center;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-bottom:8px;">Il tuo codice cliente</div>
+    <div style="font-family:serif;font-size:28px;font-weight:900;color:var(--gold);" id="loyaltyCode"></div>
+    <div style="font-size:12px;color:var(--grey);margin-top:6px;">Mostra questo codice al banco per accumulare punti</div>
+  </div>
+</div>
+
 <!-- ADMIN -->
 <div class="page" id="pageAdmin">
   <div class="admin-card">
@@ -1010,6 +1087,123 @@ applyTheme();
 
 // LANG
 document.getElementById("langSel").addEventListener("change",function(){showToast("🌍 Lingua: "+this.value.toUpperCase());});
+
+
+// LOYALTY CARD
+function getLoyaltyData(){
+  return JSON.parse(localStorage.getItem("mu_loyalty")||'{"points":0,"history":[],"code":""}');
+}
+function saveLoyaltyData(data){
+  localStorage.setItem("mu_loyalty",JSON.stringify(data));
+}
+function generateCode(){
+  var data=getLoyaltyData();
+  if(!data.code){
+    data.code="MU"+Math.random().toString(36).substr(2,6).toUpperCase();
+    saveLoyaltyData(data);
+  }
+  return data.code;
+}
+
+function renderLoyalty(){
+  var data=getLoyaltyData();
+  var points=data.points||0;
+  var totalEver=data.totalEver||0;
+  var code=generateCode();
+
+  // Update points display
+  document.getElementById("loyaltyPoints").textContent=points;
+  document.getElementById("loyaltyCode").textContent=code;
+
+  // Progress to next reward (every 10 = free item)
+  var progress=(points%10)/10*100;
+  var nextReward=10-(points%10);
+  document.getElementById("loyaltyBar").style.width=progress+"%";
+  document.getElementById("loyaltyNext").textContent=nextReward;
+
+  // Message
+  var msgs=["Fai il tuo primo acquisto per iniziare!","Ottimo inizio! Continua così 💪","Stai andando bene! 🌟","Quasi a metà strada! ⭐","Ottimo! Solo ancora un po'! 🔥","Fantastico! Sei a metà! 🎯","Eccellente! Ci sei quasi! 🏆","Solo 3 alla prossima ricompensa! 🎁","Solo 2 alla prossima ricompensa! 🎁","Solo 1 alla prossima ricompensa! 🎁","🎉 Complimenti! Hai guadagnato un omaggio!"];
+  document.getElementById("loyaltyMsg").textContent=msgs[Math.min(points%10,10)];
+
+  // Stamps grid (10 stamps)
+  var stampsHtml="";
+  for(var i=0;i<10;i++){
+    stampsHtml+='<div class="stamp'+(i<(points%10)?" filled":"")+'">'+( i<(points%10)?"⭐":"")+'</div>';
+  }
+  document.getElementById("loyaltyStamps").innerHTML=stampsHtml;
+
+  // History
+  var histDiv=document.getElementById("loyaltyHistory");
+  if(!data.history||!data.history.length){
+    histDiv.innerHTML='<p style="color:var(--grey);font-size:13px;margin-bottom:14px;">Nessun acquisto ancora.</p>';
+  } else {
+    var html="";
+    for(var i=0;i<data.history.length;i++){
+      var h=data.history[i];
+      html+='<div class="review-card" style="display:flex;justify-content:space-between;align-items:center;">'
+        +'<div><div style="font-size:13px;font-weight:600;color:var(--text);">'+h.desc+'</div>'
+        +'<div style="font-size:12px;color:var(--grey);">'+h.date+'</div></div>'
+        +'<div style="font-size:16px;font-weight:700;color:var(--gold);">+'+h.pts+' pt</div>'
+        +'</div>';
+    }
+    histDiv.innerHTML=html;
+  }
+}
+
+// Admin: add points to customer
+function addLoyaltyPoints(pts, desc){
+  var data=getLoyaltyData();
+  data.points=(data.points||0)+pts;
+  data.totalEver=(data.totalEver||0)+pts;
+  if(!data.history)data.history=[];
+  var d=new Date();
+  data.history.unshift({pts:pts,desc:desc||"Acquisto",date:d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()});
+  if(data.history.length>20)data.history=data.history.slice(0,20);
+  saveLoyaltyData(data);
+  // Check for rewards
+  if(data.points%10===0&&data.points>0){
+    showToast("🎁 Complimenti! Hai guadagnato un omaggio!");
+  } else if(data.points%5===0&&data.points>0){
+    showToast("🏷️ Hai guadagnato uno sconto del 10%!");
+  }
+  renderLoyalty();
+}
+
+// Tab event
+document.getElementById("tabFedelta").addEventListener("click",function(){
+  showPage("pageFedelta",this);
+  renderLoyalty();
+});
+
+// Add points button in admin
+var adminLoyaltyHtml='<div class="admin-card"><h3>⭐ Aggiungi Punti Cliente</h3>'
+  +'<p style="font-size:13px;color:var(--grey);margin-bottom:10px;">Tocca per aggiungere 1 punto al cliente dopo ogni acquisto al banco.</p>'
+  +'<input class="ai" id="loyaltyDesc" placeholder="Descrizione es: Camicia lino" type="text">'
+  +'<button class="big-btn btn-gold" id="addLoyaltyBtn">⭐ Aggiungi 1 Punto</button>'
+  +'<div style="font-size:13px;color:var(--grey);margin-top:8px;">Punti attuali cliente: <strong id="adminLoyaltyCount" style="color:var(--gold);">0</strong></div>'
+  +'</div>';
+
+// Insert after coupon card in admin
+document.addEventListener("DOMContentLoaded",function(){
+  var couponCard=document.querySelector("#pageAdmin .admin-card:nth-child(2)");
+  if(couponCard){
+    var div=document.createElement("div");
+    div.innerHTML=adminLoyaltyHtml;
+    couponCard.parentNode.insertBefore(div.firstChild,couponCard.nextSibling);
+    document.getElementById("addLoyaltyBtn").addEventListener("click",function(){
+      var desc=document.getElementById("loyaltyDesc").value.trim()||"Acquisto al banco";
+      addLoyaltyPoints(1,desc);
+      document.getElementById("loyaltyDesc").value="";
+      var data=getLoyaltyData();
+      document.getElementById("adminLoyaltyCount").textContent=data.points;
+      showToast("⭐ Punto aggiunto!");
+    });
+    // Show current points
+    var data=getLoyaltyData();
+    var el=document.getElementById("adminLoyaltyCount");
+    if(el)el.textContent=data.points;
+  }
+});
 
 // INIT
 renderProducts("tutti");
