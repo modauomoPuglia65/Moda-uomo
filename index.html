@@ -227,6 +227,8 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
   <button class="tab" id="tabChiSiamo">👤</button>
   <button class="tab" id="tabContatti">Contatti</button>
   <button class="tab" id="tabFedelta">⭐</button>
+  <button class="tab" id="tabOutlet">🔖</button>
+  <button class="tab" id="tabBacheca">📢</button>
   <button class="tab" id="tabAdmin">⚙️</button>
 </div>
 <!-- CATALOGO -->
@@ -404,6 +406,28 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
   </div>
 </div>
 
+<!-- OUTLET -->
+<div class="page" id="pageOutlet">
+  <div class="section-title" style="margin-top:4px;">Outlet <span>& Occasioni</span></div>
+  <div style="background:linear-gradient(135deg,#e74c3c,#c0392b);border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;">
+    <div style="font-size:28px;margin-bottom:4px;">🔖</div>
+    <div style="font-family:serif;font-size:20px;font-weight:900;color:#fff;">Prezzi Outlet</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.8);margin-top:4px;">Sconti fino al 50% su articoli selezionati</div>
+  </div>
+  <div class="product-grid" id="outletGrid"></div>
+  <div id="noOutlet" style="text-align:center;padding:40px;color:var(--grey);display:none;"><div style="font-size:40px;">🔖</div><p>Nessun articolo outlet al momento.<br>Torna presto!</p></div>
+</div>
+
+<!-- BACHECA -->
+<div class="page" id="pageBacheca">
+  <div class="section-title" style="margin-top:4px;">Bacheca <span>Annunci</span></div>
+  <div id="bachecaList"></div>
+  <div id="noBacheca" style="text-align:center;padding:40px;color:var(--grey);">
+    <div style="font-size:40px;">📢</div>
+    <p>Nessun annuncio al momento.</p>
+  </div>
+</div>
+
 <!-- ADMIN -->
 <div class="page" id="pageAdmin">
   <div class="admin-card">
@@ -429,6 +453,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <div style="display:flex;gap:8px;margin-bottom:10px;">
       <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="adminIsNew" style="accent-color:var(--gold);"> <strong>NOVITÀ</strong></label>
       <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="adminIsSale" style="accent-color:#e74c3c;"> <strong style="color:#e74c3c;">SALDO</strong></label>
+    <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="adminIsOutlet" style="accent-color:#e67e22;"> <strong style="color:#e67e22;">🔖 OUTLET</strong></label>
     </div>
     <input class="ai" id="adminOldPrice" placeholder="Prezzo originale (solo se in saldo)" type="number" step="0.01" min="0" style="display:none;">
     <div style="display:flex;gap:8px;margin-bottom:6px;">
@@ -483,6 +508,19 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <div id="shippingAdmin"></div>
   </div>
   <div class="admin-card">
+    <h3>📢 Pubblica Annuncio</h3>
+    <input class="ai" id="announcTitle" placeholder="Titolo es: Nuovi arrivi questa settimana!" type="text">
+    <textarea class="ai" id="announcText" placeholder="Testo dell'annuncio..." style="resize:vertical;min-height:80px;"></textarea>
+    <select class="ai" id="announcType">
+      <option value="info">📢 Annuncio generale</option>
+      <option value="promo">🔥 Offerta speciale</option>
+      <option value="new">🆕 Nuovi arrivi</option>
+      <option value="outlet">🔖 Outlet</option>
+    </select>
+    <button class="big-btn btn-gold" id="publishAnnouncBtn">✅ Pubblica annuncio</button>
+    <div id="announcList" style="margin-top:10px;"></div>
+  </div>
+  <div class="admin-card">
     <h3>♻️ Ripristina</h3>
     <button class="big-btn btn-grey" id="restoreBtn">↩️ Ripristina prodotti eliminati</button>
   </div>
@@ -522,6 +560,32 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <div class="pm-label">Colore</div>
     <div class="color-grid" id="pmColors"></div>
     <button class="big-btn btn-gold" id="pmAddBtn">🛒 Aggiungi al carrello</button>
+    <div id="pmRelated" style="margin-top:4px;"></div>
+    <!-- SIZE GUIDE -->
+    <details style="margin-bottom:10px;background:#f8f6f2;border-radius:10px;overflow:hidden;">
+      <summary style="padding:12px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text);">📏 Guida alle taglie</summary>
+      <div style="padding:0 14px 14px;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;">
+          <tr style="background:var(--gold);color:#fff;">
+            <th style="padding:6px;text-align:left;">Taglia</th>
+            <th style="padding:6px;">Petto (cm)</th>
+            <th style="padding:6px;">Vita (cm)</th>
+            <th style="padding:6px;">Spalle (cm)</th>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:6px;">S</td><td style="padding:6px;text-align:center;">88-92</td><td style="padding:6px;text-align:center;">76-80</td><td style="padding:6px;text-align:center;">42</td></tr>
+          <tr style="border-bottom:1px solid #eee;background:#f8f6f2;"><td style="padding:6px;">M</td><td style="padding:6px;text-align:center;">92-96</td><td style="padding:6px;text-align:center;">80-84</td><td style="padding:6px;text-align:center;">44</td></tr>
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:6px;">L</td><td style="padding:6px;text-align:center;">96-100</td><td style="padding:6px;text-align:center;">84-88</td><td style="padding:6px;text-align:center;">46</td></tr>
+          <tr style="border-bottom:1px solid #eee;background:#f8f6f2;"><td style="padding:6px;">XL</td><td style="padding:6px;text-align:center;">100-108</td><td style="padding:6px;text-align:center;">88-96</td><td style="padding:6px;text-align:center;">48</td></tr>
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:6px;">XXL</td><td style="padding:6px;text-align:center;">108-116</td><td style="padding:6px;text-align:center;">96-104</td><td style="padding:6px;text-align:center;">50</td></tr>
+          <tr style="background:#f8f6f2;"><td style="padding:6px;">XXXL</td><td style="padding:6px;text-align:center;">116-124</td><td style="padding:6px;text-align:center;">104-112</td><td style="padding:6px;text-align:center;">52</td></tr>
+        </table>
+        <div style="font-size:11px;color:var(--grey);margin-top:8px;">Per i pantaloni: 42=vita 76cm, 44=80cm, 46=84cm, 48=88cm, 50=92cm, 52=96cm, 54=100cm</div>
+      </div>
+    </details>
+    <!-- BOOKING -->
+    <button class="big-btn" id="pmBookBtn" style="background:#8e44ad;color:#fff;margin-bottom:8px;">📅 Prenota al mercato</button>
+    <!-- NOTIFY -->
+    <button class="big-btn btn-grey" id="pmNotifyBtn" style="margin-bottom:8px;">🔔 Avvisami quando disponibile</button>
     <button class="big-btn btn-grey" id="pmCloseBtn">Annulla</button>
   </div>
 </div>
@@ -643,7 +707,7 @@ function renderGrid(list,gridId){
     var src=imgs[0]||"";
     var newBadge=p.isNew?'<div class="badge-new">NEW</div>':"";
     var lastBadge=(p.stock&&p.stock<=3)?'<div class="badge-last">Ultimi '+p.stock+'!</div>':"";
-    var saleBadge=p.isSale?'<div class="badge-sale">SALDO</div>':"";
+    var saleBadge=p.isSale?'<div class="badge-sale">SALDO</div>':(p.isOutlet?'<div class="badge-sale" style="background:#e67e22;">OUTLET</div>':"");
     var stockText=(p.stock&&p.stock<=5&&p.stock>3)?'<div class="product-stock">⚠️ Solo '+p.stock+' pz</div>':"";
     var isWished=wishlist.indexOf(p.id)>-1;
     var wishIcon=isWished?"❤️":"🤍";
@@ -757,6 +821,36 @@ function openProduct(id){
   document.getElementById("pmColors").querySelectorAll(".color-btn").forEach(function(b){
     b.addEventListener("click",function(){selColor=this.dataset.color;document.querySelectorAll(".color-btn").forEach(function(x){x.classList.remove("sel");});this.classList.add("sel");});
   });
+  // Copy text button
+  setTimeout(function(){
+    var copyBtn = document.getElementById("copyProductBtn");
+    if(copyBtn){
+      copyBtn.addEventListener("click", function(){
+        var msg = "👕 " + p.name
+          + "\n💰 Prezzo: €" + p.price.toFixed(2)
+          + "\n\n✅ Disponibile da Moda Uomo"
+          + "\n📍 Mercati settimanali Puglia"
+          + "\n📞 Info: 371 126 7591"
+          + "\n🛒 Acquista online: https://modauomopuglia65.github.io/Moda-uomo";
+        try {
+          navigator.clipboard.writeText(msg).then(function(){
+            showToast("📋 Testo copiato! Incollalo su Facebook");
+          });
+        } catch(e) {
+          var ta = document.createElement("textarea");
+          ta.value = msg;
+          ta.style.cssText = "position:fixed;opacity:0;";
+          document.body.appendChild(ta);
+          ta.focus(); ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          showToast("📋 Testo copiato! Incollalo su Facebook");
+        }
+      });
+    }
+  }, 100);
+
+  renderRelated(p);
   document.getElementById("productOverlay").classList.add("open");
 }
 
@@ -1008,6 +1102,7 @@ document.getElementById("adminSaveBtn").addEventListener("click",function(){
   var cat=document.getElementById("adminCat").value;
   var isNew=document.getElementById("adminIsNew").checked;
   var isSale=document.getElementById("adminIsSale").checked;
+  var isOutlet=document.getElementById("adminIsOutlet")?document.getElementById("adminIsOutlet").checked:false;
   var oldPrice=isSale?parseFloat(document.getElementById("adminOldPrice").value)||null:null;
   var videoUrl=document.getElementById("adminVideoUrl").value.trim()||null;
   var videoUrl2=document.getElementById("adminVideoUrl2").value.trim()||null;
@@ -1018,13 +1113,14 @@ document.getElementById("adminSaveBtn").addEventListener("click",function(){
   if(!adminPhotos.length){showToast("⚠️ Aggiungi almeno una foto!");return;}
   if(!sizes.length){showToast("⚠️ Seleziona almeno una taglia!");return;}
   if(!colors.length){showToast("⚠️ Seleziona almeno un colore!");return;}
-  customProducts.push({id:Date.now(),name:name,price:price,oldPrice:oldPrice,stock:stock,cat:cat,isNew:isNew,isSale:isSale,imgs:adminPhotos,videoUrl:videoUrl,videoUrl2:videoUrl2,sizes:sizes,colors:colors});
+  customProducts.push({id:Date.now(),name:name,price:price,oldPrice:oldPrice,stock:stock,cat:cat,isNew:isNew,isSale:isSale,isOutlet:isOutlet,imgs:adminPhotos,videoUrl:videoUrl,videoUrl2:videoUrl2,sizes:sizes,colors:colors});
   localStorage.setItem("mu_p",JSON.stringify(customProducts));
   document.getElementById("adminName").value="";document.getElementById("adminPrice").value="";
   document.getElementById("adminStock").value="";document.getElementById("adminFile").value="";
   document.getElementById("adminPreview").style.display="none";
   document.getElementById("adminThumbsWrap").style.display="none";
   document.getElementById("adminIsNew").checked=false;document.getElementById("adminIsSale").checked=false;
+  if(document.getElementById("adminIsOutlet"))document.getElementById("adminIsOutlet").checked=false;
   document.getElementById("adminOldPrice").style.display="none";document.getElementById("adminOldPrice").value="";
   document.getElementById("adminVideoUrl").value="";document.getElementById("adminVideoUrl2").value="";
   document.querySelectorAll("#adminSizeGrid input,#adminColorGrid input").forEach(function(i){i.checked=false;});
@@ -1565,9 +1661,180 @@ if(!localStorage.getItem("mu_shipping")){
   localStorage.setItem("mu_shipping",JSON.stringify({italy:8,abroad:15,freeThreshold:50,enabled:true}));
 }
 
+
+// ===== OUTLET =====
+document.getElementById("tabOutlet").addEventListener("click",function(){
+  showPage("pageOutlet",this);
+  renderOutlet();
+});
+
+function renderOutlet(){
+  var all=allProducts().filter(function(p){return p.isSale||p.isOutlet;});
+  if(!all.length){
+    document.getElementById("outletGrid").innerHTML="";
+    document.getElementById("noOutlet").style.display="block";
+    return;
+  }
+  document.getElementById("noOutlet").style.display="none";
+  renderGrid(all,"outletGrid");
+}
+
+// ===== BACHECA =====
+document.getElementById("tabBacheca").addEventListener("click",function(){
+  showPage("pageBacheca",this);
+  renderBacheca();
+});
+
+function renderBacheca(){
+  var announcements=JSON.parse(localStorage.getItem("mu_announcements")||"[]");
+  var list=document.getElementById("bachecaList");
+  var noEl=document.getElementById("noBacheca");
+  if(!announcements.length){
+    list.innerHTML="";
+    noEl.style.display="block";
+    return;
+  }
+  noEl.style.display="none";
+  var typeColors={info:"#3498db",promo:"#e74c3c",new:"#27ae60",outlet:"#e67e22"};
+  var typeIcons={info:"📢",promo:"🔥",new:"🆕",outlet:"🔖"};
+  list.innerHTML=announcements.map(function(a){
+    var color=typeColors[a.type]||"#3498db";
+    var icon=typeIcons[a.type]||"📢";
+    return '<div style="background:#fff;border:1px solid var(--border);border-left:4px solid '+color+';border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">'
+      +'<div style="display:flex;align-items:center;gap:6px;"><span style="font-size:18px;">'+icon+'</span><span style="font-size:13px;font-weight:700;color:var(--text);">'+a.title+'</span></div>'
+      +'<span style="font-size:11px;color:var(--grey);">'+a.date+'</span></div>'
+      +'<div style="font-size:13px;color:var(--grey);line-height:1.6;">'+a.text+'</div>'
+      +'</div>';
+  }).join("");
+}
+
+// PUBLISH ANNOUNCEMENT
+document.getElementById("publishAnnouncBtn").addEventListener("click",function(){
+  var title=document.getElementById("announcTitle").value.trim();
+  var text=document.getElementById("announcText").value.trim();
+  var type=document.getElementById("announcType").value;
+  if(!title){showToast("⚠️ Inserisci il titolo!");return;}
+  if(!text){showToast("⚠️ Scrivi il testo!");return;}
+  var announcements=JSON.parse(localStorage.getItem("mu_announcements")||"[]");
+  var d=new Date();
+  announcements.unshift({
+    title:title,text:text,type:type,
+    date:d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()
+  });
+  if(announcements.length>20)announcements=announcements.slice(0,20);
+  localStorage.setItem("mu_announcements",JSON.stringify(announcements));
+  document.getElementById("announcTitle").value="";
+  document.getElementById("announcText").value="";
+  renderAnnouncList();
+  showToast("✅ Annuncio pubblicato!");
+});
+
+function renderAnnouncList(){
+  var announcements=JSON.parse(localStorage.getItem("mu_announcements")||"[]");
+  var list=document.getElementById("announcList");
+  if(!list)return;
+  if(!announcements.length){list.innerHTML='<p style="color:var(--grey);font-size:13px;">Nessun annuncio.</p>';return;}
+  list.innerHTML=announcements.map(function(a,i){
+    return '<div style="display:flex;justify-content:space-between;align-items:center;background:#f8f6f2;padding:8px 12px;border-radius:8px;margin-bottom:6px;">'
+      +'<div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);">'+a.title+'</div>'
+      +'<div style="font-size:11px;color:var(--grey);">'+a.date+'</div></div>'
+      +'<button data-idx="'+i+'" class="del-annunc del-btn" style="margin-left:8px;">×</button>'
+      +'</div>';
+  }).join("");
+  list.querySelectorAll(".del-annunc").forEach(function(b){
+    b.addEventListener("click",function(){
+      var idx=parseInt(this.dataset.idx);
+      var arr=JSON.parse(localStorage.getItem("mu_announcements")||"[]");
+      arr.splice(idx,1);
+      localStorage.setItem("mu_announcements",JSON.stringify(arr));
+      renderAnnouncList();
+      showToast("🗑️ Annuncio eliminato");
+    });
+  });
+}
+
+// ===== BOOKING =====
+document.getElementById("pmBookBtn").addEventListener("click",function(){
+  if(!selProduct){return;}
+  var days=["Lunedì (San Vito)","Martedì (Crispiano)","Mercoledì (Fasano)","Giovedì (Brindisi)","Venerdì (Avetrana)","Sabato (Francavilla)"];
+  var dayOptions=days.map(function(d,i){return '<option value="'+d+'">'+d+'</option>';}).join("");
+  var bookHtml='<div style="padding:20px;">'
+    +'<div style="font-family:serif;font-size:18px;font-weight:900;margin-bottom:16px;color:var(--text);">📅 Prenota: '+selProduct.name+'</div>'
+    +'<select class="ai" id="bookDay">'+dayOptions+'</select>'
+    +'<input class="ai" id="bookName" placeholder="Il tuo nome" type="text">'
+    +'<input class="ai" id="bookPhone" placeholder="Il tuo telefono" type="tel">'
+    +'<input class="ai" id="bookSize" placeholder="Taglia richiesta" type="text">'
+    +'<button class="big-btn btn-gold" id="confirmBookBtn">✅ Invia prenotazione</button>'
+    +'<button class="big-btn btn-grey" id="cancelBookBtn">Annulla</button>'
+    +'</div>';
+  document.getElementById("productOverlay").classList.remove("open");
+  // Show in cart overlay reusing it
+  document.getElementById("cartItems").innerHTML=bookHtml;
+  document.getElementById("cartFooter").innerHTML="";
+  document.getElementById("cartOverlay").classList.add("open");
+  document.getElementById("confirmBookBtn").addEventListener("click",function(){
+    var day=document.getElementById("bookDay").value;
+    var name=document.getElementById("bookName").value.trim();
+    var phone=document.getElementById("bookPhone").value.trim();
+    var size=document.getElementById("bookSize").value.trim();
+    if(!name||!phone){showToast("⚠️ Inserisci nome e telefono!");return;}
+    var msg="📅 PRENOTAZIONE\n\nProdotto: "+selProduct.name+"\nGiorno: "+day+"\nNome: "+name+"\nTelefono: "+phone+(size?"\nTaglia: "+size:"")+"\n\nPer conferma contattami al più presto!";
+    var bookings=JSON.parse(localStorage.getItem("mu_bookings")||"[]");
+    bookings.unshift({product:selProduct.name,day:day,name:name,phone:phone,size:size,date:new Date().toLocaleDateString("it-IT"),status:"In attesa"});
+    localStorage.setItem("mu_bookings",JSON.stringify(bookings));
+    document.getElementById("cartOverlay").classList.remove("open");
+    window.open("https://api.whatsapp.com/send?phone=393711267591&text="+encodeURIComponent(msg),"_blank");
+    showToast("✅ Prenotazione inviata!");
+  });
+  document.getElementById("cancelBookBtn").addEventListener("click",function(){
+    document.getElementById("cartOverlay").classList.remove("open");
+  });
+});
+
+// ===== NOTIFY =====
+document.getElementById("pmNotifyBtn").addEventListener("click",function(){
+  if(!selProduct){return;}
+  var notifications=JSON.parse(localStorage.getItem("mu_notify")||"[]");
+  var already=notifications.find(function(n){return n.id===selProduct.id;});
+  if(already){
+    showToast("✅ Sei già nella lista di attesa!");
+    return;
+  }
+  notifications.push({id:selProduct.id,name:selProduct.name,date:new Date().toLocaleDateString("it-IT")});
+  localStorage.setItem("mu_notify",JSON.stringify(notifications));
+  showToast("🔔 Ti avviseremo quando sarà disponibile!");
+});
+
+// ===== RELATED PRODUCTS =====
+function renderRelated(p){
+  var relDiv=document.getElementById("pmRelated");
+  if(!relDiv)return;
+  var all=allProducts().filter(function(x){return x.id!==p.id&&x.cat===p.cat;}).slice(0,3);
+  if(!all.length){relDiv.innerHTML="";return;}
+  var html='<div style="margin-top:12px;"><div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--grey);margin-bottom:10px;">Potrebbe interessarti</div>'
+    +'<div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;">';
+  all.forEach(function(r){
+    var imgs=(r.imgs&&r.imgs.length)?r.imgs:(r.img?[r.img]:[]);
+    html+='<div data-rid="'+r.id+'" style="flex-shrink:0;width:100px;cursor:pointer;">'
+      +'<img src="'+(imgs[0]||"")+'" style="width:100px;height:125px;object-fit:cover;border-radius:8px;display:block;">'
+      +'<div style="font-size:11px;color:var(--text);margin-top:4px;line-height:1.3;">'+r.name.substring(0,25)+'...</div>'
+      +'<div style="font-size:12px;font-weight:700;color:var(--gold);">€'+r.price.toFixed(2)+'</div>'
+      +'</div>';
+  });
+  html+='</div></div>';
+  relDiv.innerHTML=html;
+  relDiv.querySelectorAll("[data-rid]").forEach(function(el){
+    el.addEventListener("click",function(){
+      openProduct(parseInt(this.dataset.rid));
+    });
+  });
+}
+
 // INIT
 renderProducts("tutti");
 updateCartCount();
+renderAnnouncList();
 </script>
 </body>
 </html>
