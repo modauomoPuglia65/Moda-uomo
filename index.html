@@ -544,7 +544,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
 <div class="overlay" id="productOverlay">
   <div class="sheet">
     <div class="handle"></div>
-    <img id="pmImgMain" class="gallery-main" src="" alt="">
+    <img id="pmImgMain" class="gallery-main" src="" alt="" onclick="openZoom(this.src)" style="cursor:zoom-in;">
     <div class="gallery-thumbs" id="pmThumbs" style="display:none;"></div>
     <div id="pmVideoWrap" style="margin-bottom:10px;"></div>
     <div style="font-family:serif;font-size:17px;font-weight:700;margin-bottom:4px;color:var(--text);" id="pmName"></div>
@@ -597,6 +597,11 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <div id="cartItems"></div>
     <div id="cartFooter"></div>
   </div>
+</div>
+<div class="zoom-overlay" id="zoomOverlay">
+  <button class="zoom-close" id="zoomClose">✕</button>
+  <img class="zoom-img" id="zoomImg" src="" alt="">
+  <div class="zoom-hint">👆 Tocca per ingrandire · Scorri per chiudere</div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
@@ -1834,6 +1839,32 @@ function renderRelated(p){
     });
   });
 }
+
+
+// ===== ZOOM =====
+function openZoom(src){
+  document.getElementById("zoomImg").src=src;
+  document.getElementById("zoomImg").classList.remove("zoomed");
+  document.getElementById("zoomOverlay").classList.add("open");
+}
+
+document.getElementById("zoomClose").addEventListener("click",function(){
+  document.getElementById("zoomOverlay").classList.remove("open");
+});
+
+document.getElementById("zoomImg").addEventListener("click",function(){
+  this.classList.toggle("zoomed");
+});
+
+// Swipe down to close zoom
+var zoomStartY=0;
+document.getElementById("zoomOverlay").addEventListener("touchstart",function(e){
+  zoomStartY=e.touches[0].clientY;
+});
+document.getElementById("zoomOverlay").addEventListener("touchend",function(e){
+  var dy=e.changedTouches[0].clientY-zoomStartY;
+  if(dy>80){this.classList.remove("open");}
+});
 
 // INIT
 renderProducts("tutti");
