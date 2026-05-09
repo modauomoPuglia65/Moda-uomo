@@ -1869,50 +1869,31 @@ document.getElementById("zoomOverlay").addEventListener("touchend",function(e){
 
 
 // ===== MUSIC =====
-var musicPlaying = false;
-var musicAudio = null;
-
-// Free jazz tracks from free music archive / pixabay style URLs
-var jazzTracks = [
-  "https://ia800301.us.archive.org/1/items/JazzSongs_201410/01-Autumn_Leaves.mp3",
-  "https://ia800301.us.archive.org/1/items/JazzSongs_201410/03-Take_Five.mp3",
-  "https://ia800301.us.archive.org/1/items/JazzSongs_201410/05-So_What.mp3"
-];
-
-var currentTrack = 0;
-
-function initMusic(){
-  if(!musicAudio){
-    musicAudio = new Audio();
-    musicAudio.volume = 0.3;
-    musicAudio.loop = false;
-    musicAudio.addEventListener("ended", function(){
-      currentTrack = (currentTrack + 1) % jazzTracks.length;
-      musicAudio.src = jazzTracks[currentTrack];
-      musicAudio.play().catch(function(){});
-    });
-  }
-}
-
+// Embed jazz music using SoundCloud (no account needed, free)
+var musicOpen = false;
 document.getElementById("musicBtn").addEventListener("click", function(){
-  initMusic();
-  if(musicPlaying){
-    musicAudio.pause();
-    musicPlaying = false;
+  if(musicOpen){
+    var frame = document.getElementById("musicFrame");
+    if(frame){ frame.parentNode.removeChild(frame); }
+    musicOpen = false;
     this.textContent = "🎵";
-    this.style.opacity = "0.5";
-    showToast("⏸️ Musica in pausa");
-  } else {
-    musicAudio.src = jazzTracks[currentTrack];
-    musicAudio.play().then(function(){
-      musicPlaying = true;
-      document.getElementById("musicBtn").textContent = "🎷";
-      document.getElementById("musicBtn").style.opacity = "1";
-      showToast("🎷 Jazz in riproduzione!");
-    }).catch(function(){
-      showToast("⚠️ Tocca di nuovo per avviare la musica");
-    });
+    showToast("⏸️ Musica chiusa");
+    return;
   }
+  // Create floating music player
+  var frame = document.createElement("iframe");
+  frame.id = "musicFrame";
+  frame.width = "100%";
+  frame.height = "80";
+  frame.scrolling = "no";
+  frame.frameBorder = "no";
+  frame.allow = "autoplay";
+  frame.src = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/245217045&color=%23b8860b&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false";
+  frame.style.cssText = "position:fixed;bottom:0;left:0;right:0;z-index:9000;background:#1a1a1a;border-top:2px solid var(--gold);";
+  document.body.appendChild(frame);
+  musicOpen = true;
+  this.textContent = "🎷";
+  showToast("🎷 Jazz in riproduzione!");
 });
 
 // INIT
