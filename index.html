@@ -815,12 +815,9 @@ function openProduct(id){
     '<a href="https://www.facebook.com/sharer/sharer.php?u='+url+'" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:#1877f2;color:#fff;border-radius:10px;padding:8px 4px;text-decoration:none;font-size:11px;font-weight:600;">📘<span>Facebook</span></a>'
     +'<a href="https://api.whatsapp.com/send?text='+txt+'%20'+url+'" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:#25D366;color:#fff;border-radius:10px;padding:8px 4px;text-decoration:none;font-size:11px;font-weight:600;">💬<span>WhatsApp</span></a>'
     +'<a href="https://t.me/share/url?url='+url+'&text='+txt+'" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:#2CA5E0;color:#fff;border-radius:10px;padding:8px 4px;text-decoration:none;font-size:11px;font-weight:600;">✈️<span>Telegram</span></a>';
-  // Show ONLY selected sizes and colors
-  var availSizes=(p.sizes&&p.sizes.length)?p.sizes:[];
-  var availColors=(p.colors&&p.colors.length)?p.colors:[];
-  // Fallback for base products without defined sizes
-  if(!availSizes.length) availSizes=SIZES_ABITI;
-  if(!availColors.length) availColors=["Bianco","Celeste","Nero","Blu"];
+  // Show ONLY selected sizes and colors - NO fallback
+  var availSizes=(p.sizes&&p.sizes.length)?p.sizes:SIZES_ABITI;
+  var availColors=(p.colors&&p.colors.length)?p.colors:["Bianco","Celeste","Nero","Blu"];
   var szHtml="";for(var i=0;i<availSizes.length;i++){szHtml+='<button class="size-btn" data-size="'+availSizes[i]+'">'+availSizes[i]+'</button>';}
   var clHtml="";for(var i=0;i<availColors.length;i++){clHtml+='<button class="color-btn" data-color="'+availColors[i]+'">'+availColors[i]+'</button>';}
   document.getElementById("pmSizes").innerHTML=szHtml;
@@ -1894,7 +1891,20 @@ document.getElementById("musicBtn").addEventListener("click", function(){
   }
 });
 
-// INIT
+// INIT - migrate old products without sizes/colors
+var needsMigration = false;
+customProducts = customProducts.map(function(p){
+  if(!p.sizes || !p.sizes.length){
+    p.sizes = ["S","M","L","XL","XXL","XXXL"];
+    needsMigration = true;
+  }
+  if(!p.colors || !p.colors.length){
+    p.colors = ["Bianco","Celeste","Nero","Blu"];
+    needsMigration = true;
+  }
+  return p;
+});
+if(needsMigration) localStorage.setItem("mu_p", JSON.stringify(customProducts));
 renderProducts("tutti");
 updateCartCount();
 renderAnnouncList();
