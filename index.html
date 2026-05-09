@@ -1869,31 +1869,18 @@ document.getElementById("zoomOverlay").addEventListener("touchend",function(e){
 
 
 // ===== MUSIC =====
-// Embed jazz music using SoundCloud (no account needed, free)
-var musicOpen = false;
 document.getElementById("musicBtn").addEventListener("click", function(){
-  if(musicOpen){
-    var frame = document.getElementById("musicFrame");
-    if(frame){ frame.parentNode.removeChild(frame); }
-    musicOpen = false;
-    this.textContent = "🎵";
-    showToast("⏸️ Musica chiusa");
-    return;
-  }
-  // Create floating music player
-  var frame = document.createElement("iframe");
-  frame.id = "musicFrame";
-  frame.width = "100%";
-  frame.height = "80";
-  frame.scrolling = "no";
-  frame.frameBorder = "no";
-  frame.allow = "autoplay";
-  frame.src = "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/245217045&color=%23b8860b&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false";
-  frame.style.cssText = "position:fixed;bottom:0;left:0;right:0;z-index:9000;background:#1a1a1a;border-top:2px solid var(--gold);";
-  document.body.appendChild(frame);
-  musicOpen = true;
-  this.textContent = "🎷";
-  showToast("🎷 Jazz in riproduzione!");
+  // Try to open Spotify app first, fallback to web player
+  var spotifyUrl = "spotify:playlist:37i9dQZF1DX4wta20PHgwo"; // Jazz Vibes playlist
+  var spotifyWeb = "https://open.spotify.com/playlist/37i9dQZF1DX4wta20PHgwo";
+  // Try native app
+  var appOpened = false;
+  var timer = setTimeout(function(){
+    if(!appOpened){ window.open(spotifyWeb, "_blank"); }
+  }, 1500);
+  window.location.href = spotifyUrl;
+  appOpened = true;
+  showToast("🎷 Apertura Spotify Jazz...");
 });
 
 // INIT
