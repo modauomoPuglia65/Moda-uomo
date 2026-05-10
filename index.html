@@ -204,7 +204,30 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <button class="cart-btn" id="cartBtn">🛒<span class="cart-count" id="cartCount">0</span></button>
   </div>
 </header>
-<div class="search-bar"><div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchInput" type="text" placeholder="Cerca prodotto..."></div></div>
+<div class="search-bar">
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="search-wrap" style="flex:1;position:relative;">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" type="text" placeholder="Cerca prodotto...">
+    </div>
+    <button id="voiceBtn" style="background:var(--gold);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer;flex-shrink:0;">🎤</button>
+    <select id="currencySelect" style="background:#f8f6f2;border:1px solid var(--border);color:var(--text);font-size:12px;padding:6px 4px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;">
+      <option value="EUR">€ EUR</option>
+      <option value="GBP">£ GBP</option>
+      <option value="USD">$ USD</option>
+      <option value="CHF">₣ CHF</option>
+    </select>
+  </div>
+  <!-- PRICE FILTER -->
+  <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+    <span style="font-size:12px;color:var(--grey);white-space:nowrap;">Prezzo:</span>
+    <input id="priceMin" type="number" placeholder="Min €" style="flex:1;background:#f8f6f2;border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-size:12px;outline:none;font-family:'DM Sans',sans-serif;">
+    <span style="font-size:12px;color:var(--grey);">—</span>
+    <input id="priceMax" type="number" placeholder="Max €" style="flex:1;background:#f8f6f2;border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-size:12px;outline:none;font-family:'DM Sans',sans-serif;">
+    <button id="priceFilterBtn" style="background:var(--gold);border:none;color:#fff;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;white-space:nowrap;">Filtra</button>
+    <button id="priceClearBtn" style="background:#f0ede8;border:none;color:var(--grey);padding:6px 10px;border-radius:8px;font-size:12px;cursor:pointer;">✕</button>
+  </div>
+</div>
 <div class="hero">
   <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMTYwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjE2MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdvbGRHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2M5YTg0YztzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojOEI2OTE0O3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgCiAgPCEtLSBCYWNrZ3JvdW5kIGNpcmNsZSBmb3IgTVUgbW9ub2dyYW0gLS0+CiAgPGNpcmNsZSBjeD0iNjAiIGN5PSI4MCIgcj0iNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNnb2xkR3JhZCkiIHN0cm9rZS13aWR0aD0iMiIvPgogIAogIDwhLS0gTSBsZXR0ZXJmb3JtIC0tPgogIDxwYXRoIGQ9Ik0zMCAxMDUgTDMwIDU1IEw2MCA4MCBMOTAgNTUgTDkwIDEwNSIgCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIzLjUiIAogICAgICAgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDwhLS0gVGhpbiBkZWNvcmF0aXZlIGxpbmUgLS0+CiAgPGxpbmUgeDE9IjEyMCIgeTE9IjgwIiB4Mj0iMTI1IiB5Mj0iODAiIHN0cm9rZT0iI2M5YTg0YyIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgCiAgPCEtLSBNT0RBIHRleHQgLS0+CiAgPHRleHQgeD0iMTM1IiB5PSI2OCIgCiAgICAgICAgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiAKICAgICAgICBmb250LXNpemU9IjM4IiAKICAgICAgICBmb250LXdlaWdodD0iNzAwIgogICAgICAgIGxldHRlci1zcGFjaW5nPSI4IgogICAgICAgIGZpbGw9IiMxYTFhMWEiPk1PREE8L3RleHQ+CiAgCiAgPCEtLSBVT01PIHRleHQgLS0+CiAgPHRleHQgeD0iMTM1IiB5PSIxMDUiIAogICAgICAgIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgCiAgICAgICAgZm9udC1zaXplPSIzOCIKICAgICAgICBmb250LXdlaWdodD0iNzAwIiAKICAgICAgICBsZXR0ZXItc3BhY2luZz0iOCIKICAgICAgICBmaWxsPSJ1cmwoI2dvbGRHcmFkKSI+VU9NTzwvdGV4dD4KICAKICA8IS0tIEJvdHRvbSBkZWNvcmF0aXZlIGxpbmUgLS0+CiAgPGxpbmUgeDE9IjEzNSIgeTE9IjExNSIgeDI9IjM4NSIgeTI9IjExNSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgCiAgPCEtLSBQdWdsaWEgdGFnbGluZSAtLT4KICA8dGV4dCB4PSIxMzUiIHk9IjEzMiIgCiAgICAgICAgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiAKICAgICAgICBmb250LXNpemU9IjExIgogICAgICAgIGxldHRlci1zcGFjaW5nPSI1IgogICAgICAgIGZpbGw9IiM4ODgiPlBVR0xJQSDCtyBBQkJJR0xJQU1FTlRPIFVPTU88L3RleHQ+Cjwvc3ZnPg==" alt="Moda Uomo" style="height:60px;width:auto;margin-bottom:14px;">
   <div class="hero-tag">📍 Mercati Puglia</div>
@@ -243,6 +266,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <button class="filter-btn" data-cat="pantaloni">Pantaloni</button>
     <button class="filter-btn" data-cat="giacche">Giacche</button>
     <button class="filter-btn" data-cat="accessori">Accessori</button>
+    <button class="filter-btn" data-cat="taglie-forti">🔠 Taglie Forti</button>
   </div>
   <div class="product-grid" id="productGrid"></div>
 </div>
@@ -279,6 +303,8 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <div style="background:#f8f6f2;border-radius:10px;padding:12px;margin-bottom:12px;"><div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">I nostri punti di forza</div><div style="font-size:13px;line-height:2;">✅ Qualità garantita<br>✅ Prezzi competitivi<br>✅ Nuovi arrivi ogni settimana<br>✅ Tessera fedeltà cliente</div></div>
     <a href="tel:+393711267591" class="contact-btn call" style="justify-content:center;">📞 Contattaci: 371 126 7591</a>
   </div>
+  <div class="section-title">Storico <span>Acquisti</span></div>
+  <div id="purchaseHistory"></div>
   <div class="section-title">Recensioni <span>Clienti</span></div>
   <div id="reviewsList"></div>
   <div class="contact-card">
@@ -584,7 +610,11 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
       </div>
     </details>
     <!-- BOOKING -->
-    <button class="big-btn" id="pmBookBtn" style="background:#8e44ad;color:#fff;margin-bottom:8px;">📅 Prenota al mercato</button>
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <button class="big-btn" id="pmBookBtn" style="background:#8e44ad;color:#fff;margin-bottom:0;flex:1;">📅 Prenota</button>
+      <button class="big-btn" id="pmCompareBtn" style="background:#2980b9;color:#fff;margin-bottom:0;flex:1;">⚖️ Confronta</button>
+      <button class="big-btn" id="pmGiftBtn" style="background:#e91e8c;color:#fff;margin-bottom:0;flex:1;">🎁 Regalo</button>
+    </div>
     <!-- NOTIFY -->
     <button class="big-btn btn-grey" id="pmNotifyBtn" style="margin-bottom:8px;">🔔 Avvisami quando disponibile</button>
     <button class="big-btn btn-grey" id="pmCloseBtn">Annulla</button>
@@ -599,6 +629,30 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <div id="cartFooter"></div>
   </div>
 </div>
+<!-- COMPARE OVERLAY -->
+<div class="overlay" id="compareOverlay">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="section-title">Confronta <span>Prodotti</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="compareGrid"></div>
+    <button class="big-btn btn-grey" id="compareClose" style="margin-top:16px;">Chiudi</button>
+  </div>
+</div>
+
+<!-- GIFT OVERLAY -->
+<div class="overlay" id="giftOverlay">
+  <div class="sheet" style="padding-bottom:40px;">
+    <div class="handle"></div>
+    <div style="text-align:center;margin-bottom:16px;"><div style="font-size:40px;">🎁</div><div style="font-family:serif;font-size:20px;font-weight:900;color:var(--text);">Modalità Regalo</div><div style="font-size:13px;color:var(--grey);margin-top:4px;">Compila i dati del destinatario</div></div>
+    <input class="ai" id="giftName" placeholder="Nome del destinatario" type="text">
+    <input class="ai" id="giftMessage" placeholder="Messaggio di auguri es: Buon compleanno!" type="text">
+    <input class="ai" id="giftPhone" placeholder="Telefono del destinatario" type="tel">
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-bottom:14px;"><input type="checkbox" id="giftWrap" style="accent-color:var(--gold);"> <span>Aggiungi confezione regalo (+€3.00)</span></label>
+    <button class="big-btn btn-gold" id="giftConfirmBtn">🎁 Aggiungi al carrello come regalo</button>
+    <button class="big-btn btn-grey" id="giftCancelBtn">Annulla</button>
+  </div>
+</div>
+
 <div class="zoom-overlay" id="zoomOverlay">
   <button class="zoom-close" id="zoomClose">✕</button>
   <img class="zoom-img" id="zoomImg" src="" alt="">
