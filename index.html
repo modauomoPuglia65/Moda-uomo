@@ -193,6 +193,21 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
 </style>
 </head>
 <body>
+<!-- SPLASH SCREEN -->
+<div id="splashScreen" style="position:fixed;inset:0;background:linear-gradient(135deg,#1a1a1a,#2a2010);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.8s ease;">
+  <div id="splashLogo" style="opacity:0;transform:scale(0.5);transition:all 0.6s ease;text-align:center;">
+    <div style="font-family:serif;font-size:48px;font-weight:900;color:#c9a84c;letter-spacing:4px;">MODA</div>
+    <div style="font-family:serif;font-size:48px;font-weight:900;color:#fff;letter-spacing:4px;">UOMO</div>
+    <div style="width:60px;height:2px;background:#c9a84c;margin:12px auto;"></div>
+    <div style="font-size:12px;color:#888;letter-spacing:4px;text-transform:uppercase;">Puglia · Abbigliamento</div>
+  </div>
+  <div id="splashDots" style="display:flex;gap:8px;margin-top:40px;">
+    <div class="splash-dot"></div>
+    <div class="splash-dot"></div>
+    <div class="splash-dot"></div>
+  </div>
+</div>
+
 <header>
   <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMTYwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjE2MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdvbGRHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2M5YTg0YztzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojOEI2OTE0O3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgCiAgPCEtLSBCYWNrZ3JvdW5kIGNpcmNsZSBmb3IgTVUgbW9ub2dyYW0gLS0+CiAgPGNpcmNsZSBjeD0iNjAiIGN5PSI4MCIgcj0iNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNnb2xkR3JhZCkiIHN0cm9rZS13aWR0aD0iMiIvPgogIAogIDwhLS0gTSBsZXR0ZXJmb3JtIC0tPgogIDxwYXRoIGQ9Ik0zMCAxMDUgTDMwIDU1IEw2MCA4MCBMOTAgNTUgTDkwIDEwNSIgCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIzLjUiIAogICAgICAgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDwhLS0gVGhpbiBkZWNvcmF0aXZlIGxpbmUgLS0+CiAgPGxpbmUgeDE9IjEyMCIgeTE9IjgwIiB4Mj0iMTI1IiB5Mj0iODAiIHN0cm9rZT0iI2M5YTg0YyIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgCiAgPCEtLSBNT0RBIHRleHQgLS0+CiAgPHRleHQgeD0iMTM1IiB5PSI2OCIgCiAgICAgICAgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiAKICAgICAgICBmb250LXNpemU9IjM4IiAKICAgICAgICBmb250LXdlaWdodD0iNzAwIgogICAgICAgIGxldHRlci1zcGFjaW5nPSI4IgogICAgICAgIGZpbGw9IiMxYTFhMWEiPk1PREE8L3RleHQ+CiAgCiAgPCEtLSBVT01PIHRleHQgLS0+CiAgPHRleHQgeD0iMTM1IiB5PSIxMDUiIAogICAgICAgIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgCiAgICAgICAgZm9udC1zaXplPSIzOCIKICAgICAgICBmb250LXdlaWdodD0iNzAwIiAKICAgICAgICBsZXR0ZXItc3BhY2luZz0iOCIKICAgICAgICBmaWxsPSJ1cmwoI2dvbGRHcmFkKSI+VU9NTzwvdGV4dD4KICAKICA8IS0tIEJvdHRvbSBkZWNvcmF0aXZlIGxpbmUgLS0+CiAgPGxpbmUgeDE9IjEzNSIgeTE9IjExNSIgeDI9IjM4NSIgeTI9IjExNSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgCiAgPCEtLSBQdWdsaWEgdGFnbGluZSAtLT4KICA8dGV4dCB4PSIxMzUiIHk9IjEzMiIgCiAgICAgICAgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiAKICAgICAgICBmb250LXNpemU9IjExIgogICAgICAgIGxldHRlci1zcGFjaW5nPSI1IgogICAgICAgIGZpbGw9IiM4ODgiPlBVR0xJQSDCtyBBQkJJR0xJQU1FTlRPIFVPTU88L3RleHQ+Cjwvc3ZnPg==" alt="Moda Uomo" style="height:42px;width:auto;">
   <div class="header-right">
@@ -201,7 +216,11 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <select id="langSel" style="background:none;border:1px solid var(--border);color:var(--text);font-size:11px;padding:3px 6px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;">
       <option value="it">🇮🇹</option><option value="en">🇬🇧</option><option value="de">🇩🇪</option><option value="fr">🇫🇷</option>
     </select>
-    <button class="cart-btn" id="cartBtn">🛒<span class="cart-count" id="cartCount">0</span></button>
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#27ae60;font-weight:600;" id="onlineCounter">
+    <div style="width:8px;height:8px;background:#27ae60;border-radius:50%;animation:blink 1.5s infinite;"></div>
+    <span id="onlineCount">1</span> online
+  </div>
+  <button class="cart-btn" id="cartBtn">🛒<span class="cart-count" id="cartCount">0</span></button>
   </div>
 </header>
 <div class="search-bar">
@@ -253,6 +272,8 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
   <button class="tab" id="tabFedelta">⭐</button>
   <button class="tab" id="tabOutlet">🔖</button>
   <button class="tab" id="tabBacheca">📢</button>
+  <button class="tab" id="tabFaq">❓</button>
+  <button class="tab" id="tabGalleria">📸</button>
   <button class="tab" id="tabAdmin">⚙️</button>
 </div>
 <!-- CATALOGO -->
@@ -431,6 +452,16 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <div style="font-family:serif;font-size:28px;font-weight:900;color:var(--gold);" id="loyaltyCode"></div>
     <div style="font-size:12px;color:var(--grey);margin-top:6px;">Mostra questo codice al banco per accumulare punti</div>
   </div>
+  <!-- REFERRAL -->
+  <div class="contact-card">
+    <h3>👥 Invita un Amico</h3>
+    <p style="font-size:13px;color:var(--grey);margin-bottom:12px;">Invita un amico su Moda Uomo e guadagna <strong style="color:var(--gold);">3 punti bonus</strong> quando fa il suo primo acquisto!</p>
+    <div style="background:#f8f6f2;border-radius:10px;padding:14px;margin-bottom:12px;text-align:center;">
+      <div style="font-size:11px;color:var(--grey);margin-bottom:6px;">Il tuo link di invito</div>
+      <div style="font-size:12px;font-weight:700;color:var(--gold);word-break:break-all;" id="referralLink"></div>
+    </div>
+    <button class="big-btn btn-gold" id="shareReferralBtn">📤 Condividi link</button>
+  </div>
 </div>
 
 <!-- OUTLET -->
@@ -452,6 +483,30 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
   <div id="noBacheca" style="text-align:center;padding:40px;color:var(--grey);">
     <div style="font-size:40px;">📢</div>
     <p>Nessun annuncio al momento.</p>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="page" id="pageFaq">
+  <div class="section-title" style="margin-top:4px;">Domande <span>Frequenti</span></div>
+  <div id="faqList"></div>
+</div>
+
+<!-- GALLERIA -->
+<div class="page" id="pageGalleria">
+  <div class="section-title" style="margin-top:4px;">Galleria <span>Mercato</span></div>
+  <p style="font-size:13px;color:var(--grey);margin-bottom:14px;">Le nostre foto dal mercato — aggiungi le tue foto dal pannello admin!</p>
+  <div id="galleriaGrid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"></div>
+  <div id="noGalleria" style="text-align:center;padding:40px;color:var(--grey);">
+    <div style="font-size:40px;">📸</div>
+    <p>Nessuna foto ancora.<br>Aggiungile dal pannello admin!</p>
+  </div>
+  <!-- INSTAGRAM -->
+  <div class="section-title" style="margin-top:20px;">Seguici su <span>Instagram</span></div>
+  <div class="contact-card" style="text-align:center;">
+    <div style="font-size:40px;margin-bottom:8px;">📱</div>
+    <p style="font-size:13px;color:var(--grey);margin-bottom:12px;">Seguici su Instagram per vedere le novità in anteprima!</p>
+    <a href="https://www.instagram.com/" target="_blank" class="big-btn" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;display:block;text-decoration:none;">📸 Vai su Instagram</a>
   </div>
 </div>
 
@@ -533,6 +588,13 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
   <div class="admin-card">
     <h3>🚚 Gestisci Spedizioni</h3>
     <div id="shippingAdmin"></div>
+  </div>
+  <div class="admin-card">
+    <h3>📸 Galleria Mercato</h3>
+    <p style="font-size:13px;color:var(--grey);margin-bottom:10px;">Aggiungi foto della tua bancarella al mercato.</p>
+    <input type="file" id="galleriaFile" accept="image/*" multiple style="display:none">
+    <button class="big-btn btn-grey" id="galleriaPickBtn">📷 Aggiungi Foto</button>
+    <div id="galleriaAdminList" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;"></div>
   </div>
   <div class="admin-card">
     <h3>📢 Pubblica Annuncio</h3>
