@@ -193,21 +193,6 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
 </style>
 </head>
 <body>
-<!-- SPLASH SCREEN -->
-<div id="splashScreen" style="position:fixed;inset:0;background:linear-gradient(135deg,#1a1a1a,#2a2010);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.8s ease;">
-  <div id="splashLogo" style="opacity:0;transform:scale(0.5);transition:all 0.6s ease;text-align:center;">
-    <div style="font-family:serif;font-size:48px;font-weight:900;color:#c9a84c;letter-spacing:4px;">MODA</div>
-    <div style="font-family:serif;font-size:48px;font-weight:900;color:#fff;letter-spacing:4px;">UOMO</div>
-    <div style="width:60px;height:2px;background:#c9a84c;margin:12px auto;"></div>
-    <div style="font-size:12px;color:#888;letter-spacing:4px;text-transform:uppercase;">Puglia · Abbigliamento</div>
-  </div>
-  <div id="splashDots" style="display:flex;gap:8px;margin-top:40px;">
-    <div class="splash-dot"></div>
-    <div class="splash-dot"></div>
-    <div class="splash-dot"></div>
-  </div>
-</div>
-
 <header>
   <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMTYwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjE2MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdvbGRHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2M5YTg0YztzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojOEI2OTE0O3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgCiAgPCEtLSBCYWNrZ3JvdW5kIGNpcmNsZSBmb3IgTVUgbW9ub2dyYW0gLS0+CiAgPGNpcmNsZSBjeD0iNjAiIGN5PSI4MCIgcj0iNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNnb2xkR3JhZCkiIHN0cm9rZS13aWR0aD0iMiIvPgogIAogIDwhLS0gTSBsZXR0ZXJmb3JtIC0tPgogIDxwYXRoIGQ9Ik0zMCAxMDUgTDMwIDU1IEw2MCA4MCBMOTAgNTUgTDkwIDEwNSIgCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIzLjUiIAogICAgICAgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDwhLS0gVGhpbiBkZWNvcmF0aXZlIGxpbmUgLS0+CiAgPGxpbmUgeDE9IjEyMCIgeTE9IjgwIiB4Mj0iMTI1IiB5Mj0iODAiIHN0cm9rZT0iI2M5YTg0YyIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgCiAgPCEtLSBNT0RBIHRleHQgLS0+CiAgPHRleHQgeD0iMTM1IiB5PSI2OCIgCiAgICAgICAgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiAKICAgICAgICBmb250LXNpemU9IjM4IiAKICAgICAgICBmb250LXdlaWdodD0iNzAwIgogICAgICAgIGxldHRlci1zcGFjaW5nPSI4IgogICAgICAgIGZpbGw9IiMxYTFhMWEiPk1PREE8L3RleHQ+CiAgCiAgPCEtLSBVT01PIHRleHQgLS0+CiAgPHRleHQgeD0iMTM1IiB5PSIxMDUiIAogICAgICAgIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgCiAgICAgICAgZm9udC1zaXplPSIzOCIKICAgICAgICBmb250LXdlaWdodD0iNzAwIiAKICAgICAgICBsZXR0ZXItc3BhY2luZz0iOCIKICAgICAgICBmaWxsPSJ1cmwoI2dvbGRHcmFkKSI+VU9NTzwvdGV4dD4KICAKICA8IS0tIEJvdHRvbSBkZWNvcmF0aXZlIGxpbmUgLS0+CiAgPGxpbmUgeDE9IjEzNSIgeTE9IjExNSIgeDI9IjM4NSIgeTI9IjExNSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgCiAgPCEtLSBQdWdsaWEgdGFnbGluZSAtLT4KICA8dGV4dCB4PSIxMzUiIHk9IjEzMiIgCiAgICAgICAgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiAKICAgICAgICBmb250LXNpemU9IjExIgogICAgICAgIGxldHRlci1zcGFjaW5nPSI1IgogICAgICAgIGZpbGw9IiM4ODgiPlBVR0xJQSDCtyBBQkJJR0xJQU1FTlRPIFVPTU88L3RleHQ+Cjwvc3ZnPg==" alt="Moda Uomo" style="height:42px;width:auto;">
   <div class="header-right">
