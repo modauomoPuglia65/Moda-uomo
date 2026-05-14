@@ -1449,6 +1449,64 @@ document.getElementById("zoomOverlay").addEventListener("touchend",function(e){i
 if(!localStorage.getItem("mu_shipping")){
   localStorage.setItem("mu_shipping",JSON.stringify({italy:8,abroad:15,freeThreshold:50,enabled:true}));
 }
+
+// ===== BACK BUTTON HANDLING =====
+// Push state when overlay opens so back button closes overlay, not the app
+function pushHistory(id){
+  history.pushState({overlay:id}, "", "");
+}
+
+window.addEventListener("popstate", function(e){
+  // Close any open overlay when back is pressed
+  var overlays = document.querySelectorAll(".overlay.open");
+  if(overlays.length > 0){
+    overlays[overlays.length-1].classList.remove("open");
+    return;
+  }
+  // If no overlay open, go back to catalog instead of exiting
+  if(document.getElementById("pageCatalogo").style.display === "none"){
+    showPage("pageCatalogo", document.getElementById("tabCatalogo"));
+    renderProducts();
+    history.pushState({}, "", "");
+    return;
+  }
+  // Otherwise push state again to prevent exit
+  history.pushState({}, "", "");
+});
+
+// Push initial state to prevent immediate exit
+history.pushState({}, "", "");
+
+// Override overlay open to push history
+var origProductOpen = document.getElementById("productOverlay").classList.add.bind(document.getElementById("productOverlay").classList);
+document.getElementById("productOverlay").addEventListener("click", function(e){
+  if(e.target === this) this.classList.remove("open");
+});
+
+// Intercept all overlay opens
+function openOverlay(id){
+  document.getElementById(id).classList.add("open");
+  history.pushState({overlay:id}, "", "");
+}
+function closeOverlay(id){
+  document.getElementById(id).classList.remove("open");
+}
+
+// Override cart button
+document.getElementById("cartBtn").removeEventListener("click", function(){});
+document.getElementById("cartBtn").onclick = function(){
+  renderCart();
+  openOverlay("cartOverlay");
+};
+
+// Override product overlay close
+document.getElementById("pmCloseBtn").onclick = function(){
+  closeOverlay("productOverlay");
+};
+document.getElementById("productOverlay").onclick = function(e){
+  if(e.target === this) closeOverlay("productOverlay");
+};
+
 renderProducts();
 updateCartCount();
 renderBacheca();
