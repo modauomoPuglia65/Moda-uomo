@@ -369,6 +369,19 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
       <option value="giacche">Giacche</option>
       <option value="accessori">Accessori</option>
     </select>
+    <div style="font-size:11px;color:var(--grey);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Fantasia / Motivo</div>
+    <div class="check-group" id="adminPatternGrid">
+      <label class="check-label"><input type="checkbox" value="Tinta Unita" style="accent-color:var(--gold);"> Tinta Unita</label>
+      <label class="check-label"><input type="checkbox" value="Rigato" style="accent-color:var(--gold);"> 〰️ Rigato</label>
+      <label class="check-label"><input type="checkbox" value="Quadri" style="accent-color:var(--gold);"> ▪️ Quadri</label>
+      <label class="check-label"><input type="checkbox" value="Fantasia" style="accent-color:var(--gold);"> 🌸 Fantasia</label>
+      <label class="check-label"><input type="checkbox" value="Pallini" style="accent-color:var(--gold);"> ⚪ Pallini</label>
+      <label class="check-label"><input type="checkbox" value="Multicolore" style="accent-color:var(--gold);"> 🌈 Multicolore</label>
+      <label class="check-label"><input type="checkbox" value="Floreale" style="accent-color:var(--gold);"> 🌺 Floreale</label>
+      <label class="check-label"><input type="checkbox" value="Paisley" style="accent-color:var(--gold);"> 🔮 Paisley</label>
+      <label class="check-label"><input type="checkbox" value="Micro Fantasia" style="accent-color:var(--gold);"> Micro Fantasia</label>
+      <label class="check-label"><input type="checkbox" value="Hawaiano" style="accent-color:var(--gold);"> 🌴 Hawaiano</label>
+    </div>
     <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
       <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="adminIsNew" style="accent-color:var(--gold);"> <strong>NOVITÀ</strong></label>
       <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="adminIsSale" style="accent-color:#e74c3c;"> <strong style="color:#e74c3c;">SALDO</strong></label>
@@ -509,6 +522,10 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <div class="size-grid" id="pmSizes"></div>
     <div class="pm-label">Colore</div>
     <div class="color-grid" id="pmColors"></div>
+    <div id="pmPatternWrap" style="display:none;">
+      <div class="pm-label">Fantasia / Motivo</div>
+      <div class="color-grid" id="pmPatterns"></div>
+    </div>
     <button class="big-btn btn-gold" id="pmAddBtn">🛒 Aggiungi al carrello</button>
     <button class="big-btn" id="pmBookBtn" style="background:#8e44ad;color:#fff;">📅 Prenota al mercato</button>
     <button class="big-btn btn-grey" id="pmCloseBtn">Annulla</button>
@@ -702,6 +719,7 @@ function renderGrid(list,gridId){
     var newB=p.isNew?'<div class="badge-new">NEW</div>':"";
     var lastB=(p.stock&&p.stock<=3)?'<div class="badge-last">Ultimi '+p.stock+'!</div>':"";
     var saleB=p.isSale?'<div class="badge-sale">SALDO</div>':(p.isOutlet?'<div class="badge-sale" style="background:#e67e22;">OUTLET</div>':"");
+    var patternB=p.patterns&&p.patterns.length?'<div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.6);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;">'+p.patterns[0]+'</div>':""  ;
     var stockT=(p.stock&&p.stock>3&&p.stock<=5)?'<div class="product-stock">⚠️ Solo '+p.stock+' pz</div>':"";
     var wished=wishlist.indexOf(p.id)>-1;
     var priceH=(p.isSale&&p.oldPrice)?('<span class="price-old">'+convertPrice(p.oldPrice)+'</span><span class="price-sale">'+convertPrice(p.price)+'</span>'):convertPrice(p.price);
@@ -783,6 +801,12 @@ function openProduct(id){
   }
   document.getElementById("pmName").textContent=p.name;
   document.getElementById("pmPrice").innerHTML=(p.isSale&&p.oldPrice)?('<span class="price-old">'+convertPrice(p.oldPrice)+'</span> <span class="price-sale">'+convertPrice(p.price)+'</span>'):convertPrice(p.price);
+    // Show pattern info
+  if(p.patterns&&p.patterns.length){
+    document.getElementById("pmName").innerHTML=p.name+'<div style="font-size:11px;color:var(--gold);margin-top:3px;letter-spacing:1px;">'+p.patterns.join(" · ")+'</div>';
+  } else {
+    document.getElementById("pmName").textContent=p.name;
+  }
   var stockEl=document.getElementById("pmStock");
   if(p.stock&&p.stock<=5){stockEl.textContent="⚠️ Solo "+p.stock+" pz!";stockEl.style.display="block";}
   else{stockEl.style.display="none";}
@@ -806,6 +830,22 @@ function openProduct(id){
   document.getElementById("pmColors").querySelectorAll(".color-btn").forEach(function(b){
     b.addEventListener("click",function(){selColor=this.dataset.color;document.querySelectorAll(".color-btn").forEach(function(x){x.classList.remove("sel");});this.classList.add("sel");});
   });
+  // Patterns
+  var patternWrap=document.getElementById("pmPatternWrap");
+  var pmPatterns=document.getElementById("pmPatterns");
+  if(p.patterns&&p.patterns.length){
+    patternWrap.style.display="block";
+    pmPatterns.innerHTML=p.patterns.map(function(pt){return '<button class="color-btn" data-pattern="'+pt+'">'+pt+'</button>';}).join("");
+    pmPatterns.querySelectorAll(".color-btn").forEach(function(b){
+      b.addEventListener("click",function(){
+        document.querySelectorAll("#pmPatterns .color-btn").forEach(function(x){x.classList.remove("sel");});
+        this.classList.add("sel");
+      });
+    });
+  } else {
+    patternWrap.style.display="none";
+    pmPatterns.innerHTML="";
+  }
   // Related
   renderRelated(p);
   document.getElementById("productOverlay").classList.add("open");
@@ -1061,13 +1101,14 @@ document.getElementById("adminSaveBtn").addEventListener("click",function(){
   var videoUrl=document.getElementById("adminVideoUrl").value.trim()||null;
   var videoUrl2=document.getElementById("adminVideoUrl2").value.trim()||null;
   var sizes=Array.from(document.querySelectorAll("#adminSizeGrid input:checked")).map(function(i){return i.value;});
+  var patterns=Array.from(document.querySelectorAll("#adminPatternGrid input:checked")).map(function(i){return i.value;});
   var colors=Array.from(document.querySelectorAll("#adminColorGrid input:checked")).map(function(i){return i.value;});
   if(!name){showToast("⚠️ Inserisci il nome!");return;}
   if(!price||price<=0){showToast("⚠️ Inserisci il prezzo!");return;}
   if(!adminPhotos.length){showToast("⚠️ Aggiungi almeno una foto!");return;}
   if(!sizes.length){showToast("⚠️ Seleziona almeno una taglia!");return;}
   if(!colors.length){showToast("⚠️ Seleziona almeno un colore!");return;}
-  customProducts.push({id:Date.now(),name:name,price:price,oldPrice:oldPrice,stock:stock,cat:cat,isNew:isNew,isSale:isSale,isOutlet:isOutlet,imgs:adminPhotos,videoUrl:videoUrl,videoUrl2:videoUrl2,sizes:sizes,colors:colors});
+  customProducts.push({id:Date.now(),name:name,price:price,oldPrice:oldPrice,stock:stock,cat:cat,isNew:isNew,isSale:isSale,isOutlet:isOutlet,imgs:adminPhotos,videoUrl:videoUrl,videoUrl2:videoUrl2,sizes:sizes,colors:colors,patterns:patterns});
   localStorage.setItem("mu_p",JSON.stringify(customProducts));
   // Reset
   document.getElementById("adminName").value="";
@@ -1083,7 +1124,7 @@ document.getElementById("adminSaveBtn").addEventListener("click",function(){
   document.getElementById("adminOldPrice").value="";
   document.getElementById("adminVideoUrl").value="";
   document.getElementById("adminVideoUrl2").value="";
-  document.querySelectorAll("#adminSizeGrid input,#adminColorGrid input").forEach(function(i){i.checked=false;});
+  document.querySelectorAll("#adminSizeGrid input,#adminColorGrid input,#adminPatternGrid input").forEach(function(i){i.checked=false;});
   adminPhotos=[];
   renderAdminList();renderProducts();
   showToast("✅ Prodotto aggiunto!");
