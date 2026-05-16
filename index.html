@@ -1105,11 +1105,13 @@ document.getElementById("adminSaveBtn").addEventListener("click",function(){
   var colors=Array.from(document.querySelectorAll("#adminColorGrid input:checked")).map(function(i){return i.value;});
   if(!name){showToast("⚠️ Inserisci il nome!");return;}
   if(!price||price<=0){showToast("⚠️ Inserisci il prezzo!");return;}
-  if(!adminPhotos.length){showToast("⚠️ Aggiungi almeno una foto!");return;}
   if(!sizes.length){showToast("⚠️ Seleziona almeno una taglia!");return;}
   if(!colors.length){showToast("⚠️ Seleziona almeno un colore!");return;}
-  customProducts.push({id:Date.now(),name:name,price:price,oldPrice:oldPrice,stock:stock,cat:cat,isNew:isNew,isSale:isSale,isOutlet:isOutlet,imgs:adminPhotos,videoUrl:videoUrl,videoUrl2:videoUrl2,sizes:sizes,colors:colors,patterns:patterns});
+  // Use placeholder if no photo
+  var finalPhotos = adminPhotos.length ? adminPhotos : ["data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTI1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjUwIj7ipo88L3RleHQ+PHRleHQgeD0iMTAwIiB5PSIxNjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiPkZvdG8gbm9uIGRpc3BvbmliaWxlPC90ZXh0Pjwvc3ZnPg=="];
+  customProducts.push({id:Date.now(),name:name,price:price,oldPrice:oldPrice,stock:stock,cat:cat,isNew:isNew,isSale:isSale,isOutlet:isOutlet,imgs:finalPhotos,videoUrl:videoUrl,videoUrl2:videoUrl2,sizes:sizes,colors:colors,patterns:patterns});
   localStorage.setItem("mu_p",JSON.stringify(customProducts));
+  customProducts = JSON.parse(localStorage.getItem("mu_p")||"[]");
   // Reset
   document.getElementById("adminName").value="";
   document.getElementById("adminPrice").value="";
@@ -1127,7 +1129,7 @@ document.getElementById("adminSaveBtn").addEventListener("click",function(){
   document.querySelectorAll("#adminSizeGrid input,#adminColorGrid input,#adminPatternGrid input").forEach(function(i){i.checked=false;});
   adminPhotos=[];
   renderAdminList();renderProducts();
-  showToast("✅ Prodotto aggiunto!");
+  showToast("✅ Prodotto aggiunto! Totale: "+allProducts().length);
 });
 
 document.getElementById("adminLogoutBtn").addEventListener("click",function(){
