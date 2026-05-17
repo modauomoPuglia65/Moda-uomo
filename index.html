@@ -688,7 +688,8 @@ try {
 
 function allProducts(){
   var hidden=JSON.parse(localStorage.getItem("mu_hidden")||"[]");
-  return baseProducts.concat(customProducts).filter(function(p){return hidden.indexOf(p.id)===-1;});
+  var custom=JSON.parse(localStorage.getItem("mu_p")||"[]");
+  return baseProducts.concat(custom).filter(function(p){return hidden.indexOf(p.id)===-1;});
 }
 function convertPrice(eur){
   var r=exchangeRates[currentCurrency]||1;
@@ -781,6 +782,8 @@ document.querySelectorAll(".filter-btn").forEach(function(btn){
 
 // RENDER PRODUCTS
 function renderProducts(){
+  // Always reload from localStorage to get latest products
+  customProducts = JSON.parse(localStorage.getItem("mu_p")||"[]");
   var all=allProducts();
   var list=currentFilter==="tutti"?all:currentFilter==="novita"?all.filter(function(p){return p.isNew;}):all.filter(function(p){return p.cat===currentFilter;});
   renderGrid(list,"productGrid");
@@ -1187,14 +1190,17 @@ document.getElementById("adminSaveBtn").addEventListener("click",function(){
   if(!colors.length){showToast("⚠️ Seleziona almeno un colore!");return;}
   // Use placeholder if no photo
   var finalPhotos = adminPhotos.length ? adminPhotos : ["data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTI1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjUwIj7ipo88L3RleHQ+PHRleHQgeD0iMTAwIiB5PSIxNjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiPkZvdG8gbm9uIGRpc3BvbmliaWxlPC90ZXh0Pjwvc3ZnPg=="];
-  customProducts.push({id:Date.now(),name:name,price:price,oldPrice:oldPrice,stock:stock,cat:cat,isNew:isNew,isSale:isSale,isOutlet:isOutlet,imgs:finalPhotos,videoUrl:videoUrl,videoUrl2:videoUrl2,sizes:sizes,colors:colors,patterns:patterns});
+  var newProduct = {id:Date.now(),name:name,price:price,oldPrice:oldPrice,stock:stock,cat:cat,isNew:isNew,isSale:isSale,isOutlet:isOutlet,imgs:finalPhotos,videoUrl:videoUrl,videoUrl2:videoUrl2,sizes:sizes,colors:colors,patterns:patterns};
+  customProducts.push(newProduct);
   localStorage.setItem("mu_p",JSON.stringify(customProducts));
+  // Force reload from storage to be sure
   customProducts = JSON.parse(localStorage.getItem("mu_p")||"[]");
+  // Go to catalog and show all products
   currentFilter = "tutti";
   document.querySelectorAll(".filter-btn").forEach(function(b){b.classList.remove("active");});
-  var tuttiBtn = document.querySelector('.filter-btn[data-cat="tutti"]');
-  if(tuttiBtn) tuttiBtn.classList.add("active");
-  // Reset
+  var allBtn = document.querySelector('.filter-btn[data-cat="tutti"]');
+  if(allBtn) allBtn.classList.add("active");
+  // Reset form
   document.getElementById("adminName").value="";
   document.getElementById("adminPrice").value="";
   document.getElementById("adminStock").value="";
