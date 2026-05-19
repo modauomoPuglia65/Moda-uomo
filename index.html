@@ -1178,17 +1178,12 @@ function makeSizeBtn(val){
   b.dataset.val = val;
   b.style.cssText = "padding:8px 14px;border-radius:20px;border:2px solid #ddd;background:#f8f6f2;color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;";
   b.addEventListener("click", function(){
-    var active = this.style.background === "rgb(184, 134, 11)" || this.classList.contains("sel-active");
-    if(active){
-      this.style.background = "#f8f6f2";
-      this.style.borderColor = "#ddd";
-      this.style.color = "var(--text)";
+    if(this.classList.contains("sel-active")){
       this.classList.remove("sel-active");
+      this.style.cssText = "padding:8px 14px;border-radius:20px;border:2px solid #ddd;background:#f8f6f2;color:#333;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;";
     } else {
-      this.style.background = "var(--gold)";
-      this.style.borderColor = "var(--gold)";
-      this.style.color = "#fff";
       this.classList.add("sel-active");
+      this.style.cssText = "padding:8px 14px;border-radius:20px;border:2px solid #b8860b;background:#b8860b;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;";
     }
   });
   return b;
@@ -1310,9 +1305,7 @@ document.getElementById("adminSaveBtn").addEventListener("click", function(){
   });
   document.querySelectorAll("#adminSizeGrid button, #adminColorGrid button, #adminPatternGrid button").forEach(function(b){
     b.classList.remove("sel-active");
-    b.style.background = "#f8f6f2";
-    b.style.borderColor = "#ddd";
-    b.style.color = "var(--text)";
+    b.style.cssText = "padding:8px 14px;border-radius:20px;border:2px solid #ddd;background:#f8f6f2;color:#333;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;";
   });
   
   // Show in catalog
