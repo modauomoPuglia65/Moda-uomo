@@ -423,22 +423,19 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
 <div class="page" id="pageAdmin">
   <div class="admin-card">
     <h3>➕ Aggiungi Prodotto</h3>
+    
+    <!-- PHOTO -->
     <img id="adminPreview" style="width:100%;height:150px;object-fit:cover;border-radius:8px;margin-bottom:10px;border:1px solid #ddd;display:none;" src="" alt="">
-    <div id="adminThumbsWrap" style="display:none;margin-bottom:10px;"><div style="font-size:12px;color:var(--grey);margin-bottom:6px;">Foto caricate:</div><div style="display:flex;gap:6px;overflow-x:auto;" id="adminThumbs"></div></div>
+    <div id="adminThumbs" style="display:flex;gap:6px;overflow-x:auto;margin-bottom:8px;"></div>
+    <input type="file" id="adminFile" accept="image/*" multiple style="opacity:0;position:absolute;width:1px;height:1px;">
+    <button type="button" onclick="document.getElementById('adminFile').click();" id="adminPickBtn" style="width:100%;background:#f8f6f2;border:2px dashed #ccc;color:#555;padding:14px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;font-family:'DM Sans',sans-serif;">📷 Scegli Foto dal Telefono</button>
     
-    <!-- FILE INPUT - Android compatible -->
-    <input type="file" id="adminFile" accept="image/*" multiple style="display:none;">
-    <button type="button" id="adminPickBtn" class="big-btn btn-grey" style="border:2px dashed #bbb;background:#f8f6f2;">
-      📷 Scegli Foto dal Telefono
-    </button>
-    <div id="adminPhotoStatus" style="font-size:12px;color:var(--gold);text-align:center;margin-bottom:6px;display:none;">✅ Foto caricate!</div>
+    <!-- NAME & PRICE -->
+    <input class="ai" id="adminName" placeholder="Nome prodotto *" type="text">
+    <input class="ai" id="adminPrice" placeholder="Prezzo es. 29.90 *" type="number" step="0.01" min="0" inputmode="decimal">
+    <input class="ai" id="adminStock" placeholder="Pezzi disponibili" type="number" min="0" inputmode="numeric">
     
-    <div style="font-size:11px;color:var(--grey);margin-bottom:8px;">🎬 Video (link YouTube o Instagram)</div>
-    <input class="ai" id="adminVideoUrl" placeholder="Link YouTube" type="url">
-    <input class="ai" id="adminVideoUrl2" placeholder="Link Instagram Reels" type="url">
-    <input class="ai" id="adminName" placeholder="Nome prodotto" type="text">
-    <input class="ai" id="adminPrice" placeholder="Prezzo es. 29.90" type="number" step="0.01" min="0">
-    <input class="ai" id="adminStock" placeholder="Pezzi disponibili" type="number" min="0">
+    <!-- CATEGORY -->
     <select class="ai" id="adminCat">
       <option value="camicie-lino">Camicie Lino Mix</option>
       <option value="camicie-cotone">Camicie Cotone</option>
@@ -447,52 +444,37 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
       <option value="giacche">Giacche</option>
       <option value="accessori">Accessori</option>
     </select>
-    <div style="font-size:11px;color:var(--grey);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Fantasia / Motivo</div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;" id="adminPatternGrid">
-      <button type="button" class="color-sel-btn" data-val="Tinta Unita">Tinta Unita</button>
-      <button type="button" class="color-sel-btn" data-val="Rigato">〰️ Rigato</button>
-      <button type="button" class="color-sel-btn" data-val="Quadri">▪️ Quadri</button>
-      <button type="button" class="color-sel-btn" data-val="Fantasia">🌸 Fantasia</button>
-      <button type="button" class="color-sel-btn" data-val="Pallini">⚪ Pallini</button>
-      <button type="button" class="color-sel-btn" data-val="Multicolore">🌈 Multicolore</button>
-      <button type="button" class="color-sel-btn" data-val="Floreale">🌺 Floreale</button>
-      <button type="button" class="color-sel-btn" data-val="Paisley">🔮 Paisley</button>
-      <button type="button" class="color-sel-btn" data-val="Micro Fantasia">Micro Fantasia</button>
-      <button type="button" class="color-sel-btn" data-val="Hawaiano">🌴 Hawaiano</button>
+    
+    <!-- FLAGS -->
+    <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+      <button type="button" id="btnNew" onclick="toggleFlag('btnNew','isNew')" style="padding:8px 14px;border-radius:20px;border:2px solid #ddd;background:#f8f6f2;color:#555;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">🆕 Novità</button>
+      <button type="button" id="btnSale" onclick="toggleFlag('btnSale','isSale')" style="padding:8px 14px;border-radius:20px;border:2px solid #ddd;background:#f8f6f2;color:#555;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">🏷️ Saldo</button>
+      <button type="button" id="btnOutlet" onclick="toggleFlag('btnOutlet','isOutlet')" style="padding:8px 14px;border-radius:20px;border:2px solid #ddd;background:#f8f6f2;color:#555;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">🔖 Outlet</button>
     </div>
-    <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="adminIsNew" style="accent-color:var(--gold);"> <strong>NOVITÀ</strong></label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="adminIsSale" style="accent-color:#e74c3c;"> <strong style="color:#e74c3c;">SALDO</strong></label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="adminIsOutlet" style="accent-color:#e67e22;"> <strong style="color:#e67e22;">OUTLET</strong></label>
-    </div>
-    <input class="ai" id="adminOldPrice" placeholder="Prezzo originale (solo se saldo)" type="number" step="0.01" min="0" style="display:none;">
+    <input class="ai" id="adminOldPrice" placeholder="Prezzo originale (solo se saldo)" type="number" step="0.01" min="0" style="display:none;" inputmode="decimal">
+    
+    <!-- SIZE MODE -->
     <div style="display:flex;gap:8px;margin-bottom:8px;">
-      <button class="filter-btn active" id="sizeModeAbiti" onclick="setSizeMode('abiti',this)" style="flex-shrink:0;">👕 Abiti</button>
-      <button class="filter-btn" id="sizeModeNumeri" onclick="setSizeMode('numeri',this)" style="flex-shrink:0;">👖 Pantaloni</button>
+      <button type="button" onclick="setSizeMode2('abiti')" id="sm_abiti" style="padding:7px 14px;border-radius:20px;background:var(--gold);border:2px solid var(--gold);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">👕 Abiti</button>
+      <button type="button" onclick="setSizeMode2('numeri')" id="sm_numeri" style="padding:7px 14px;border-radius:20px;background:#f8f6f2;border:2px solid #ddd;color:#555;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">👖 Pantaloni</button>
     </div>
-    <div style="font-size:11px;color:var(--grey);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Taglie</div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;" id="adminSizeGrid">
-      <button type="button" class="size-sel-btn" data-val="S">S</button>
-      <button type="button" class="size-sel-btn" data-val="M">M</button>
-      <button type="button" class="size-sel-btn" data-val="L">L</button>
-      <button type="button" class="size-sel-btn" data-val="XL">XL</button>
-      <button type="button" class="size-sel-btn" data-val="XXL">XXL</button>
-      <button type="button" class="size-sel-btn" data-val="XXXL">XXXL</button>
-    </div>
-    <div style="font-size:11px;color:var(--grey);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Colori</div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;" id="adminColorGrid">
-      <button type="button" class="color-sel-btn" data-val="Bianco">Bianco</button>
-      <button type="button" class="color-sel-btn" data-val="Celeste">Celeste</button>
-      <button type="button" class="color-sel-btn" data-val="Nero">Nero</button>
-      <button type="button" class="color-sel-btn" data-val="Blu">Blu</button>
-      <button type="button" class="color-sel-btn" data-val="Rosso">Rosso</button>
-      <button type="button" class="color-sel-btn" data-val="Verde">Verde</button>
-      <button type="button" class="color-sel-btn" data-val="Grigio">Grigio</button>
-      <button type="button" class="color-sel-btn" data-val="Beige">Beige</button>
-      <button type="button" class="color-sel-btn" data-val="Bordeaux">Bordeaux</button>
-      <button type="button" class="color-sel-btn" data-val="Militare">Militare</button>
-    </div>
-    <button class="big-btn btn-gold" id="adminSaveBtn">✅ Aggiungi al Catalogo</button>
+    
+    <!-- SIZES -->
+    <div style="font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Taglie *</div>
+    <div id="adminSizeGrid" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;"></div>
+    
+    <!-- COLORS -->
+    <div style="font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Colori *</div>
+    <div id="adminColorGrid" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;"></div>
+    
+    <!-- PATTERNS -->
+    <div style="font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Fantasia / Motivo</div>
+    <div id="adminPatternGrid" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;"></div>
+    
+    <!-- VIDEO -->
+    <input class="ai" id="adminVideoUrl" placeholder="Link YouTube (opzionale)" type="url">
+    
+    <button type="button" class="big-btn btn-gold" id="adminSaveBtn">✅ Aggiungi al Catalogo</button>
   </div>
   
   <div class="admin-card">
@@ -1169,76 +1151,178 @@ document.getElementById("adminFile").addEventListener("change",function(){
   }
 });
 
-document.getElementById("adminIsSale").addEventListener("change",function(){
-  document.getElementById("adminOldPrice").style.display=this.checked?"block":"none";
-});
+// ===== ADMIN PRODUCT FORM =====
+var adminFlags = {isNew:false, isSale:false, isOutlet:false};
 
-function setSizeMode(mode,btn){
-  document.getElementById("sizeModeAbiti").classList.remove("active");
-  document.getElementById("sizeModeNumeri").classList.remove("active");
-  btn.classList.add("active");
-  var sizes=mode==="abiti"?SIZES_ABITI:SIZES_NUMERI;
-  document.getElementById("adminSizeGrid").innerHTML=sizes.map(function(s){
-    return '<button type="button" class="size-sel-btn" data-val="'+s+'">'+s+'</button>';
-  }).join("");
-  // Re-attach click handlers
-  document.querySelectorAll(".size-sel-btn").forEach(function(b){
-    b.addEventListener("click",function(){this.classList.toggle("sel-active");});
-  });
+function toggleFlag(btnId, flag){
+  adminFlags[flag] = !adminFlags[flag];
+  var btn = document.getElementById(btnId);
+  if(adminFlags[flag]){
+    btn.style.background = "var(--gold)";
+    btn.style.borderColor = "var(--gold)";
+    btn.style.color = "#fff";
+  } else {
+    btn.style.background = "#f8f6f2";
+    btn.style.borderColor = "#ddd";
+    btn.style.color = "#555";
+  }
+  if(flag === "isSale"){
+    document.getElementById("adminOldPrice").style.display = adminFlags.isSale ? "block" : "none";
+  }
 }
 
-document.getElementById("adminSaveBtn").addEventListener("click",function(){
-  var name=document.getElementById("adminName").value.trim();
-  var price=parseFloat(document.getElementById("adminPrice").value);
-  var stock=parseInt(document.getElementById("adminStock").value)||null;
-  var cat=document.getElementById("adminCat").value;
-  var isNew=document.getElementById("adminIsNew").checked;
-  var isSale=document.getElementById("adminIsSale").checked;
-  var isOutlet=document.getElementById("adminIsOutlet").checked;
-  var oldPrice=isSale?parseFloat(document.getElementById("adminOldPrice").value)||null:null;
-  var videoUrl=document.getElementById("adminVideoUrl").value.trim()||null;
-  var videoUrl2=document.getElementById("adminVideoUrl2").value.trim()||null;
-  var sizes=Array.from(document.querySelectorAll("#adminSizeGrid .size-sel-btn.sel-active")).map(function(b){return b.dataset.val;});
-  var patterns=Array.from(document.querySelectorAll("#adminPatternGrid .color-sel-btn.sel-active")).map(function(b){return b.dataset.val;});
-  var colors=Array.from(document.querySelectorAll("#adminColorGrid .color-sel-btn.sel-active")).map(function(b){return b.dataset.val;});
-  if(!name){showToast("⚠️ Inserisci il nome!");return;}
-  if(!price||price<=0){showToast("⚠️ Inserisci il prezzo!");return;}
-  if(!sizes.length){showToast("⚠️ Seleziona almeno una taglia!");return;}
-  if(!colors.length){showToast("⚠️ Seleziona almeno un colore!");return;}
-  // Use placeholder if no photo
-  var finalPhotos = adminPhotos.length ? adminPhotos : ["data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTI1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjUwIj7ipo88L3RleHQ+PHRleHQgeD0iMTAwIiB5PSIxNjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiPkZvdG8gbm9uIGRpc3BvbmliaWxlPC90ZXh0Pjwvc3ZnPg=="];
-  var newProduct = {id:Date.now(),name:name,price:price,oldPrice:oldPrice,stock:stock,cat:cat,isNew:isNew,isSale:isSale,isOutlet:isOutlet,imgs:finalPhotos,videoUrl:videoUrl,videoUrl2:videoUrl2,sizes:sizes,colors:colors,patterns:patterns};
-  customProducts.push(newProduct);
-  localStorage.setItem("mu_p",JSON.stringify(customProducts));
-  // Force reload from storage to be sure
-  customProducts = JSON.parse(localStorage.getItem("mu_p")||"[]");
-  // Go to catalog and show all products
+function makeSizeBtn(val){
+  var b = document.createElement("button");
+  b.type = "button";
+  b.textContent = val;
+  b.dataset.val = val;
+  b.style.cssText = "padding:8px 14px;border-radius:20px;border:2px solid #ddd;background:#f8f6f2;color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;";
+  b.addEventListener("click", function(){
+    var active = this.style.background === "rgb(184, 134, 11)" || this.classList.contains("sel-active");
+    if(active){
+      this.style.background = "#f8f6f2";
+      this.style.borderColor = "#ddd";
+      this.style.color = "var(--text)";
+      this.classList.remove("sel-active");
+    } else {
+      this.style.background = "var(--gold)";
+      this.style.borderColor = "var(--gold)";
+      this.style.color = "#fff";
+      this.classList.add("sel-active");
+    }
+  });
+  return b;
+}
+
+function setSizeMode2(mode){
+  document.getElementById("sm_abiti").style.background = mode==="abiti" ? "var(--gold)" : "#f8f6f2";
+  document.getElementById("sm_abiti").style.borderColor = mode==="abiti" ? "var(--gold)" : "#ddd";
+  document.getElementById("sm_abiti").style.color = mode==="abiti" ? "#fff" : "#555";
+  document.getElementById("sm_numeri").style.background = mode==="numeri" ? "var(--gold)" : "#f8f6f2";
+  document.getElementById("sm_numeri").style.borderColor = mode==="numeri" ? "var(--gold)" : "#ddd";
+  document.getElementById("sm_numeri").style.color = mode==="numeri" ? "#fff" : "#555";
+  var sizes = mode==="abiti" ? SIZES_ABITI : SIZES_NUMERI;
+  var grid = document.getElementById("adminSizeGrid");
+  grid.innerHTML = "";
+  sizes.forEach(function(s){ grid.appendChild(makeSizeBtn(s)); });
+}
+
+// Init grids
+setSizeMode2("abiti");
+
+var COLORS_LIST = ["Bianco","Celeste","Nero","Blu","Rosso","Verde","Grigio","Beige","Bordeaux","Militare"];
+var PATTERNS_LIST = ["Tinta Unita","〰️ Rigato","▪️ Quadri","🌸 Fantasia","⚪ Pallini","🌈 Multicolore","🌺 Floreale","🔮 Paisley","Micro Fantasia","🌴 Hawaiano"];
+
+COLORS_LIST.forEach(function(c){
+  document.getElementById("adminColorGrid").appendChild(makeSizeBtn(c));
+});
+PATTERNS_LIST.forEach(function(p){
+  document.getElementById("adminPatternGrid").appendChild(makeSizeBtn(p));
+});
+
+// File upload
+document.getElementById("adminFile").addEventListener("change", function(){
+  adminPhotos = [];
+  var files = Array.from(this.files);
+  if(!files.length) return;
+  document.getElementById("adminThumbs").innerHTML = "";
+  showToast("⏳ Caricamento " + files.length + " foto...");
+  var done = 0;
+  for(var i = 0; i < files.length; i++){
+    (function(file, idx){
+      var reader = new FileReader();
+      reader.onload = function(e){
+        adminPhotos.push(e.target.result);
+        if(idx === 0){
+          document.getElementById("adminPreview").src = e.target.result;
+          document.getElementById("adminPreview").style.display = "block";
+        }
+        var t = document.createElement("img");
+        t.src = e.target.result;
+        t.style.cssText = "width:50px;height:62px;object-fit:cover;border-radius:6px;border:2px solid var(--gold);flex-shrink:0;";
+        document.getElementById("adminThumbs").appendChild(t);
+        done++;
+        if(done === files.length){
+          document.getElementById("adminPickBtn").textContent = "✅ " + done + " foto caricate";
+          document.getElementById("adminPickBtn").style.background = "#e8f5e9";
+          document.getElementById("adminPickBtn").style.borderColor = "#27ae60";
+          document.getElementById("adminPickBtn").style.color = "#27ae60";
+          showToast("✅ " + done + " foto pronte!");
+        }
+      };
+      reader.onerror = function(){ showToast("❌ Errore foto"); };
+      reader.readAsDataURL(file);
+    })(files[i], i);
+  }
+});
+
+// SAVE PRODUCT
+document.getElementById("adminSaveBtn").addEventListener("click", function(){
+  var name = document.getElementById("adminName").value.trim();
+  var price = parseFloat(document.getElementById("adminPrice").value);
+  var stock = parseInt(document.getElementById("adminStock").value) || null;
+  var cat = document.getElementById("adminCat").value;
+  var oldPrice = adminFlags.isSale ? (parseFloat(document.getElementById("adminOldPrice").value) || null) : null;
+  var videoUrl = document.getElementById("adminVideoUrl").value.trim() || null;
+  
+  var sizes = Array.from(document.querySelectorAll("#adminSizeGrid button.sel-active")).map(function(b){return b.dataset.val;});
+  var colors = Array.from(document.querySelectorAll("#adminColorGrid button.sel-active")).map(function(b){return b.dataset.val;});
+  var patterns = Array.from(document.querySelectorAll("#adminPatternGrid button.sel-active")).map(function(b){return b.dataset.val;});
+  
+  if(!name){ showToast("⚠️ Inserisci il nome!"); return; }
+  if(!price || price <= 0){ showToast("⚠️ Inserisci il prezzo!"); return; }
+  if(!sizes.length){ showToast("⚠️ Seleziona almeno una taglia!"); return; }
+  if(!colors.length){ showToast("⚠️ Seleziona almeno un colore!"); return; }
+  
+  var finalPhotos = adminPhotos.length ? adminPhotos : ["data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjYwIj7ipo88L3RleHQ+PC9zdmc+"];
+  
+  var newProduct = {
+    id: Date.now(),
+    name: name, price: price, oldPrice: oldPrice, stock: stock,
+    cat: cat, isNew: adminFlags.isNew, isSale: adminFlags.isSale, isOutlet: adminFlags.isOutlet,
+    imgs: finalPhotos, videoUrl: videoUrl, sizes: sizes, colors: colors, patterns: patterns
+  };
+  
+  var saved = JSON.parse(localStorage.getItem("mu_p") || "[]");
+  saved.push(newProduct);
+  localStorage.setItem("mu_p", JSON.stringify(saved));
+  customProducts = saved;
+  
+  // Reset form
+  document.getElementById("adminName").value = "";
+  document.getElementById("adminPrice").value = "";
+  document.getElementById("adminStock").value = "";
+  document.getElementById("adminFile").value = "";
+  document.getElementById("adminPreview").style.display = "none";
+  document.getElementById("adminThumbs").innerHTML = "";
+  document.getElementById("adminPickBtn").textContent = "📷 Scegli Foto dal Telefono";
+  document.getElementById("adminPickBtn").style.background = "#f8f6f2";
+  document.getElementById("adminPickBtn").style.borderColor = "#ccc";
+  document.getElementById("adminPickBtn").style.color = "#555";
+  document.getElementById("adminOldPrice").value = "";
+  document.getElementById("adminOldPrice").style.display = "none";
+  document.getElementById("adminVideoUrl").value = "";
+  adminPhotos = [];
+  adminFlags = {isNew:false, isSale:false, isOutlet:false};
+  ["btnNew","btnSale","btnOutlet"].forEach(function(id){
+    var b = document.getElementById(id);
+    if(b){ b.style.background="#f8f6f2"; b.style.borderColor="#ddd"; b.style.color="#555"; }
+  });
+  document.querySelectorAll("#adminSizeGrid button, #adminColorGrid button, #adminPatternGrid button").forEach(function(b){
+    b.classList.remove("sel-active");
+    b.style.background = "#f8f6f2";
+    b.style.borderColor = "#ddd";
+    b.style.color = "var(--text)";
+  });
+  
+  // Show in catalog
   currentFilter = "tutti";
   document.querySelectorAll(".filter-btn").forEach(function(b){b.classList.remove("active");});
   var allBtn = document.querySelector('.filter-btn[data-cat="tutti"]');
   if(allBtn) allBtn.classList.add("active");
-  // Reset form
-  document.getElementById("adminName").value="";
-  document.getElementById("adminPrice").value="";
-  document.getElementById("adminStock").value="";
-  document.getElementById("adminFile").value="";
-  document.getElementById("adminPreview").style.display="none";
-  document.getElementById("adminThumbsWrap").style.display="none";
-  document.getElementById("adminPickBtn").style.background="#f8f6f2";
-  document.getElementById("adminPickBtn").style.borderColor="#bbb";
-  document.getElementById("adminPickBtn").textContent="📷 Scegli Foto dal Telefono";
-  document.getElementById("adminPhotoStatus").style.display="none";
-  document.getElementById("adminIsNew").checked=false;
-  document.getElementById("adminIsSale").checked=false;
-  document.getElementById("adminIsOutlet").checked=false;
-  document.getElementById("adminOldPrice").style.display="none";
-  document.getElementById("adminOldPrice").value="";
-  document.getElementById("adminVideoUrl").value="";
-  document.getElementById("adminVideoUrl2").value="";
-  document.querySelectorAll(".size-sel-btn,.color-sel-btn").forEach(function(b){b.classList.remove("sel-active");});
-  adminPhotos=[];
-  renderAdminList();renderProducts();
-  showToast("✅ Prodotto aggiunto! Totale: "+allProducts().length);
+  renderProducts();
+  renderAdminList();
+  showToast("✅ Prodotto aggiunto! Totale: " + allProducts().length);
 });
 
 document.getElementById("adminLogoutBtn").addEventListener("click",function(){
