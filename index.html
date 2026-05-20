@@ -585,7 +585,13 @@ function openProduct(id){
   }else{th.style.display="none";}
   // Video
   var vw=document.getElementById("pmVideoWrap");vw.innerHTML="";vw.style.display="none";
-  if(p.videoUrl){var m=p.videoUrl.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([\w-]+)/);if(m){vw.innerHTML='<iframe width="100%" height="180" src="https://www.youtube.com/embed/'+m[1]+'" frameborder="0" allowfullscreen style="border-radius:10px;"></iframe>';vw.style.display="block";}}
+  if(p.videoUrl){
+    var ytid=null;var u=p.videoUrl;
+    if(u.indexOf("watch?v=")>-1)ytid=u.split("watch?v=")[1].split("&")[0];
+    else if(u.indexOf("shorts/")>-1)ytid=u.split("shorts/")[1].split("?")[0];
+    else if(u.indexOf("youtu.be/")>-1)ytid=u.split("youtu.be/")[1].split("?")[0];
+    if(ytid){vw.innerHTML='<iframe width="100%" height="180" src="https://www.youtube.com/embed/'+ytid+'" frameborder="0" allowfullscreen style="border-radius:10px;"></iframe>';vw.style.display="block";}
+  }
   document.getElementById("pmName").textContent=p.name;
   document.getElementById("pmPrice").textContent="€"+p.price.toFixed(2);
   var st=document.getElementById("pmStock");
