@@ -428,8 +428,10 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backd
     <img id="adminPreview" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-bottom:8px;display:none;">
     <div id="adminThumbs" style="display:flex;gap:6px;overflow-x:auto;min-height:0;margin-bottom:8px;"></div>
     
-    <input type="file" id="adminFile" accept="image/*" multiple style="opacity:0;width:0;height:0;position:absolute;">
-    <button type="button" id="adminPickBtn" style="width:100%;padding:14px;border:2px dashed #ccc;border-radius:12px;background:#f8f6f2;font-size:14px;font-weight:700;color:#555;cursor:pointer;font-family:inherit;margin-bottom:10px;">📷 Scegli Foto</button>
+    <label for="adminFile" id="adminPickBtn" style="display:block;width:100%;padding:14px;border:2px dashed #ccc;border-radius:12px;background:#f8f6f2;font-size:14px;font-weight:700;color:#555;cursor:pointer;font-family:inherit;margin-bottom:10px;text-align:center;box-sizing:border-box;">
+      📷 Scegli Foto dal Telefono
+      <input type="file" id="adminFile" accept="image/*" multiple style="display:none;">
+    </label>
 
     <input class="ai" id="adminName" placeholder="Nome prodotto *" type="text">
     <input class="ai" id="adminPrice" placeholder="Prezzo es. 29.90 *" type="number" step="0.01" min="0" inputmode="decimal">
@@ -1222,12 +1224,8 @@ function switchSizes(mode) {
   });
 });
 
-// Photo button
-document.getElementById("adminPickBtn").addEventListener("click", function(){
-  document.getElementById("adminFile").click();
-});
-
-document.getElementById("adminFile").addEventListener("change", function(){
+// Photo - label handles click automatically
+function handleAdminFile(){
   adminPhotos = [];
   var files = Array.from(this.files);
   if(!files.length) return;
@@ -1296,9 +1294,11 @@ document.getElementById("adminSaveBtn").addEventListener("click", function(){
   document.getElementById("adminFile").value = "";
   document.getElementById("adminPreview").style.display = "none";
   document.getElementById("adminThumbs").innerHTML = "";
-  document.getElementById("adminPickBtn").textContent = "📷 Scegli Foto";
+  document.getElementById("adminPickBtn").innerHTML = '📷 Scegli Foto dal Telefono<input type="file" id="adminFile" accept="image/*" multiple style="display:none;">';
   document.getElementById("adminPickBtn").style.borderColor = "#ccc";
   document.getElementById("adminPickBtn").style.color = "#555";
+  // Re-attach listener after reset
+  document.getElementById("adminFile").addEventListener("change", handleAdminFile);
   document.getElementById("adminVideoUrl").value = "";
   document.getElementById("adminOldPrice").value = "";
   document.getElementById("adminOldPrice").style.display = "none";
