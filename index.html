@@ -1744,14 +1744,6 @@ document.getElementById("productOverlay").onclick = function(e){
   if(e.target === this) closeOverlay("productOverlay");
 };
 
-// Init selection buttons
-document.querySelectorAll(".size-sel-btn").forEach(function(b){
-  b.addEventListener("click",function(){this.classList.toggle("sel-active");});
-});
-document.querySelectorAll(".color-sel-btn").forEach(function(b){
-  b.addEventListener("click",function(){this.classList.toggle("sel-active");});
-});
-
 renderProducts();
 updateCartCount();
 renderBacheca();
