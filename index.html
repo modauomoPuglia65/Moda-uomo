@@ -391,6 +391,8 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdr
 <a href="https://api.whatsapp.com/send?phone=393711267591&text=Ciao%20Moda%20Uomo!" target="_blank" style="position:fixed;bottom:20px;right:14px;z-index:8000;display:flex;align-items:center;gap:8px;background:#25D366;color:#fff;text-decoration:none;padding:12px 16px;border-radius:30px;box-shadow:0 4px 16px rgba(37,211,102,.5);font-size:13px;font-weight:700;animation:pg 2s infinite;">🔍 <span>Messaggia</span></a>
 <div class="toast" id="toast"></div>
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+
 // CONSTANTS
 var PWD="1965a4b18c",PAYPAL="wwwmaggio83@gmail.com",PHONE="393711267591";
 var SA=["S","M","L","XL","XXL","XXXL"],SN=["42","44","46","48","50","52","54"];
@@ -417,14 +419,7 @@ try{cartMeta=JSON.parse(localStorage.getItem("mu_cartmeta")||"{}")}catch(e){}
 try{wishlist=JSON.parse(localStorage.getItem("mu_wish")||"[]")}catch(e){}
 try{reviews=JSON.parse(localStorage.getItem("mu_rev")||"[]")}catch(e){}
 
-// Firebase
-var db=null;
-try{
-  if(typeof firebase!=="undefined"){
-    firebase.initializeApp({apiKey:"AIzaSyCwv00hCFA9Qa3uSNeQOfl_cEB9BUrNIZc",databaseURL:"https://moda--uomo-default-rtdb.europe-west1.firebasedatabase.app",projectId:"moda--uomo"});
-    db=firebase.database();
-  }
-}catch(e){}
+var db=null; // Firebase disabled for reliability
 
 // UTILS
 function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(function(){t.classList.remove("show");},2500);}
@@ -1061,6 +1056,8 @@ if(!localStorage.getItem("mu_ship"))localStorage.setItem("mu_ship",JSON.stringif
 updateCount();
 renderBacheca();
 renderCustom(null);
+
+});
 </script>
 </body>
 </html>
