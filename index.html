@@ -12,29 +12,29 @@ html,body{width:100%;overflow-x:hidden;font-family:"DM Sans",sans-serif;backgrou
 header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);border-bottom:1px solid var(--bd);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.06);}
 .tabs{display:flex;border-bottom:1px solid var(--bd);background:#fff;position:sticky;top:57px;z-index:90;overflow-x:auto;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none;}
-.tab{flex-shrink:0;padding:12px 10px;font-size:11px;font-weight:600;color:#999;cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;min-width:52px;text-transform:uppercase;letter-spacing:.5px;}
+.tab{flex-shrink:0;padding:12px 10px;font-size:11px;font-weight:600;color:#999;cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;min-width:52px;text-transform:uppercase;}
 .tab.on{color:var(--g);border-bottom-color:var(--g);}
 .page{display:none;padding:14px;background:#f5f3ef;min-height:60vh;}
 .page.on{display:block;}
 .hero{padding:22px 16px 18px;text-align:center;background:linear-gradient(180deg,#f0ebe0,#f5f3ef);border-bottom:1px solid var(--bd);}
-.hero h1{font-family:"Playfair Display",serif;font-size:28px;font-weight:900;line-height:1.1;margin-bottom:8px;}
+.hero h1{font-family:"Playfair Display",serif;font-size:28px;font-weight:900;line-height:1.1;}
 .hero h1 em{color:var(--g);font-style:italic;}
 .filters{display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px;scrollbar-width:none;margin-top:4px;}
 .filters::-webkit-scrollbar{display:none;}
 .fb{background:#fff;border:1px solid var(--bd);color:#666;font-size:12px;padding:6px 14px;border-radius:20px;white-space:nowrap;cursor:pointer;font-family:inherit;flex-shrink:0;}
 .fb.on{background:var(--g);border-color:var(--g);color:#fff;font-weight:600;}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
-.card{background:#fff;border:1px solid var(--bd);border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);}
-.card:active{opacity:.8;}
+.card{background:#fff;border:1px solid var(--bd);border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);position:relative;}
+.card:active{opacity:.8;transform:scale(.98);}
 .cimg{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:#f0ede8;}
-.cimg img{width:100%;height:100%;object-fit:cover;display:block;}
-.badge{position:absolute;top:8px;left:8px;color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;background:#e74c3c;}
-.wbtn{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:28px;height:28px;font-size:15px;cursor:pointer;z-index:2;}
-.cinfo{padding:10px 12px 12px;}
+.cimg img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.badge{position:absolute;top:8px;left:8px;color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;background:#e74c3c;pointer-events:none;}
+.wbtn{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;z-index:3;}
+.cinfo{padding:10px 12px 12px;pointer-events:none;}
 .ccat{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:4px;}
 .cname{font-size:13px;font-weight:500;margin-bottom:6px;line-height:1.3;}
 .cprice{font-family:"Playfair Display",serif;font-size:16px;font-weight:700;color:var(--g);}
-.abtn{background:var(--g);color:#fff;border:none;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;font-weight:700;flex-shrink:0;}
+.abtn{background:var(--g);color:#fff;border:none;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;font-weight:700;pointer-events:auto;}
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;}
 .ov.on{display:flex;}
 .sheet{background:#fff;border-radius:20px 20px 0 0;padding:20px 18px 36px;width:100%;max-height:92vh;overflow-y:auto;}
@@ -53,25 +53,22 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);border
 .sbtn.on{background:#b8860b;border-color:#b8860b;color:#fff;}
 .cc{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:18px;margin-bottom:12px;}
 .cc h3{font-family:"Playfair Display",serif;font-size:17px;margin-bottom:8px;}
-.cbtn{display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;text-decoration:none;padding:12px 16px;border-radius:8px;font-size:14px;font-weight:600;margin-bottom:8px;}
+.cbtn{display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;text-decoration:none;padding:12px 16px;border-radius:8px;font-size:14px;font-weight:600;margin-bottom:8px;background:#25D366;}
 .cbtn.call{background:var(--g);}
 .acard{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:18px;margin-bottom:14px;}
 .acard h3{font-family:"Playfair Display",serif;font-size:16px;margin-bottom:12px;color:var(--g);}
 .arow{display:flex;align-items:center;gap:10px;background:#f8f6f2;border-radius:10px;padding:10px;margin-bottom:8px;}
-.arow img{width:44px;height:55px;object-fit:cover;border-radius:6px;flex-shrink:0;}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8f6f2;border-radius:8px;border-left:3px solid var(--g);text-decoration:none;margin-bottom:8px;color:#1a1a1a;}
+.rcard{background:#f8f6f2;border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid var(--g);}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--g);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:20px;z-index:9999;transition:transform .3s;white-space:nowrap;pointer-events:none;}
 .toast.on{transform:translateX(-50%) translateY(0);}
-.srow{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8f6f2;border-radius:8px;border-left:3px solid var(--g);text-decoration:none;margin-bottom:8px;}
-.rcard{background:#f8f6f2;border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid var(--g);}
-@keyframes pg{0%,100%{box-shadow:0 4px 16px rgba(37,211,102,.5);}50%{box-shadow:0 4px 24px rgba(37,211,102,.9),0 0 0 8px rgba(37,211,102,.15);}}
+@keyframes pg{0%,100%{box-shadow:0 4px 16px rgba(37,211,102,.5);}50%{box-shadow:0 4px 24px rgba(37,211,102,.9);}}
 </style>
 </head>
 <body>
 <header>
   <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMTYwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjE2MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdvbGRHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2M5YTg0YztzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojOEI2OTE0O3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgCiAgPCEtLSBCYWNrZ3JvdW5kIGNpcmNsZSBmb3IgTVUgbW9ub2dyYW0gLS0+CiAgPGNpcmNsZSBjeD0iNjAiIGN5PSI4MCIgcj0iNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNnb2xkR3JhZCkiIHN0cm9rZS13aWR0aD0iMiIvPgogIAogIDwhLS0gTSBsZXR0ZXJmb3JtIC0tPgogIDxwYXRoIGQ9Ik0zMCAxMDUgTDMwIDU1IEw2MCA4MCBMOTAgNTUgTDkwIDEwNSIgCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIzLjUiIAogICAgICAgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDwhLS0gVGhpbiBkZWNvcmF0aXZlIGxpbmUgLS0+CiAgPGxpbmUgeDE9IjEyMCIgeTE9IjgwIiB4Mj0iMTI1IiB5Mj0iODAiIHN0cm9rZT0iI2M5YTg0YyIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgCiAgPCEtLSBNT0RBIHRleHQgLS0+CiAgPHRleHQgeD0iMTM1IiB5PSI2OCIgCiAgICAgICAgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiAKICAgICAgICBmb250LXNpemU9IjM4IiAKICAgICAgICBmb250LXdlaWdodD0iNzAwIgogICAgICAgIGxldHRlci1zcGFjaW5nPSI4IgogICAgICAgIGZpbGw9IiMxYTFhMWEiPk1PREE8L3RleHQ+CiAgCiAgPCEtLSBVT01PIHRleHQgLS0+CiAgPHRleHQgeD0iMTM1IiB5PSIxMDUiIAogICAgICAgIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgCiAgICAgICAgZm9udC1zaXplPSIzOCIKICAgICAgICBmb250LXdlaWdodD0iNzAwIiAKICAgICAgICBsZXR0ZXItc3BhY2luZz0iOCIKICAgICAgICBmaWxsPSJ1cmwoI2dvbGRHcmFkKSI+VU9NTzwvdGV4dD4KICAKICA8IS0tIEJvdHRvbSBkZWNvcmF0aXZlIGxpbmUgLS0+CiAgPGxpbmUgeDE9IjEzNSIgeTE9IjExNSIgeDI9IjM4NSIgeTI9IjExNSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgCiAgPCEtLSBQdWdsaWEgdGFnbGluZSAtLT4KICA8dGV4dCB4PSIxMzUiIHk9IjEzMiIgCiAgICAgICAgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiAKICAgICAgICBmb250LXNpemU9IjExIgogICAgICAgIGxldHRlci1zcGFjaW5nPSI1IgogICAgICAgIGZpbGw9IiM4ODgiPlBVR0xJQSDCtyBBQkJJR0xJQU1FTlRPIFVPTU88L3RleHQ+Cjwvc3ZnPg==" alt="Moda Uomo" style="height:40px;width:auto;">
-  <div style="display:flex;align-items:center;gap:8px;">
-    <button onclick="openCart()" style="background:none;border:none;font-size:22px;cursor:pointer;position:relative;">🛒<span id="cc" style="position:absolute;top:-6px;right:-6px;background:var(--g);color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;">0</span></button>
-  </div>
+  <button onclick="openCart()" style="background:none;border:none;font-size:22px;cursor:pointer;position:relative;">🛒<span id="cc" style="position:absolute;top:-6px;right:-6px;background:var(--g);color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;">0</span></button>
 </header>
 <div style="padding:10px 14px;background:#fff;border-bottom:1px solid var(--bd);">
   <input id="srch" oninput="doSearch(this.value)" placeholder="🔍  Cerca prodotto..." style="width:100%;background:#f8f6f2;border:1px solid var(--bd);padding:9px 14px;border-radius:24px;font-size:14px;font-family:inherit;outline:none;">
@@ -101,6 +98,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);border
   <button class="tab" onclick="goTab('pResi',this)">↩️</button>
   <button class="tab" onclick="goAdmin(this)">⚙️</button>
 </div>
+
 <div class="page on" id="pCat">
 <div class="filters">
 <button class="fb on" onclick="filt('tutti',this)">Tutti</button>
@@ -113,22 +111,90 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);border
 <button class="fb" onclick="filt('accessori',this)">Accessori</button>
 </div>
 <div class="grid" id="grid">
-<div class="card" data-id="1" data-cat="camicie-lino" data-new="0" onclick="openP(1,"Camicia ENOS Linen Mix \u2013 Righe Verde/Grigio",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Bianco", "Celeste", "Verde", "Grigio"])"><div class="cimg"><img id="img1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia ENOS Linen Mix – Righe Verde/Grigio"><button class="wbtn" onclick="event.stopPropagation();doWish(1,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia ENOS Linen Mix – Righe Verde/Grigio</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(1,"Camicia ENOS Linen Mix \u2013 Righe Verde/Grigio",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Bianco", "Celeste", "Verde", "Grigio"])">+</button></div></div></div>
-<div class="card" data-id="2" data-cat="camicie-lino" data-new="1" onclick="openP(2,"Camicia ENOS Linen Mix \u2013 Azzurro/Verde",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Celeste", "Verde"])"><div class="cimg"><img id="img2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia ENOS Linen Mix – Azzurro/Verde"><div class="badge">NEW</div><button class="wbtn" onclick="event.stopPropagation();doWish(2,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia ENOS Linen Mix – Azzurro/Verde</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(2,"Camicia ENOS Linen Mix \u2013 Azzurro/Verde",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Celeste", "Verde"])">+</button></div></div></div>
-<div class="card" data-id="3" data-cat="camicie-lino" data-new="0" onclick="openP(3,"Camicia ENOS Linen Mix \u2013 Azzurro/Beige",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Celeste", "Beige"])"><div class="cimg"><img id="img3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia ENOS Linen Mix – Azzurro/Beige"><div class="badge" style="left:auto;right:36px;background:#e67e22;">Ultimi 3!</div><button class="wbtn" onclick="event.stopPropagation();doWish(3,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia ENOS Linen Mix – Azzurro/Beige</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(3,"Camicia ENOS Linen Mix \u2013 Azzurro/Beige",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Celeste", "Beige"])">+</button></div></div></div>
-<div class="card" data-id="4" data-cat="camicie-lino" data-new="0" onclick="openP(4,"Camicia ENOS Linen Mix \u2013 Blu/Bianco",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Blu", "Bianco"])"><div class="cimg"><img id="img4" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia ENOS Linen Mix – Blu/Bianco"><button class="wbtn" onclick="event.stopPropagation();doWish(4,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia ENOS Linen Mix – Blu/Bianco</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(4,"Camicia ENOS Linen Mix \u2013 Blu/Bianco",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Blu", "Bianco"])">+</button></div></div></div>
-<div class="card" data-id="5" data-cat="camicie-lino" data-new="0" onclick="openP(5,"Camicia ENOS Linen Mix \u2013 Verde/Beige",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Verde", "Beige"])"><div class="cimg"><img id="img5" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia ENOS Linen Mix – Verde/Beige"><div class="badge" style="left:auto;right:36px;background:#e67e22;">Ultimi 2!</div><button class="wbtn" onclick="event.stopPropagation();doWish(5,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia ENOS Linen Mix – Verde/Beige</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(5,"Camicia ENOS Linen Mix \u2013 Verde/Beige",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Verde", "Beige"])">+</button></div></div></div>
-<div class="card" data-id="6" data-cat="camicie-cotone" data-new="1" onclick="openP(6,"Camicia Righe Beige/Tortora",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Beige"])"><div class="cimg"><img id="img6" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia Righe Beige/Tortora"><div class="badge">NEW</div><button class="wbtn" onclick="event.stopPropagation();doWish(6,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-cotone</div><div class="cname">Camicia Righe Beige/Tortora</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(6,"Camicia Righe Beige/Tortora",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Beige"])">+</button></div></div></div>
-<div class="card" data-id="7" data-cat="camicie-cotone" data-new="1" onclick="openP(7,"Camicia Righe Azzurro/Bianco",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Celeste", "Bianco"])"><div class="cimg"><img id="img7" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia Righe Azzurro/Bianco"><div class="badge">NEW</div><button class="wbtn" onclick="event.stopPropagation();doWish(7,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-cotone</div><div class="cname">Camicia Righe Azzurro/Bianco</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(7,"Camicia Righe Azzurro/Bianco",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Celeste", "Bianco"])">+</button></div></div></div>
-<div class="card" data-id="8" data-cat="camicie-fantasia" data-new="0" onclick="openP(8,"Camicia Fantasia Floreale",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Bianco", "Blu"])"><div class="cimg"><img id="img8" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia Fantasia Floreale"><button class="wbtn" onclick="event.stopPropagation();doWish(8,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-fantasia</div><div class="cname">Camicia Fantasia Floreale</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(8,"Camicia Fantasia Floreale",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Bianco", "Blu"])">+</button></div></div></div>
-<div class="card" data-id="9" data-cat="camicie-fantasia" data-new="0" onclick="openP(9,"Camicia Fantasia Manichino",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Bianco", "Blu"])"><div class="cimg"><img id="img9" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia Fantasia Manichino"><button class="wbtn" onclick="event.stopPropagation();doWish(9,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-fantasia</div><div class="cname">Camicia Fantasia Manichino</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(9,"Camicia Fantasia Manichino",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Bianco", "Blu"])">+</button></div></div></div>
-<div class="card" data-id="10" data-cat="camicie-lino" data-new="0" onclick="openP(10,"Camicia Linen Mix Bianco/Grigio",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Bianco", "Grigio"])"><div class="cimg"><img id="img10" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia Linen Mix Bianco/Grigio"><div class="badge" style="left:auto;right:36px;background:#e67e22;">Ultimi 1!</div><button class="wbtn" onclick="event.stopPropagation();doWish(10,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia Linen Mix Bianco/Grigio</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(10,"Camicia Linen Mix Bianco/Grigio",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Bianco", "Grigio"])">+</button></div></div></div>
-<div class="card" data-id="11" data-cat="camicie-fantasia" data-new="1" onclick="openP(11,"Camicia Fantasia Botanical",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Celeste", "Beige"])"><div class="cimg"><img id="img11" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E" alt="Camicia Fantasia Botanical"><div class="badge">NEW</div><button class="wbtn" onclick="event.stopPropagation();doWish(11,this)">🤍</button></div><div class="cinfo"><div class="ccat">camicie-fantasia</div><div class="cname">Camicia Fantasia Botanical</div><div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div><button class="abtn" onclick="event.stopPropagation();openP(11,"Camicia Fantasia Botanical",29.9,["S", "M", "L", "XL", "XXL", "XXXL"],["Celeste", "Beige"])">+</button></div></div></div>
+<div class="card" data-id="1" data-cat="camicie-lino" data-new="0" onclick="openP(1)">
+<div class="cimg"><img id="img1" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia ENOS Linen Mix – Righe Verde/Grigio">
+<button class="wbtn" onclick="event.stopPropagation();doWish(1,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia ENOS Linen Mix – Righe Verde/Grigio</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(1)">+</button>
+</div></div></div>
+<div class="card" data-id="2" data-cat="camicie-lino" data-new="1" onclick="openP(2)">
+<div class="cimg"><img id="img2" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia ENOS Linen Mix – Azzurro/Verde"><div class="badge">NEW</div>
+<button class="wbtn" onclick="event.stopPropagation();doWish(2,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia ENOS Linen Mix – Azzurro/Verde</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(2)">+</button>
+</div></div></div>
+<div class="card" data-id="3" data-cat="camicie-lino" data-new="0" onclick="openP(3)">
+<div class="cimg"><img id="img3" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia ENOS Linen Mix – Azzurro/Beige"><div class="badge" style="left:auto;right:36px;background:#e67e22;">Ultimi 3!</div>
+<button class="wbtn" onclick="event.stopPropagation();doWish(3,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia ENOS Linen Mix – Azzurro/Beige</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(3)">+</button>
+</div></div></div>
+<div class="card" data-id="4" data-cat="camicie-lino" data-new="0" onclick="openP(4)">
+<div class="cimg"><img id="img4" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia ENOS Linen Mix – Blu/Bianco">
+<button class="wbtn" onclick="event.stopPropagation();doWish(4,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia ENOS Linen Mix – Blu/Bianco</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(4)">+</button>
+</div></div></div>
+<div class="card" data-id="5" data-cat="camicie-lino" data-new="0" onclick="openP(5)">
+<div class="cimg"><img id="img5" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia ENOS Linen Mix – Verde/Beige"><div class="badge" style="left:auto;right:36px;background:#e67e22;">Ultimi 2!</div>
+<button class="wbtn" onclick="event.stopPropagation();doWish(5,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia ENOS Linen Mix – Verde/Beige</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(5)">+</button>
+</div></div></div>
+<div class="card" data-id="6" data-cat="camicie-cotone" data-new="1" onclick="openP(6)">
+<div class="cimg"><img id="img6" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia Righe Beige/Tortora"><div class="badge">NEW</div>
+<button class="wbtn" onclick="event.stopPropagation();doWish(6,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-cotone</div><div class="cname">Camicia Righe Beige/Tortora</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(6)">+</button>
+</div></div></div>
+<div class="card" data-id="7" data-cat="camicie-cotone" data-new="1" onclick="openP(7)">
+<div class="cimg"><img id="img7" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia Righe Azzurro/Bianco"><div class="badge">NEW</div>
+<button class="wbtn" onclick="event.stopPropagation();doWish(7,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-cotone</div><div class="cname">Camicia Righe Azzurro/Bianco</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(7)">+</button>
+</div></div></div>
+<div class="card" data-id="8" data-cat="camicie-fantasia" data-new="0" onclick="openP(8)">
+<div class="cimg"><img id="img8" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia Fantasia Floreale">
+<button class="wbtn" onclick="event.stopPropagation();doWish(8,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-fantasia</div><div class="cname">Camicia Fantasia Floreale</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(8)">+</button>
+</div></div></div>
+<div class="card" data-id="9" data-cat="camicie-fantasia" data-new="0" onclick="openP(9)">
+<div class="cimg"><img id="img9" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia Fantasia Manichino">
+<button class="wbtn" onclick="event.stopPropagation();doWish(9,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-fantasia</div><div class="cname">Camicia Fantasia Manichino</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(9)">+</button>
+</div></div></div>
+<div class="card" data-id="10" data-cat="camicie-lino" data-new="0" onclick="openP(10)">
+<div class="cimg"><img id="img10" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia Linen Mix Bianco/Grigio"><div class="badge" style="left:auto;right:36px;background:#e67e22;">Ultimi 1!</div>
+<button class="wbtn" onclick="event.stopPropagation();doWish(10,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-lino</div><div class="cname">Camicia Linen Mix Bianco/Grigio</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(10)">+</button>
+</div></div></div>
+<div class="card" data-id="11" data-cat="camicie-fantasia" data-new="1" onclick="openP(11)">
+<div class="cimg"><img id="img11" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==" alt="Camicia Fantasia Botanical"><div class="badge">NEW</div>
+<button class="wbtn" onclick="event.stopPropagation();doWish(11,this)">🤍</button></div>
+<div class="cinfo"><div class="ccat">camicie-fantasia</div><div class="cname">Camicia Fantasia Botanical</div>
+<div style="display:flex;align-items:center;justify-content:space-between;"><div class="cprice">€29.90</div>
+<button class="abtn" onclick="event.stopPropagation();openP(11)">+</button>
+</div></div></div>
+
 </div>
 <div class="grid" id="cgrid" style="margin-top:12px;"></div>
 </div>
+
 <div class="page" id="pSal">
-  <div style="font-family:serif;font-size:19px;font-weight:900;margin-bottom:14px;margin-top:4px;">Saldi <span style="color:var(--g);">&amp; Sconti</span></div>
+  <div style="font-family:serif;font-size:19px;font-weight:900;margin-bottom:14px;margin-top:4px;">Saldi <span style="color:var(--g);">& Sconti</span></div>
   <div class="grid" id="salG"></div>
   <p id="noSal" style="color:#666;text-align:center;padding:30px;">Nessun saldo al momento</p>
 </div>
@@ -209,7 +275,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);border
   <div style="font-family:serif;font-size:19px;font-weight:900;margin-bottom:14px;margin-top:4px;">Politica <span style="color:var(--g);">Resi</span></div>
   <div class="cc">
     <div style="text-align:center;margin-bottom:14px;"><div style="font-size:48px;">↩️</div><div style="font-family:serif;font-size:20px;font-weight:900;">Resi &amp; Cambi</div></div>
-    <div style="background:#f8f6f2;border-radius:10px;padding:14px;margin-bottom:10px;border-left:4px solid var(--g);"><b>✅ Cosa puoi fare</b><div style="font-size:13px;color:#666;line-height:1.8;margin-top:6px;">• Cambio taglia entro 14 giorni<br>• Reso entro 14 giorni<br>• Sostituzione articoli difettosi</div></div>
+    <div style="background:#f8f6f2;border-radius:10px;padding:14px;margin-bottom:10px;border-left:4px solid var(--g);"><b>✅ Cosa puoi fare</b><div style="font-size:13px;color:#666;line-height:1.8;margin-top:6px;">• Cambio taglia entro 14 giorni<br>• Reso entro 14 giorni</div></div>
     <a href="tel:+393711267591" class="cbtn call">📞 Chiama per un reso</a>
   </div>
 </div>
@@ -264,12 +330,13 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);border
     <button class="btn gold" onclick="saveAn()">✅ Pubblica</button>
     <div id="anL" style="margin-top:8px;"></div>
   </div>
-  <div class="acard"><h3>📊 Statistiche</h3><div id="stD" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"></div></div>
-  <div class="acard"><h3>📦 Storico Ordini</h3><div id="orD"></div></div>
-  <div class="acard"><h3>📦 Tutti i Prodotti</h3><div id="prL"></div></div>
+  <div class="acard"><h3>📊 Stats</h3><div id="stD" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"></div></div>
+  <div class="acard"><h3>📦 Ordini</h3><div id="orD"></div></div>
+  <div class="acard"><h3>📦 Prodotti</h3><div id="prL"></div></div>
   <div class="acard"><h3>♻️ Ripristina</h3><button class="btn grey" onclick="restA()">↩️ Ripristina eliminati</button></div>
   <div class="acard"><h3>🚪 Esci</h3><button class="btn red" onclick="lgOut()">Esci</button></div>
 </div>
+
 <div class="ov" id="pwOv">
   <div class="sheet" style="padding-bottom:40px;">
     <div class="handle"></div>
@@ -309,8 +376,8 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);border
 </div>
 <a href="https://api.whatsapp.com/send?phone=393711267591&text=Ciao%20Moda%20Uomo!" target="_blank" style="position:fixed;bottom:20px;right:14px;z-index:8000;display:flex;align-items:center;gap:8px;background:#25D366;color:#fff;text-decoration:none;padding:12px 16px;border-radius:30px;box-shadow:0 4px 16px rgba(37,211,102,.5);font-size:13px;font-weight:700;animation:pg 2s infinite;">🔍 <span>Messaggia</span></a>
 <div class="toast" id="toast"></div>
+
 <script>
-var PWD="1965a4b18c",PAYPAL="wwwmaggio83@gmail.com",PHONE="393711267591";
 var SA=["S","M","L","XL","XXL","XXXL"],SN=["42","44","46","48","50","52","54"];
 var AC=["Bianco","Celeste","Nero","Blu","Rosso","Verde","Grigio","Beige","Bordeaux","Militare"];
 var AP=["Tinta Unita","Rigato","Quadri","Fantasia","Pallini","Multicolore","Floreale","Paisley"];
@@ -342,7 +409,6 @@ function goAdmin(btn){
   if(aLog){goTab("pAdmin",btn);bAdmin();rPrL();rCpL();rSts();rOrds();rShip();rAnns();}
   else{document.getElementById("pwOv").classList.add("on");document.getElementById("pwIn").value="";document.getElementById("pwEr").style.display="none";setTimeout(function(){document.getElementById("pwIn").focus();},300);}
 }
-
 function filt(cat,btn){
   document.querySelectorAll(".fb").forEach(function(b){b.classList.remove("on");});
   btn.classList.add("on");
@@ -353,84 +419,54 @@ function filt(cat,btn){
   });
   rCust(cat);
 }
-
 function doSearch(q){
   q=q.toLowerCase().trim();
   document.querySelectorAll("#grid .card").forEach(function(c){
     if(!q){c.style.display="";return;}
-    var n=c.querySelector(".cname").textContent.toLowerCase();
-    c.style.display=n.indexOf(q)>-1?"":"none";
+    c.style.display=c.querySelector(".cname").textContent.toLowerCase().indexOf(q)>-1?"":"none";
   });
-  if(!q){rCust(null);return;}
-  rCustL(gCust().filter(function(p){return p.name.toLowerCase().indexOf(q)>-1;}));
+  if(!q)rCust(null);
+  else rCustL(gCust().filter(function(p){return p.name.toLowerCase().indexOf(q)>-1;}));
 }
-
 function rCust(cat){
-  var c=gCust(),h=gHid();
-  rCustL(c.filter(function(p){
+  var h=gHid();
+  rCustL(gCust().filter(function(p){
     if(h.indexOf(p.id)>-1)return false;
     if(!cat||cat==="tutti")return true;
     if(cat==="novita")return p.isNew;
     return p.cat===cat;
   }));
 }
-
 function mkCard(p){
-  var src=(p.imgs&&p.imgs.length)?p.imgs[0]:(p.img||"");
-  var sz=JSON.stringify(p.sizes||SA);
-  var cl=JSON.stringify(p.colors||["Bianco","Celeste"]);
-  var nm=p.name.replace(/'/g,"\\'");
-  return '<div class="card" onclick="openP('+p.id+',\''+nm+'\','+p.price+','+sz+','+cl+',\''+src+'\')">'+
-    '<div class="cimg"><img src="'+src+'" alt="'+p.name+'" loading="lazy">'+
-    (p.isNew?'<div class="badge">NEW</div>':p.isSale?'<div class="badge">SALDO</div>':p.isO?'<div class="badge" style="background:#e67e22;">OUT</div>':'')+
+  var src=(p.imgs&&p.imgs.length)?p.imgs[0]:(p.img||"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==");
+  return '<div class="card" data-id="'+p.id+'" onclick="openP('+p.id+')">'+
+    '<div class="cimg"><img src="'+src+'" alt="'+p.name+'" loading="lazy" style="pointer-events:none;">'+
+    (p.isNew?'<div class="badge" style="pointer-events:none;">NEW</div>':'')+
     '<button class="wbtn" onclick="event.stopPropagation();doWish('+p.id+',this)">'+(wish.indexOf(p.id)>-1?"❤️":"🤍")+'</button></div>'+
-    '<div class="cinfo"><div class="ccat">'+p.cat+'</div><div class="cname">'+p.name+'</div>'+
+    '<div class="cinfo" style="pointer-events:none;"><div class="ccat">'+p.cat+'</div><div class="cname">'+p.name+'</div>'+
     '<div style="display:flex;align-items:center;justify-content:space-between;">'+
     '<div class="cprice">€'+p.price.toFixed(2)+'</div>'+
-    '<button class="abtn" onclick="event.stopPropagation();openP('+p.id+',\''+nm+'\','+p.price+','+sz+','+cl+',\''+src+'\')">+</button>'+
+    '<button class="abtn" onclick="event.stopPropagation();openP('+p.id+')" style="pointer-events:auto;">+</button>'+
     '</div></div></div>';
 }
-
-function rCustL(list){
-  document.getElementById("cgrid").innerHTML=list.map(mkCard).join("");
-}
-
+function rCustL(list){document.getElementById("cgrid").innerHTML=list.map(mkCard).join("");}
 function doWish(id,btn){
   var i=wish.indexOf(id);
   if(i>-1){wish.splice(i,1);btn.textContent="🤍";T("💔 Rimosso dai preferiti");}
-  else{wish.push(id);btn.textContent="❤️";T("❤️ Aggiunto ai preferiti!");}
+  else{wish.push(id);btn.textContent="❤️";T("❤️ Preferiti!");}
   localStorage.setItem("w",JSON.stringify(wish));
 }
-
-// Update hearts on base product cards
-document.querySelectorAll("#grid .card").forEach(function(c){
-  var fn=c.getAttribute("onclick")||"";
-  var m=fn.match(/openP\((\d+)/);
-  if(m&&wish.indexOf(parseInt(m[1]))>-1){
-    var wb=c.querySelector(".wbtn");
-    if(wb)wb.textContent="❤️";
-  }
-});
-
-// Load real product images from localStorage
-(function(){
-  var imgs=null;try{imgs=JSON.parse(localStorage.getItem("bimgs")||"null");}catch(e){}
-  if(imgs){
-    for(var id in imgs){
-      var el=document.getElementById("img"+id);
-      if(el)el.src=imgs[id];
-    }
-  }
-})();
-
-function openP(id,name,price,sizes,colors,img){
-  selP={id:id,name:name,price:price,sizes:sizes,colors:colors,img:img};
-  selSz=null;selCl=null;
-  document.getElementById("pmI").src=img||"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E";
-  document.getElementById("pmN").textContent=name;
-  document.getElementById("pmP").textContent="€"+price.toFixed(2);
-  document.getElementById("pmSz").innerHTML=sizes.map(function(s){return '<button class="sz" onclick="selSz=\''+s+'\';document.querySelectorAll(\'.sz\').forEach(function(x){x.classList.remove(\'on\')});this.classList.add(\'on\')">'+s+'</button>';}).join("");
-  document.getElementById("pmCl").innerHTML=colors.map(function(c){return '<button class="cl" onclick="selCl=\''+c+'\';document.querySelectorAll(\'.cl\').forEach(function(x){x.classList.remove(\'on\')});this.classList.add(\'on\')">'+c+'</button>';}).join("");
+function openP(id){
+  var p=allP().find(function(x){return x.id===id;});
+  if(!p)return;
+  selP=p;selSz=null;selCl=null;
+  var src=(p.imgs&&p.imgs.length)?p.imgs[0]:(p.img||"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==");
+  document.getElementById("pmI").src=src;
+  document.getElementById("pmN").textContent=p.name;
+  document.getElementById("pmP").textContent="€"+p.price.toFixed(2);
+  var sz=p.sizes||SA,cl=p.colors||["Bianco","Celeste"];
+  document.getElementById("pmSz").innerHTML=sz.map(function(s){return '<button class="sz" onclick="selSz=''+s+'';document.querySelectorAll('.sz').forEach(function(x){x.classList.remove('on')});this.classList.add('on')">'+s+'</button>';}).join("");
+  document.getElementById("pmCl").innerHTML=cl.map(function(c){return '<button class="cl" onclick="selCl=''+c+'';document.querySelectorAll('.cl').forEach(function(x){x.classList.remove('on')});this.classList.add('on')">'+c+'</button>';}).join("");
   document.getElementById("prOv").classList.add("on");
   history.pushState({},"","");
 }
@@ -439,13 +475,11 @@ function addC(){
   if(!selCl){T("⚠️ Scegli il colore!");return;}
   var k=selP.id+"_"+selSz+"_"+selCl;
   cart[k]=(cart[k]||0)+1;cartM[k]={id:selP.id,size:selSz,color:selCl};
-  sC();uCt();clOv("prOv");T("✅ Aggiunto al carrello!");
+  sC();uCt();clOv("prOv");T("✅ Aggiunto!");
 }
-function doBook(){if(!selP)return;window.open("https://api.whatsapp.com/send?phone="+PHONE+"&text="+encodeURIComponent("📅 Prenoto: "+selP.name),"_blank");}
-
+function doBook(){if(!selP)return;window.open("https://api.whatsapp.com/send?phone=393711267591&text="+encodeURIComponent("📅 Prenoto: "+selP.name),"_blank");}
 function openCart(){rCart();document.getElementById("caOv").classList.add("on");history.pushState({},"","");}
 document.getElementById("caOv").addEventListener("click",function(e){if(e.target===this)clOv("caOv");});
-
 function rCart(){
   var ks=Object.keys(cart),iD=document.getElementById("cIt"),fD=document.getElementById("cFt");
   if(!ks.length){iD.innerHTML='<div style="text-align:center;padding:30px;color:#666;">🛒 Carrello vuoto</div>';fD.innerHTML="";return;}
@@ -454,66 +488,40 @@ function rCart(){
     var q=cart[k],m=cartM[k];if(!m)return;
     var p=allP().find(function(x){return x.id==m.id;});if(!p)return;
     total+=p.price*q;
-    var src=(p.imgs&&p.imgs.length)?p.imgs[0]:(p.img||"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E");
+    var src=(p.imgs&&p.imgs.length)?p.imgs[0]:(p.img||"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjY3Ij48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI2NyIgZmlsbD0iI2YwZWRlOCIvPjx0ZXh0IHg9IjEwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgwIj7wn5GUPGdseXBoPjwvc3ZnPg==");
     h+='<div style="display:flex;align-items:center;padding:12px 0;border-bottom:1px solid #eee;gap:10px;">'+
       '<img src="'+src+'" style="width:50px;height:62px;object-fit:cover;border-radius:8px;flex-shrink:0;">'+
       '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+p.name+'</div>'+
-      '<div style="font-size:12px;color:#666;">T: <b style="color:var(--g)">'+m.size+'</b> · C: <b style="color:var(--g)">'+m.color+'</b></div>'+
-      '<div style="font-size:13px;color:var(--g);">€'+p.price.toFixed(2)+' × '+q+'</div></div>'+
-      '<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">'+
-      '<button onclick="chQ(\''+k+'\',-1)" style="background:#f0ede8;border:none;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;">−</button>'+
+      '<div style="font-size:12px;color:#666;">T: <b style="color:var(--g)">'+m.size+'</b> · C: <b style="color:var(--g)">'+m.color+'</b></div></div>'+
+      '<div style="display:flex;align-items:center;gap:8px;">'+
+      '<button onclick="chQ(''+k+'',-1)" style="background:#f0ede8;border:none;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;">−</button>'+
       '<span>'+q+'</span>'+
-      '<button onclick="chQ(\''+k+'\',1)" style="background:#f0ede8;border:none;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;">+</button></div></div>';
+      '<button onclick="chQ(''+k+'',1)" style="background:#f0ede8;border:none;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;">+</button></div></div>';
   });
   iD.innerHTML=h;
   var s;try{s=JSON.parse(localStorage.getItem("ship")||'{"italy":8,"abroad":15,"free":50,"on":true}');}catch(e){s={italy:8,abroad:15,free:50,on:true};}
-  var ss=localStorage.getItem("ss")||"italy";
-  var sc=s.on?(total>=s.free?0:(ss==="italy"?s.italy:s.abroad)):0;
-  var cp=null;try{cp=JSON.parse(localStorage.getItem("coup")||"null");}catch(e){}
-  var disc=cp?Math.round(total*cp.pct/100*100)/100:0;
-  var ft=(total-disc+sc).toFixed(2);
-  var ppU="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business="+encodeURIComponent(PAYPAL)+"&item_name=Moda+Uomo&amount="+ft+"&currency_code=EUR";
-  fD.innerHTML='<div style="display:flex;gap:8px;margin-bottom:10px;"><input id="cIn" class="ai" placeholder="Codice sconto?" style="flex:1;margin-bottom:0;" value="'+(cp?cp.code:"")+'">'+ 
-    '<button onclick="apCp()" class="btn gold" style="width:70px;margin-bottom:0;padding:10px;">OK</button></div>'+
-    (cp?'<div style="color:#27ae60;font-size:13px;margin-bottom:8px;">🎉 Sconto '+cp.pct+'%!</div>':'')+
-    (s.on&&total<s.free?'<div style="font-size:13px;background:#f8f6f2;padding:10px;border-radius:8px;margin-bottom:10px;">🚚 Italia €'+s.italy+' · Estero €'+s.abroad+' · Gratis sopra €'+s.free+'</div>':'')+
-    (s.on&&total>=s.free?'<div style="color:#27ae60;font-size:13px;margin-bottom:8px;padding:8px;background:#f0fff4;border-radius:8px;">🚚 Spedizione GRATUITA!</div>':'')+
-    '<div style="background:#f8f6f2;border-radius:10px;padding:12px;margin-bottom:10px;">'+
+  var sc=s.on?(total>=s.free?0:s.italy):0;
+  var ft=(total+sc).toFixed(2);
+  var ppU="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=wwwmaggio83%40gmail.com&item_name=Moda+Uomo&amount="+ft+"&currency_code=EUR";
+  fD.innerHTML='<div style="background:#f8f6f2;border-radius:10px;padding:12px;margin-bottom:10px;">'+
     '<div style="font-size:12px;font-weight:700;margin-bottom:8px;">📦 Indirizzo spedizione</div>'+
     '<input id="sN" class="ai" placeholder="Nome e Cognome" style="margin-bottom:6px;">'+
     '<input id="sA" class="ai" placeholder="Via e numero" style="margin-bottom:6px;">'+
-    '<div style="display:flex;gap:6px;"><input id="sC" class="ai" placeholder="Città" style="flex:2;margin-bottom:0;"><input id="sP" class="ai" placeholder="CAP" style="flex:1;margin-bottom:0;max-width:80px;"></div></div>'+
+    '<input id="sC" class="ai" placeholder="Città" style="margin-bottom:0;"></div>'+
     '<div style="display:flex;justify-content:space-between;padding:14px 0;"><span style="font-weight:700;">Totale</span><span style="font-family:serif;font-size:22px;font-weight:700;color:var(--g);">€'+ft+'</span></div>'+
-    '<button onclick="ckPP(\''+ppU+'\','+total+','+sc+')" class="btn" style="background:#003087;color:#fff;">💳 Paga con PayPal</button>'+
-    '<button onclick="ckCl('+total+','+sc+')" class="btn green">📞 Chiama per ordinare</button>';
-  var addr;try{addr=JSON.parse(localStorage.getItem("addr")||"null");}catch(e){addr=null;}
-  if(addr){setTimeout(function(){
-    if(document.getElementById("sN"))document.getElementById("sN").value=addr.n||"";
-    if(document.getElementById("sA"))document.getElementById("sA").value=addr.a||"";
-    if(document.getElementById("sC"))document.getElementById("sC").value=addr.c||"";
-    if(document.getElementById("sP"))document.getElementById("sP").value=addr.p||"";
-  },50);}
+    '<button onclick="ckPP(''+ppU+'')" class="btn" style="background:#003087;color:#fff;">💳 Paga con PayPal</button>'+
+    '<button onclick="ckCl()" class="btn green">📞 Chiama per ordinare</button>';
 }
 function chQ(k,d){cart[k]=(cart[k]||0)+d;if(cart[k]<=0){delete cart[k];delete cartM[k];}sC();uCt();rCart();}
-function apCp(){
-  var code=document.getElementById("cIn").value.trim().toUpperCase();
-  var cps=[];try{cps=JSON.parse(localStorage.getItem("coupons")||"[]");}catch(e){}
-  var f=cps.find(function(c){return c.code===code;});
-  if(f){localStorage.setItem("coup",JSON.stringify(f));T("🎉 Sconto "+f.pct+"%!");rCart();}
-  else{T("❌ Codice non valido");localStorage.removeItem("coup");}
-}
-function gAddr(){return{n:(document.getElementById("sN")||{}).value||"",a:(document.getElementById("sA")||{}).value||"",c:(document.getElementById("sC")||{}).value||"",p:(document.getElementById("sP")||{}).value||""};}
-function ckPP(url,tot,sc){var a=gAddr();if(!a.n||!a.a){T("⚠️ Compila l'indirizzo!");return;}svOrd(tot,sc,a);window.open(url,"_blank");}
-function ckCl(tot,sc){var a=gAddr();if(!a.n||!a.a){T("⚠️ Compila l'indirizzo!");return;}svOrd(tot,sc,a);window.location.href="tel:+"+PHONE;}
-function svOrd(tot,sc,a){
-  localStorage.setItem("addr",JSON.stringify(a));
+function ckPP(url){var n=(document.getElementById("sN")||{}).value||"";if(!n){T("⚠️ Inserisci il nome!");return;}svOrd();window.open(url,"_blank");}
+function ckCl(){var n=(document.getElementById("sN")||{}).value||"";if(!n){T("⚠️ Inserisci il nome!");return;}svOrd();window.location.href="tel:+393711267591";}
+function svOrd(){
   var ords=[];try{ords=JSON.parse(localStorage.getItem("ords")||"[]");}catch(e){}
   var items=[];Object.keys(cart).forEach(function(k){var m=cartM[k],p=allP().find(function(x){return x.id==m.id;});if(p)items.push(p.name+" ("+m.size+"/"+m.color+") x"+cart[k]);});
-  ords.unshift({date:new Date().toLocaleDateString("it-IT"),items:items,total:"€"+(tot+sc).toFixed(2),address:a.n+", "+a.a+", "+a.c});
-  if(ords.length>20)ords=ords.slice(0,20);localStorage.setItem("ords",JSON.stringify(ords));
+  ords.unshift({date:new Date().toLocaleDateString("it-IT"),items:items});
+  localStorage.setItem("ords",JSON.stringify(ords.slice(0,20)));
   cart={};cartM={};sC();uCt();
 }
-
 function doPw(){
   if(document.getElementById("pwIn").value==="1965a4b18c"){
     aLog=true;clOv("pwOv");
@@ -521,8 +529,7 @@ function doPw(){
     bAdmin();rPrL();rCpL();rSts();rOrds();rShip();rAnns();T("✅ Benvenuto admin!");
   }else{document.getElementById("pwEr").style.display="block";document.getElementById("pwIn").value="";}
 }
-
-function mkB(val,gid){
+function mkB(val){
   var b=document.createElement("button");b.type="button";b.textContent=val;b.dataset.val=val;b.dataset.on="0";b.className="sbtn";
   b.onclick=function(){if(this.dataset.on==="1"){this.dataset.on="0";this.classList.remove("on");}else{this.dataset.on="1";this.classList.add("on");}};
   return b;
@@ -530,16 +537,16 @@ function mkB(val,gid){
 function bAdmin(){
   var sz=document.getElementById("aSz"),cl=document.getElementById("aCl"),pt=document.getElementById("aPt");
   if(!sz||sz.dataset.b)return;
-  SA.forEach(function(s){sz.appendChild(mkB(s,"aSz"));});
-  AC.forEach(function(c){cl.appendChild(mkB(c,"aCl"));});
-  AP.forEach(function(p){pt.appendChild(mkB(p,"aPt"));});
+  SA.forEach(function(s){sz.appendChild(mkB(s));});
+  AC.forEach(function(c){cl.appendChild(mkB(c));});
+  AP.forEach(function(p){pt.appendChild(mkB(p));});
   sz.dataset.b="1";
 }
 function tF(btn,f){aF[f]=!aF[f];btn.style.background=aF[f]?"#b8860b":"#f8f6f2";btn.style.borderColor=aF[f]?"#b8860b":"#ddd";btn.style.color=aF[f]?"#fff":"#333";}
 function szM(m){
   document.getElementById("szA").classList.toggle("on",m==="a");document.getElementById("szN").classList.toggle("on",m==="n");
   var sg=document.getElementById("aSz");sg.innerHTML="";sg.removeAttribute("data-b");
-  (m==="a"?SA:SN).forEach(function(s){sg.appendChild(mkB(s,"aSz"));});sg.dataset.b="1";
+  (m==="a"?SA:SN).forEach(function(s){sg.appendChild(mkB(s));});sg.dataset.b="1";
 }
 function loadPh(inp){
   aPh=[];var files=Array.from(inp.files);if(!files.length)return;
@@ -554,145 +561,66 @@ function loadPh(inp){
       document.getElementById("aTh").appendChild(t);
       done++;if(done===files.length){document.getElementById("aLbl").style.borderColor="#27ae60";T("✅ "+done+" foto pronte!");}
     };
-    reader.onerror=function(){T("❌ Errore foto");};
     reader.readAsDataURL(file);
   });
 }
 function saveProd(){
-  var name=document.getElementById("aNm").value.trim();
-  var price=parseFloat(document.getElementById("aPr").value);
-  var stock=parseInt(document.getElementById("aSt").value)||null;
-  var cat=document.getElementById("aCt").value;
-  var sizes=Array.from(document.querySelectorAll("#aSz .sbtn.on")).map(function(b){return b.dataset.val;});
-  var colors=Array.from(document.querySelectorAll("#aCl .sbtn.on")).map(function(b){return b.dataset.val;});
-  var patterns=Array.from(document.querySelectorAll("#aPt .sbtn.on")).map(function(b){return b.dataset.val;});
+  var name=document.getElementById("aNm").value.trim(),price=parseFloat(document.getElementById("aPr").value);
   if(!name){T("⚠️ Inserisci il nome!");return;}
   if(!price||price<=0){T("⚠️ Inserisci il prezzo!");return;}
+  var sizes=Array.from(document.querySelectorAll("#aSz .sbtn.on")).map(function(b){return b.dataset.val;});
+  var colors=Array.from(document.querySelectorAll("#aCl .sbtn.on")).map(function(b){return b.dataset.val;});
   if(!sizes.length){T("⚠️ Seleziona almeno una taglia!");return;}
   if(!colors.length){T("⚠️ Seleziona almeno un colore!");return;}
-  var ph="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 267'%3E%3Crect width='200' height='267' fill='%23f0ede8'/%3E%3Ctext x='100' y='140' text-anchor='middle' font-size='80'%3E%F0%9F%91%94%3C/text%3E%3C/svg%3E";
-  var prod={id:Date.now(),name:name,price:price,stock:stock,cat:cat,isNew:aF.isN,isSale:aF.isS,isO:aF.isO,imgs:aPh.length?aPh:[ph],sizes:sizes,colors:colors,patterns:patterns};
+  var prod={id:Date.now(),name:name,price:price,stock:parseInt(document.getElementById("aSt").value)||null,cat:document.getElementById("aCt").value,isNew:aF.isN,isSale:aF.isS,imgs:aPh.length?aPh:[],sizes:sizes,colors:colors};
   var saved=[];try{saved=JSON.parse(localStorage.getItem("p")||"[]");}catch(e){}
   saved.push(prod);localStorage.setItem("p",JSON.stringify(saved));
   document.getElementById("aNm").value="";document.getElementById("aPr").value="";document.getElementById("aSt").value="";
   document.getElementById("aFile").value="";document.getElementById("aPv").style.display="none";document.getElementById("aTh").innerHTML="";
-  document.getElementById("aLbl").style.borderColor="#ccc";aPh=[];
-  aF={isN:false,isS:false,isO:false};
+  document.getElementById("aLbl").style.borderColor="#ccc";aPh=[];aF={isN:false,isS:false,isO:false};
   ["bN","bS","bO"].forEach(function(id){var b=document.getElementById(id);if(b){b.style.background="#f8f6f2";b.style.borderColor="#ddd";b.style.color="#333";}});
   document.getElementById("aSz").innerHTML="";document.getElementById("aSz").removeAttribute("data-b");
   document.getElementById("aCl").innerHTML="";document.getElementById("aPt").innerHTML="";
-  bAdmin();rCust(null);rPrL();T("✅ Prodotto aggiunto! ("+allP().length+" totali)");
+  bAdmin();rCust(null);rPrL();T("✅ Prodotto aggiunto!");
 }
 function rPrL(){
-  var all=allP(),custIds=[];try{custIds=JSON.parse(localStorage.getItem("p")||"[]").map(function(p){return p.id;});}catch(e){}
-  document.getElementById("prL").innerHTML=all.map(function(p){
+  document.getElementById("prL").innerHTML=allP().map(function(p){
     var src=(p.imgs&&p.imgs.length)?p.imgs[0]:(p.img||"");
-    return '<div class="arow"><img src="'+src+'" alt="" onerror="this.src=\'\'">'+'<div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+p.name+'</div><div style="font-size:11px;color:var(--g);">€'+p.price.toFixed(2)+' · '+p.cat+'</div></div>'+'<button onclick="delP('+p.id+')" style="background:#c0392b;border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;flex-shrink:0;">×</button></div>';
+    return '<div class="arow"><img src="'+src+'" alt="" style="width:44px;height:55px;object-fit:cover;border-radius:6px;flex-shrink:0;">'+
+      '<div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+p.name+'</div>'+
+      '<div style="font-size:11px;color:var(--g);">€'+p.price.toFixed(2)+' · '+p.cat+'</div></div>'+
+      '<button onclick="delP('+p.id+')" style="background:#c0392b;border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;flex-shrink:0;">×</button></div>';
   }).join("")||'<p style="color:#666;font-size:13px;">Nessun prodotto.</p>';
 }
 function delP(id){
   var custIds=[];try{custIds=JSON.parse(localStorage.getItem("p")||"[]").map(function(p){return p.id;});}catch(e){}
-  if(custIds.indexOf(id)>-1){var saved=[];try{saved=JSON.parse(localStorage.getItem("p")||"[]");}catch(e){}localStorage.setItem("p",JSON.stringify(saved.filter(function(p){return p.id!==id;})));}
-  else{var h=[];try{h=JSON.parse(localStorage.getItem("h")||"[]");}catch(e){}h.push(id);localStorage.setItem("h",JSON.stringify(h));document.querySelectorAll("#grid .card").forEach(function(c){if((c.getAttribute("onclick")||"").indexOf("openP("+id+",")>-1)c.style.display="none";}); }
+  if(custIds.indexOf(id)>-1){var s=[];try{s=JSON.parse(localStorage.getItem("p")||"[]");}catch(e){}localStorage.setItem("p",JSON.stringify(s.filter(function(p){return p.id!==id;})));}
+  else{var h=[];try{h=JSON.parse(localStorage.getItem("h")||"[]");}catch(e){}h.push(id);localStorage.setItem("h",JSON.stringify(h));document.querySelectorAll("#grid .card[data-id='"+id+"']").forEach(function(c){c.style.display="none";});}
   rPrL();rCust(null);T("🗑️ Eliminato");
 }
 function restA(){localStorage.removeItem("h");document.querySelectorAll("#grid .card").forEach(function(c){c.style.display="";});rPrL();T("✅ Ripristinati!");}
 function lgOut(){aLog=false;goTab("pCat",document.querySelector(".tab"));document.querySelector(".tab").classList.add("on");}
-
-function saveCp(){
-  var code=document.getElementById("cCd").value.trim().toUpperCase(),pct=parseInt(document.getElementById("cPc").value);
-  if(!code||!pct){T("⚠️ Inserisci codice e sconto!");return;}
-  var cps=[];try{cps=JSON.parse(localStorage.getItem("coupons")||"[]");}catch(e){}
-  cps=cps.filter(function(c){return c.code!==code;});cps.push({code:code,pct:pct});
-  localStorage.setItem("coupons",JSON.stringify(cps));
-  document.getElementById("cCd").value="";document.getElementById("cPc").value="";
-  rCpL();T("✅ Coupon "+code+"!");
-}
-function rCpL(){
-  var cps=[];try{cps=JSON.parse(localStorage.getItem("coupons")||"[]");}catch(e){}
-  document.getElementById("cList").innerHTML=cps.map(function(c){return '<div style="display:flex;justify-content:space-between;align-items:center;background:#f8f6f2;padding:8px 12px;border-radius:8px;margin-bottom:6px;"><span style="font-weight:700;color:var(--g);">'+c.code+'</span><span style="color:#666;">-'+c.pct+'%</span><button onclick="dlCp(\''+c.code+'\' )" style="background:#c0392b;border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;">×</button></div>';}).join("")||'<p style="color:#666;font-size:13px;">Nessun coupon.</p>';
-}
+function saveCp(){var code=document.getElementById("cCd").value.trim().toUpperCase(),pct=parseInt(document.getElementById("cPc").value);if(!code||!pct){T("⚠️ Codice e sconto!");return;}var cps=[];try{cps=JSON.parse(localStorage.getItem("coupons")||"[]");}catch(e){}cps=cps.filter(function(c){return c.code!==code;});cps.push({code:code,pct:pct});localStorage.setItem("coupons",JSON.stringify(cps));document.getElementById("cCd").value="";document.getElementById("cPc").value="";rCpL();T("✅ Coupon "+code+"!");}
+function rCpL(){var cps=[];try{cps=JSON.parse(localStorage.getItem("coupons")||"[]");}catch(e){}document.getElementById("cList").innerHTML=cps.map(function(c){return '<div style="display:flex;justify-content:space-between;align-items:center;background:#f8f6f2;padding:8px 12px;border-radius:8px;margin-bottom:6px;"><span style="font-weight:700;color:var(--g);">'+c.code+'</span><span>-'+c.pct+'%</span><button onclick="dlCp(''+c.code+'')" style="background:#c0392b;border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;">×</button></div>';}).join("")||'<p style="color:#666;font-size:13px;">Nessun coupon.</p>';}
 function dlCp(code){var c=[];try{c=JSON.parse(localStorage.getItem("coupons")||"[]");}catch(e){}localStorage.setItem("coupons",JSON.stringify(c.filter(function(x){return x.code!==code;})));rCpL();}
-function rShip(){
-  var box=document.getElementById("shDiv");if(!box)return;
-  var s;try{s=JSON.parse(localStorage.getItem("ship")||'{"italy":8,"abroad":15,"free":50,"on":true}');}catch(e){s={italy:8,abroad:15,free:50,on:true};}
-  box.innerHTML='<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-bottom:12px;"><input type="checkbox" id="shOn" '+(s.on?"checked":"")+' style="accent-color:var(--g);width:16px;height:16px;"> Spedizione attiva</label>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">'+
-    '<div><div style="font-size:11px;color:#888;margin-bottom:4px;">🇮🇹 Italia €</div><input class="ai" id="shI" type="number" value="'+s.italy+'" style="margin-bottom:0;"></div>'+
-    '<div><div style="font-size:11px;color:#888;margin-bottom:4px;">🌍 Estero €</div><input class="ai" id="shA" type="number" value="'+s.abroad+'" style="margin-bottom:0;"></div>'+
-    '<div><div style="font-size:11px;color:#888;margin-bottom:4px;">🚚 Gratis da €</div><input class="ai" id="shF" type="number" value="'+s.free+'" style="margin-bottom:0;"></div>'+
-    '</div><button class="btn gold" onclick="svSh()" style="margin-top:10px;">✅ Salva</button>';
-}
+function rShip(){var box=document.getElementById("shDiv");if(!box)return;var s;try{s=JSON.parse(localStorage.getItem("ship")||'{"italy":8,"abroad":15,"free":50,"on":true}');}catch(e){s={italy:8,abroad:15,free:50,on:true};}box.innerHTML='<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-bottom:12px;"><input type="checkbox" id="shOn" '+(s.on?"checked":"")+' style="accent-color:var(--g);width:16px;height:16px;"> Spedizione attiva</label><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;"><div><div style="font-size:11px;color:#888;margin-bottom:4px;">🇮🇹 Italia €</div><input class="ai" id="shI" type="number" value="'+s.italy+'" style="margin-bottom:0;"></div><div><div style="font-size:11px;color:#888;margin-bottom:4px;">🌍 Estero €</div><input class="ai" id="shA" type="number" value="'+s.abroad+'" style="margin-bottom:0;"></div><div><div style="font-size:11px;color:#888;margin-bottom:4px;">🚚 Gratis da €</div><input class="ai" id="shF" type="number" value="'+s.free+'" style="margin-bottom:0;"></div></div><button class="btn gold" onclick="svSh()" style="margin-top:10px;">✅ Salva</button>';}
 function svSh(){localStorage.setItem("ship",JSON.stringify({on:document.getElementById("shOn").checked,italy:parseFloat(document.getElementById("shI").value)||8,abroad:parseFloat(document.getElementById("shA").value)||15,free:parseFloat(document.getElementById("shF").value)||50})));T("✅ Spedizioni salvate!");}
-function saveAn(){
-  var t=document.getElementById("anT").value.trim(),b=document.getElementById("anB").value.trim(),tp=document.getElementById("anTp").value;
-  if(!t||!b){T("⚠️ Compila titolo e testo!");return;}
-  var arr=[];try{arr=JSON.parse(localStorage.getItem("ann")||"[]");}catch(e){}
-  var d=new Date();arr.unshift({title:t,text:b,type:tp,date:d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()});
-  if(arr.length>20)arr=arr.slice(0,20);localStorage.setItem("ann",JSON.stringify(arr));
-  document.getElementById("anT").value="";document.getElementById("anB").value="";
-  rAnns();rBach();T("✅ Pubblicato!");
-}
-function rAnns(){
-  var arr=[];try{arr=JSON.parse(localStorage.getItem("ann")||"[]");}catch(e){}
-  document.getElementById("anL").innerHTML=arr.map(function(a,i){return '<div style="display:flex;justify-content:space-between;align-items:center;background:#f8f6f2;padding:8px 12px;border-radius:8px;margin-bottom:6px;"><div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+a.title+'</div><div style="font-size:11px;color:#666;">'+a.date+'</div></div><button onclick="dlAn('+i+')" style="background:#c0392b;border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;flex-shrink:0;margin-left:8px;">×</button></div>';}).join("")||'<p style="color:#666;font-size:13px;">Nessun annuncio.</p>';
-}
+function saveAn(){var t=document.getElementById("anT").value.trim(),b=document.getElementById("anB").value.trim(),tp=document.getElementById("anTp").value;if(!t||!b){T("⚠️ Titolo e testo!");return;}var arr=[];try{arr=JSON.parse(localStorage.getItem("ann")||"[]");}catch(e){}var d=new Date();arr.unshift({title:t,text:b,type:tp,date:d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()});localStorage.setItem("ann",JSON.stringify(arr.slice(0,20)));document.getElementById("anT").value="";document.getElementById("anB").value="";rAnns();rBach();T("✅ Pubblicato!");}
+function rAnns(){var arr=[];try{arr=JSON.parse(localStorage.getItem("ann")||"[]");}catch(e){}document.getElementById("anL").innerHTML=arr.map(function(a,i){return '<div style="display:flex;justify-content:space-between;align-items:center;background:#f8f6f2;padding:8px 12px;border-radius:8px;margin-bottom:6px;"><div><div style="font-size:12px;font-weight:600;">'+a.title+'</div><div style="font-size:11px;color:#666;">'+a.date+'</div></div><button onclick="dlAn('+i+')" style="background:#c0392b;border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;flex-shrink:0;margin-left:8px;">×</button></div>';}).join("")||'<p style="color:#666;font-size:13px;">Nessun annuncio.</p>';}
 function dlAn(i){var arr=[];try{arr=JSON.parse(localStorage.getItem("ann")||"[]");}catch(e){}arr.splice(i,1);localStorage.setItem("ann",JSON.stringify(arr));rAnns();}
-function rBach(){
-  var arr=[];try{arr=JSON.parse(localStorage.getItem("ann")||"[]");}catch(e){}
-  var cols={info:"#3498db",promo:"#e74c3c",new:"#27ae60"};var icons={info:"📢",promo:"🔥",new:"🆕"};
-  document.getElementById("bachDiv").innerHTML=arr.map(function(a){return '<div style="background:#fff;border:1px solid var(--bd);border-left:4px solid '+(cols[a.type]||"#3498db")+';border-radius:12px;padding:14px;margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:13px;font-weight:700;">'+(icons[a.type]||"📢")+' '+a.title+'</span><span style="font-size:11px;color:#666;">'+a.date+'</span></div><div style="font-size:13px;color:#666;line-height:1.6;">'+a.text+'</div></div>';}).join("");
-}
-function rSts(){
-  var ords=[];try{ords=JSON.parse(localStorage.getItem("ords")||"[]");}catch(e){}
-  document.getElementById("stD").innerHTML='<div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--g);">'+allP().length+'</div><div style="font-size:11px;color:#666;">Prodotti</div></div>'+'<div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--g);">'+ords.length+'</div><div style="font-size:11px;color:#666;">Ordini</div></div>'+'<div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--g);">'+wish.length+'</div><div style="font-size:11px;color:#666;">Preferiti</div></div>'+'<div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--g);">'+revs.length+'</div><div style="font-size:11px;color:#666;">Recensioni</div></div>';
-}
-function rOrds(){
-  var ords=[];try{ords=JSON.parse(localStorage.getItem("ords")||"[]");}catch(e){}
-  document.getElementById("orD").innerHTML=ords.length?ords.map(function(o){return '<div style="background:#f8f6f2;border-radius:10px;padding:10px;margin-bottom:8px;"><div style="display:flex;justify-content:space-between;"><span style="font-size:12px;font-weight:700;">'+o.date+'</span><span style="color:var(--g);font-weight:700;">'+o.total+'</span></div><div style="font-size:12px;color:#666;margin-top:4px;">'+o.items.join(", ")+'</div></div>';}).join(""):'<p style="color:#666;font-size:13px;">Nessun ordine.</p>';
-}
-function doLoyalty(){
-  var code=gCid();document.getElementById("lCode").textContent=code;
-  var h="";for(var i=0;i<10;i++){h+='<div style="aspect-ratio:1;border-radius:50%;border:2px solid #333;background:#111;display:flex;align-items:center;justify-content:center;font-size:14px;"></div>';}
-  document.getElementById("stamps").innerHTML=h;
-}
-function doMeteo(){
-  var g=document.getElementById("metD");g.innerHTML='<p style="color:#666;text-align:center;">⏳ Caricamento...</p>';
-  var loaded=0,results=new Array(MR.length);
-  MR.forEach(function(m,i){
-    fetch("https://api.open-meteo.com/v1/forecast?latitude="+m.lat+"&longitude="+m.lng+"&current=temperature_2m,weathercode&timezone=Europe%2FRome")
-    .then(function(r){return r.json();}).then(function(data){
-      var temp=data.current.temperature_2m,code=data.current.weathercode;
-      var icon=code<=1?"☀️":code<=3?"⛅":code<=67?"🌧️":"⛈️";
-      results[i]='<div style="background:#fff;border:1px solid var(--bd);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--g);font-weight:700;">'+m.g+'</div><div style="font-size:15px;font-weight:600;margin-top:2px;">'+m.n+'</div></div><div style="text-align:center;"><div style="font-size:34px;">'+icon+'</div><div style="font-family:serif;font-size:20px;font-weight:700;color:var(--g);">'+temp+'°C</div></div></div>';
-      loaded++;if(loaded===MR.length)g.innerHTML=results.join("");
-    }).catch(function(){results[i]='<div style="background:#fff;border:1px solid var(--bd);border-radius:12px;padding:14px;font-size:13px;color:#666;">'+m.g+' – '+m.n+': non disponibile</div>';loaded++;if(loaded===MR.length)g.innerHTML=results.join("");});
-  });
-}
+function rBach(){var arr=[];try{arr=JSON.parse(localStorage.getItem("ann")||"[]");}catch(e){}var cols={info:"#3498db",promo:"#e74c3c",new:"#27ae60"};var icons={info:"📢",promo:"🔥",new:"🆕"};document.getElementById("bachDiv").innerHTML=arr.map(function(a){return '<div style="background:#fff;border:1px solid var(--bd);border-left:4px solid '+(cols[a.type]||"#3498db")+';border-radius:12px;padding:14px;margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:13px;font-weight:700;">'+(icons[a.type]||"📢")+' '+a.title+'</span><span style="font-size:11px;color:#666;">'+a.date+'</span></div><div style="font-size:13px;color:#666;line-height:1.6;">'+a.text+'</div></div>';}).join("");}
+function rSts(){var ords=[];try{ords=JSON.parse(localStorage.getItem("ords")||"[]");}catch(e){}document.getElementById("stD").innerHTML='<div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--g);">'+allP().length+'</div><div style="font-size:11px;color:#666;">Prodotti</div></div><div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--g);">'+ords.length+'</div><div style="font-size:11px;color:#666;">Ordini</div></div><div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--g);">'+wish.length+'</div><div style="font-size:11px;color:#666;">Preferiti</div></div><div style="background:#f8f6f2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--g);">'+revs.length+'</div><div style="font-size:11px;color:#666;">Recensioni</div></div>';}
+function rOrds(){var ords=[];try{ords=JSON.parse(localStorage.getItem("ords")||"[]");}catch(e){}document.getElementById("orD").innerHTML=ords.length?ords.map(function(o){return '<div style="background:#f8f6f2;border-radius:10px;padding:10px;margin-bottom:8px;"><div style="display:flex;justify-content:space-between;"><span style="font-size:12px;font-weight:700;">'+o.date+'</span></div><div style="font-size:12px;color:#666;margin-top:4px;">'+o.items.join(", ")+'</div></div>';}).join(""):'<p style="color:#666;font-size:13px;">Nessun ordine.</p>';}
+function doLoyalty(){var code=gCid();document.getElementById("lCode").textContent=code;var h="";for(var i=0;i<10;i++){h+='<div style="aspect-ratio:1;border-radius:50%;border:2px solid #333;background:#111;"></div>';}document.getElementById("stamps").innerHTML=h;}
+function doMeteo(){var g=document.getElementById("metD");g.innerHTML='<p style="color:#666;text-align:center;">⏳ Caricamento...</p>';var loaded=0,results=new Array(MR.length);MR.forEach(function(m,i){fetch("https://api.open-meteo.com/v1/forecast?latitude="+m.lat+"&longitude="+m.lng+"&current=temperature_2m,weathercode&timezone=Europe%2FRome").then(function(r){return r.json();}).then(function(data){var temp=data.current.temperature_2m,code=data.current.weathercode;var icon=code<=1?"☀️":code<=3?"⛅":code<=67?"🌧️":"⛈️";results[i]='<div style="background:#fff;border:1px solid var(--bd);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--g);font-weight:700;">'+m.g+'</div><div style="font-size:15px;font-weight:600;margin-top:2px;">'+m.n+'</div></div><div style="text-align:center;"><div style="font-size:34px;">'+icon+'</div><div style="font-family:serif;font-size:20px;font-weight:700;color:var(--g);">'+temp+'°C</div></div></div>';loaded++;if(loaded===MR.length)g.innerHTML=results.join("");}).catch(function(){results[i]='<div style="background:#fff;border:1px solid var(--bd);border-radius:12px;padding:14px;font-size:13px;color:#666;">'+m.g+' – '+m.n+'</div>';loaded++;if(loaded===MR.length)g.innerHTML=results.join("");});});}
 function setSt(v){selSt=v;document.querySelectorAll("#stars span").forEach(function(s,i){s.style.opacity=i<v?"1":".4";});}
-function sendRev(){
-  var name=document.getElementById("rNm").value.trim(),text=document.getElementById("rTx").value.trim();
-  if(!name||!text||!selSt){T("⚠️ Compila tutti i campi!");return;}
-  var d=new Date();revs.unshift({name:name,stars:selSt,text:text,date:d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()});
-  localStorage.setItem("r",JSON.stringify(revs));
-  document.getElementById("rNm").value="";document.getElementById("rTx").value="";
-  document.querySelectorAll("#stars span").forEach(function(s){s.style.opacity=".4";});selSt=0;
-  renderRevs();T("⭐ Grazie!");
-}
-function renderRevs(){
-  document.getElementById("revL").innerHTML=revs.length?revs.map(function(r){return '<div class="rcard"><div style="font-size:13px;font-weight:700;">'+r.name+'</div><div style="font-size:13px;margin:4px 0;">'+"⭐".repeat(r.stars)+'</div><div style="font-size:13px;color:#666;">'+r.text+'</div></div>';}).join(""):'<p style="color:#666;font-size:13px;margin-bottom:14px;">Nessuna recensione ancora!</p>';
-}
+function sendRev(){var name=document.getElementById("rNm").value.trim(),text=document.getElementById("rTx").value.trim();if(!name||!text||!selSt){T("⚠️ Compila tutti i campi!");return;}var d=new Date();revs.unshift({name:name,stars:selSt,text:text,date:d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()});localStorage.setItem("r",JSON.stringify(revs));document.getElementById("rNm").value="";document.getElementById("rTx").value="";document.querySelectorAll("#stars span").forEach(function(s){s.style.opacity=".4";});selSt=0;renderRevs();T("⭐ Grazie!");}
+function renderRevs(){document.getElementById("revL").innerHTML=revs.length?revs.map(function(r){return '<div class="rcard"><b>'+r.name+'</b><div>'+"⭐".repeat(r.stars)+'</div><div style="font-size:13px;color:#666;">'+r.text+'</div></div>';}).join(""):'<p style="color:#666;font-size:13px;margin-bottom:14px;">Nessuna recensione ancora!</p>';}
 history.pushState({},"","");
 window.addEventListener("popstate",function(){
   var open=document.querySelectorAll(".ov.on");
   if(open.length){open[open.length-1].classList.remove("on");history.pushState({},"","");return;}
-  if(!document.getElementById("pCat").classList.contains("on")){
-    document.querySelectorAll(".page").forEach(function(p){p.classList.remove("on");});
-    document.getElementById("pCat").classList.add("on");
-    document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("on");});
-    document.querySelector(".tab").classList.add("on");
-    history.pushState({},"","");
-  }else{history.pushState({},"","");}
+  if(!document.getElementById("pCat").classList.contains("on")){document.querySelectorAll(".page").forEach(function(p){p.classList.remove("on");});document.getElementById("pCat").classList.add("on");document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("on");});document.querySelector(".tab").classList.add("on");history.pushState({},"","");}else{history.pushState({},"","");}
 });
 if(!localStorage.getItem("ship"))localStorage.setItem("ship",JSON.stringify({italy:8,abroad:15,free:50,on:true}));
 uCt();rBach();rCust(null);
