@@ -11,7 +11,7 @@ self.addEventListener("install", function(e){
   self.skipWaiting();
 });
 
-// Activate: clear old caches
+// Activate: clear ALL old caches immediately
 self.addEventListener("activate", function(e){
   e.waitUntil(
     caches.keys().then(function(keys){
@@ -24,21 +24,23 @@ self.addEventListener("activate", function(e){
   self.clients.claim();
 });
 
-// Fetch: serve from cache, fallback to network
+// Fetch: NETWORK FIRST - always try network, fallback to cache
 self.addEventListener("fetch", function(e){
-  // Skip non-GET and external APIs (meteo, paypal, whatsapp)
   if(e.request.method !== "GET") return;
   var url = e.request.url;
+
+  // Skip external APIs
   if(url.indexOf("open-meteo") > -1) return;
   if(url.indexOf("paypal") > -1) return;
   if(url.indexOf("whatsapp") > -1) return;
   if(url.indexOf("googleapis") > -1) return;
+  if(url.indexOf("youtube") > -1) return;
+  if(url.indexOf("tawk") > -1) return;
 
-  e.respondWith(
-    caches.match(e.request).then(function(cached){
-      if(cached) return cached;
-      return fetch(e.request).then(function(response){
-        // Cache successful responses
+  // For HTML pages: network first, cache fallback
+  if(url.indexOf(".html") > -1 || url.endsWith("/") || url.indexOf("github.io") > -1){
+    e.respondWith(
+      fetch(e.request).then(function(response){
         if(response && response.status === 200){
           var clone = response.clone();
           caches.open(CACHE).then(function(cache){
@@ -47,9 +49,34 @@ self.addEventListener("fetch", function(e){
         }
         return response;
       }).catch(function(){
-        // Offline fallback: return cached index.html
+        return caches.match(e.request).then(function(cached){
+          return cached || caches.match("/index.html");
+        });
+      })
+    );
+    return;
+  }
+
+  // For other assets: cache first, network fallback
+  e.respondWith(
+    caches.match(e.request).then(function(cached){
+      if(cached) return cached;
+      return fetch(e.request).then(function(response){
+        if(response && response.status === 200){
+          var clone = response.clone();
+          caches.open(CACHE).then(function(cache){
+            cache.put(e.request, clone);
+          });
+        }
+        return response;
+      }).catch(function(){
         return caches.match("/index.html");
       });
     })
   );
+});
+
+// Listen for skip waiting message
+self.addEventListener("message", function(e){
+  if(e.data === "skipWaiting") self.skipWaiting();
 });
