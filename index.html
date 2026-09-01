@@ -1321,20 +1321,25 @@ function openBooking(prodName, prodPrice){
 // SERVICE WORKER - MODALITA OFFLINE
 if("serviceWorker" in navigator && location.protocol !== "file:" && location.hostname !== "www.claudeusercontent.com"){
   navigator.serviceWorker.register("/sw.js").then(function(reg){
-    // Force check for updates every time app opens
+    // Force update check on every load
     reg.update();
     reg.addEventListener("updatefound", function(){
       var newSW = reg.installing;
       newSW.addEventListener("statechange", function(){
-        if(newSW.state === "installed" && navigator.serviceWorker.controller){
-          // New version available - reload automatically
-          toast("Aggiornamento disponibile! Ricarico...");
-          setTimeout(function(){ window.location.reload(); }, 2000);
+        if(newSW.state === "installed"){
+          // Tell new SW to take control immediately
+          newSW.postMessage("skipWaiting");
+          toast("App aggiornata! Ricarico...");
+          setTimeout(function(){ window.location.reload(true); }, 1500);
         }
       });
     });
   }).catch(function(err){
     console.log("SW errore:", err);
+  });
+  // Reload when new SW takes control
+  navigator.serviceWorker.addEventListener("controllerchange", function(){
+    window.location.reload(true);
   });
 }
 
