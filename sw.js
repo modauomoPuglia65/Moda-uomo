@@ -1,4 +1,4 @@
-const CACHE = "moda-uomo-v1";
+const CACHE = "moda-uomo-v202609010306";
 const FILES = ["/", "/index.html", "/manifest.json", "/icon-192.png", "/icon-512.png"];
 
 // Install: cache files
