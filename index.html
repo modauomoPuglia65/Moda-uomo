@@ -473,6 +473,7 @@ function goPage(n,btn){
   if(btn)btn.classList.add("on");
   window.scrollTo(0,0);
   if(n===0){renderGrid();initGallery();}
+  if(n===0){curF="tutti";document.querySelectorAll(".flt").forEach(function(b){b.classList.remove("on");});var firstFlt=document.querySelector(".flt");if(firstFlt)firstFlt.classList.add("on");renderGrid();}
   if(n===1){renderSGrid();renderBach();startCD();}
   if(n===2)renderWish();
   if(n===3){renderLoy();renderOrds();renderRevs();}
@@ -787,7 +788,7 @@ function saveProd(){
   document.getElementById("aVidUrl").value="";
   document.getElementById("bN").classList.remove("on");document.getElementById("bS").classList.remove("on");
   document.getElementById("aSz").innerHTML="";document.getElementById("aSz").removeAttribute("data-b");document.getElementById("aCl").innerHTML="";document.getElementById("aCl").removeAttribute("data-b");
-  buildAdminBtns();renderGrid();renderPrList();renderStats();toast("Prodotto aggiunto!");
+  buildAdminBtns();curF="tutti";renderGrid();renderPrList();renderStats();toast("Prodotto aggiunto!");goPage(0,document.querySelector(".tab"));
 }
 function renderPrList(){
   var box=document.getElementById("prList");box.innerHTML="";
