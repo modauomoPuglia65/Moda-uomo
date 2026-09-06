@@ -613,11 +613,13 @@ function openProd(id){
   ];
   shares.forEach(function(s){var b=document.createElement("button");b.type="button";b.className="sbtn";b.style.background=s.bg;b.textContent=s.txt;b.onclick=s.fn;shrDiv.appendChild(b);});
   // Sizes - auto-select if only one
-  var szRow=document.createElement("div");szRow.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px";
+  var hasSz=p.sizes&&p.sizes.length>0;
+  var hasCl=p.colors&&p.colors.length>0;
+  var szRow=document.createElement("div");szRow.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px";if(!hasSz)szRow.style.display="none";
   var szLbl=document.createElement("div");szLbl.style.cssText="font-weight:700;font-size:13px";szLbl.textContent="Taglia";szRow.appendChild(szLbl);
   var szGuide=document.createElement("button");szGuide.type="button";szGuide.style.cssText="background:none;border:none;color:var(--g);font-size:12px;font-weight:700;cursor:pointer;text-decoration:underline";szGuide.textContent="📏 Guida taglie";szGuide.onclick=function(){openSizeGuide();};szRow.appendChild(szGuide);
   sh.appendChild(szRow);
-  var szDiv=document.createElement("div");szDiv.className="opts";sh.appendChild(szDiv);
+  var szDiv=document.createElement("div");szDiv.className="opts";if(!hasSz)szDiv.style.display="none";sh.appendChild(szDiv);
   if(p.sizes.length===1){
     _sz=p.sizes[0];
     var b1=document.createElement("button");b1.type="button";b1.className="opt on";b1.textContent=p.sizes[0];b1.onclick=function(){};szDiv.appendChild(b1);
@@ -629,8 +631,8 @@ function openProd(id){
     });
   }
   // Colors - auto-select if only one
-  var clLbl=document.createElement("div");clLbl.style.cssText="font-weight:700;font-size:13px;margin-bottom:6px;margin-top:4px";clLbl.textContent="Colore";sh.appendChild(clLbl);
-  var clDiv=document.createElement("div");clDiv.className="opts";sh.appendChild(clDiv);
+  var clLbl=document.createElement("div");clLbl.style.cssText="font-weight:700;font-size:13px;margin-bottom:6px;margin-top:4px";clLbl.textContent="Colore";if(!hasCl)clLbl.style.display="none";sh.appendChild(clLbl);
+  var clDiv=document.createElement("div");clDiv.className="opts";if(!hasCl)clDiv.style.display="none";sh.appendChild(clDiv);
   if(p.colors.length===1){
     _cl=p.colors[0];
     var b2=document.createElement("button");b2.type="button";b2.className="opt on";b2.textContent=p.colors[0];b2.onclick=function(){};clDiv.appendChild(b2);
@@ -643,7 +645,7 @@ function openProd(id){
   }
   // Buttons
   var addB=document.createElement("button");addB.type="button";addB.className="btn bg";addB.textContent="Aggiungi al carrello";
-  addB.onclick=function(){if(!_sz){toast("Scegli la taglia!");return;}if(!_cl){toast("Scegli il colore!");return;}cart.push({id:p.id,sz:_sz,cl:_cl,q:1});ss("c",cart);updCnt();closeOv();toast("Aggiunto al carrello!");};
+  addB.onclick=function(){var nSz=p.sizes&&p.sizes.length>0;var nCl=p.colors&&p.colors.length>0;if(nSz&&!_sz){toast("Scegli la taglia!");return;}if(nCl&&!_cl){toast("Scegli il colore!");return;}cart.push({id:p.id,sz:_sz||"-",cl:_cl||"-",q:1});ss("c",cart);updCnt();closeOv();toast("Aggiunto al carrello!");};
   sh.appendChild(addB);
   var waB=document.createElement("button");waB.type="button";waB.className="btn bgr";waB.textContent="📅 Prenota al mercato";waB.onclick=function(){closeOv();setTimeout(function(){openBooking(p.name,p.price.toFixed(2));},200);};sh.appendChild(waB);
   var telB=document.createElement("a");telB.href="tel:+393711267591";telB.className="btn bs";telB.textContent="Chiama";sh.appendChild(telB);
@@ -773,6 +775,43 @@ function buildAdminBtns(){
   if(cl&&!cl.dataset.b){AC.forEach(function(c){cl.appendChild(mkABtn(c));});cl.dataset.b="1";}
 }
 function mkABtn(val){var b=document.createElement("button");b.type="button";b.textContent=val;b.dataset.val=val;b.className="flt";b.onclick=function(){this.classList.toggle("on");};return b;}
+
+var _rPh=[];
+function loadRapidPh(inp){
+  _rPh=[];var files=Array.from(inp.files);if(!files.length)return;
+  document.getElementById("rPv").style.display="none";
+  toast(files.length+" foto...");
+  var done=0;
+  files.forEach(function(file,idx){
+    var r=new FileReader();
+    r.onload=function(e){
+      _rPh.push(e.target.result);
+      if(idx===0){document.getElementById("rPv").src=e.target.result;document.getElementById("rPv").style.display="block";}
+      if(++done===files.length){document.getElementById("rLbl").style.borderColor="#27ae60";toast("Foto pronte!");}
+    };
+    r.readAsDataURL(file);
+  });
+}
+function saveRapidProd(){
+  var name=document.getElementById("rNm").value.trim();
+  var price=parseFloat(document.getElementById("rPr").value);
+  var cat=document.getElementById("rCt").value;
+  if(!name){toast("Inserisci il nome!");return;}
+  if(!price||price<=0){toast("Inserisci il prezzo!");return;}
+  var saved=ls("p",[]);
+  saved.push({id:Date.now(),name:name,price:price,oldPrice:0,stock:null,cat:cat,isNew:true,isSale:false,imgs:_rPh.slice(),sizes:[],colors:[],desc:""});
+  ss("p",saved);
+  document.getElementById("rNm").value="";
+  document.getElementById("rPr").value="";
+  document.getElementById("rFile").value="";
+  document.getElementById("rPv").style.display="none";
+  document.getElementById("rLbl").style.borderColor="#ccc";
+  _rPh=[];
+  curF="tutti";
+  renderGrid();renderPrList();renderStats();
+  toast("Articolo pubblicato!");
+  goPage(0,document.querySelector(".tab"));
+}
 
 function loadPh(inp){aPh=[];var files=Array.from(inp.files);if(!files.length)return;document.getElementById("aTh").innerHTML="";toast(files.length+" foto...");var done=0;files.forEach(function(file,idx){var r=new FileReader();r.onload=function(e){aPh.push(e.target.result);if(idx===0){document.getElementById("aPv").src=e.target.result;document.getElementById("aPv").style.display="block";}var t=document.createElement("img");t.src=e.target.result;t.style.cssText="width:52px;height:65px;object-fit:cover;border-radius:8px;border:2px solid var(--g);flex-shrink:0";document.getElementById("aTh").appendChild(t);if(++done===files.length){document.getElementById("aLbl").style.borderColor="#27ae60";toast(done+" foto pronte!");}};r.readAsDataURL(file);});}
 
