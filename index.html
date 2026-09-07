@@ -335,6 +335,28 @@ a{color:inherit;text-decoration:none}
 
 <div class="pg" id="p5">
   <div class="panel"><div class="ptit">Statistiche</div><div class="stg" id="stg"></div></div>
+  <div class="panel" style="border:2px solid var(--g)">
+    <div class="ptit">⚡ Articolo Rapido</div>
+    <p style="font-size:13px;color:var(--mu);margin-bottom:12px">Pubblica subito senza taglia e colore — ideale per accessori, cinture, cappelli, ecc.</p>
+    <img id="rPv" style="width:100%;max-height:180px;object-fit:cover;border-radius:14px;margin-bottom:10px;display:none">
+    <label for="rFile" id="rLbl" style="display:block;width:100%;padding:14px;border:2px dashed #ccc;border-radius:14px;background:var(--soft);font-size:14px;font-weight:700;color:var(--mu);cursor:pointer;text-align:center;margin-bottom:10px">
+      📷 Scegli Foto
+      <input type="file" id="rFile" accept="image/*" multiple style="display:none" onchange="loadRapidPh(this)">
+    </label>
+    <input class="ai" id="rNm" placeholder="Nome articolo *">
+    <input class="ai" id="rPr" placeholder="Prezzo * euro" type="number" step="0.01" inputmode="decimal">
+    <select class="ai" id="rCt">
+      <option value="accessori">Accessori</option>
+      <option value="camicie-lino">Camicie Lino</option>
+      <option value="camicie-cotone">Camicie Cotone</option>
+      <option value="camicie-rigato">Camicie Rigato</option>
+      <option value="camicie-fantasia">Camicie Fantasia</option>
+      <option value="maglioni">Maglioni</option>
+      <option value="pantaloni">Pantaloni</option>
+      <option value="giacche">Giacche</option>
+    </select>
+    <button type="button" class="btn bg" onclick="saveRapidProd()" style="font-size:16px">⚡ Pubblica Subito</button>
+  </div>
   <div class="panel">
     <div class="ptit">Aggiungi Prodotto</div>
     <img id="aPv" style="width:100%;max-height:180px;object-fit:cover;border-radius:14px;margin-bottom:10px;display:none">
