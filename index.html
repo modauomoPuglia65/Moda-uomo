@@ -551,7 +551,7 @@ function openProd(id){
   // Media gallery - main viewer
   var mediaBox=document.createElement("div");mediaBox.style.cssText="position:relative;margin-bottom:10px";sh.appendChild(mediaBox);
   var mainImg=document.createElement("img");mainImg.src=src;mainImg.className="shimg";mainImg.alt=p.name;mainImg.style.cssText="cursor:zoom-in;margin-bottom:0";mainImg.id="mainMedia";
-  mainImg.onclick=function(){openZoom(src,p.name);};
+  mainImg.onclick=function(){openZoom(mainImg.src,p.name);};
   mediaBox.appendChild(mainImg);
 
   // Video element (hidden by default)
@@ -593,7 +593,7 @@ function openProd(id){
           // Update borders on all thumbs
           thumbRow.querySelectorAll("div").forEach(function(t){t.style.borderColor="#e4ddd2";});
           thumbEl.style.borderColor="#b8860b";
-          var mi=document.getElementById("mainImg");
+          var mi=document.getElementById("mainMedia");
           var mv=document.getElementById("mainVid");
           var mf=document.getElementById("mainFrame");
           if(mi)mi.style.display="none";
