@@ -588,28 +588,28 @@ function openProd(id){
       } else {
         var vidIcon=document.createElement("div");vidIcon.style.cssText="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#111;color:#fff;font-size:24px";vidIcon.textContent="▶";tb.appendChild(vidIcon);
       }
-      tb.onclick=(function(media,idx,allThumbs){
+      tb.onclick=(function(media,thumbEl){
         return function(){
-          // Update border
-          allThumbs.forEach(function(t){t.style.borderColor="#e4ddd2";});
-          this.style.borderColor="#b8860b";
+          // Update borders on all thumbs
+          thumbRow.querySelectorAll("div").forEach(function(t){t.style.borderColor="#e4ddd2";});
+          thumbEl.style.borderColor="#b8860b";
           var mi=document.getElementById("mainImg");
           var mv=document.getElementById("mainVid");
           var mf=document.getElementById("mainFrame");
           if(mi)mi.style.display="none";
-          if(mv){mv.style.display="none";mv.pause&&mv.pause();}
+          if(mv){mv.style.display="none";if(mv.pause)mv.pause();}
           if(mf)mf.style.display="none";
           if(media.type==="img"){
-            if(mi){mi.src=media.src;mi.style.display="block";mi.onclick=function(){openZoom(media.src,"Foto");};} 
+            if(mi){mi.src=media.src;mi.style.display="block";mi.onclick=function(){openZoom(media.src,"Foto");};}
           } else if(media.type==="vid"){
             if(mv){mv.src=media.src;mv.style.display="block";}
           } else if(media.type==="youtube"){
             var mff=document.getElementById("mainFrame");
-            if(!mff){mff=document.createElement("iframe");mff.id="mainFrame";mff.allow="autoplay";mff.allowFullscreen=true;mff.style.cssText="width:100%;aspect-ratio:16/9;border:none;border-radius:16px;display:none";mediaBox.insertBefore(mff,null);}
+            if(!mff){mff=document.createElement("iframe");mff.id="mainFrame";mff.allow="autoplay";mff.allowFullscreen=true;mff.style.cssText="width:100%;aspect-ratio:16/9;border:none;border-radius:16px;display:none";mediaBox.appendChild(mff);}
             mff.src=media.src+"?autoplay=1";mff.style.display="block";
           }
         };
-      })(m,i,Array.from(thumbRow.children));
+      })(m,tb);
       thumbRow.appendChild(tb);
     });
     sh.appendChild(thumbRow);
