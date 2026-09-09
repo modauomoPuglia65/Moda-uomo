@@ -548,15 +548,63 @@ function openProd(id){
   var sh=document.getElementById("sh");
   sh.innerHTML="";
   var hdl=document.createElement("div");hdl.className="hdl";sh.appendChild(hdl);
-  // Media gallery - main viewer
-  var mediaBox=document.createElement("div");mediaBox.style.cssText="position:relative;margin-bottom:10px";sh.appendChild(mediaBox);
-  var mainImg=document.createElement("img");mainImg.src=src;mainImg.className="shimg";mainImg.alt=p.name;mainImg.style.cssText="cursor:zoom-in;margin-bottom:0";mainImg.id="mainMedia";
-  mainImg.onclick=function(){openZoom(mainImg.src,p.name);};
-  mediaBox.appendChild(mainImg);
+  // Media gallery with SWIPE support
+  var mediaBox=document.createElement("div");mediaBox.style.cssText="position:relative;margin-bottom:10px;overflow:hidden;border-radius:20px 20px 0 0";sh.appendChild(mediaBox);
 
-  // Video element (hidden by default)
-  var mainVid=document.createElement("video");mainVid.controls=true;mainVid.style.cssText="width:100%;border-radius:16px;display:none;background:#000;margin-bottom:0";mainVid.id="mainVid";
-  mediaBox.appendChild(mainVid);
+  // Swipe gallery container
+  var swipeWrap=document.createElement("div");swipeWrap.style.cssText="display:flex;transition:transform .3s ease;will-change:transform;cursor:grab";swipeWrap.id="swipeWrap";
+  mediaBox.appendChild(swipeWrap);
+
+  // Dot indicators
+  var dotsRow=document.createElement("div");dotsRow.style.cssText="position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:5";dotsRow.id="swipeDots";
+  mediaBox.appendChild(dotsRow);
+
+  // Swipe state
+  var swipeIdx=0;
+  var touchStartX=0,touchStartY=0,isDragging=false;
+
+  function goSlide(n,mediaListRef){
+    var total=mediaListRef.length;
+    if(n<0)n=total-1;
+    if(n>=total)n=0;
+    swipeIdx=n;
+    swipeWrap.style.transform="translateX(-"+( n*100)+"%)";
+    // Update dots
+    dotsRow.querySelectorAll("span").forEach(function(d,i){
+      d.style.background=i===n?"#fff":"rgba(255,255,255,.5)";
+      d.style.width=i===n?"20px":"8px";
+    });
+  }
+
+  // Touch events for swipe
+  mediaBox.addEventListener("touchstart",function(e){
+    touchStartX=e.touches[0].clientX;
+    touchStartY=e.touches[0].clientY;
+    isDragging=true;
+    swipeWrap.style.transition="none";
+  },{passive:true});
+  mediaBox.addEventListener("touchmove",function(e){
+    if(!isDragging)return;
+    var dx=e.touches[0].clientX-touchStartX;
+    swipeWrap.style.transform="translateX(calc(-"+( swipeIdx*100)+"% + "+dx+"px))";
+  },{passive:true});
+  mediaBox.addEventListener("touchend",function(e){
+    if(!isDragging)return;
+    isDragging=false;
+    swipeWrap.style.transition="transform .3s ease";
+    var dx=e.changedTouches[0].clientX-touchStartX;
+    var dy=e.changedTouches[0].clientY-touchStartY;
+    if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){
+      if(dx<0)goSlide(swipeIdx+1,mediaList);
+      else goSlide(swipeIdx-1,mediaList);
+    } else {
+      goSlide(swipeIdx,mediaList);
+    }
+  },{passive:true});
+
+  // Also keep mainImg for backward compat
+  var mainImg={src:src,id:"mainMedia"};
+  var mainVid=null;
 
   // Build media list: all images + video
   var mediaList=[];
@@ -578,41 +626,46 @@ function openProd(id){
     }
   }
 
-  // Thumbnails row (only if more than 1 media)
+  // Build slides for each media item
+  mediaList.forEach(function(m,i){
+    var slide=document.createElement("div");
+    slide.style.cssText="min-width:100%;position:relative";
+    if(m.type==="img"){
+      var sImg=document.createElement("img");
+      sImg.src=m.src;sImg.style.cssText="width:100%;height:75vw;max-height:440px;object-fit:cover;object-position:top center;display:block";
+      sImg.onclick=function(){openZoom(m.src,"Foto "+( i+1));};
+      sImg.style.cursor="zoom-in";
+      slide.appendChild(sImg);
+    } else if(m.type==="vid"){
+      var sVid=document.createElement("video");sVid.src=m.src;sVid.controls=true;
+      sVid.style.cssText="width:100%;height:75vw;max-height:440px;background:#000;display:block";
+      slide.appendChild(sVid);
+    } else if(m.type==="youtube"){
+      var sFrame=document.createElement("iframe");sFrame.src=m.src;sFrame.allow="autoplay";sFrame.allowFullscreen=true;
+      sFrame.style.cssText="width:100%;height:75vw;max-height:440px;border:none;display:block";
+      slide.appendChild(sFrame);
+    }
+    swipeWrap.appendChild(slide);
+    // Add dot
+    if(mediaList.length>1){
+      var dot=document.createElement("span");
+      dot.style.cssText="height:8px;border-radius:999px;background:"+(i===0?"#fff":"rgba(255,255,255,.5)")+";transition:all .3s;width:"+(i===0?"20px":"8px");
+      dotsRow.appendChild(dot);
+    }
+  });
+  // Set swipeWrap width
+  swipeWrap.style.width=(mediaList.length*100)+"%";
+  mediaList.forEach(function(m,i){
+    swipeWrap.children[i].style.width=(100/mediaList.length)+"%";
+  });
+  // Arrow buttons if more than 1
   if(mediaList.length>1){
-    var thumbRow=document.createElement("div");thumbRow.style.cssText="display:flex;gap:8px;overflow-x:auto;margin-top:8px;padding-bottom:4px;scrollbar-width:none";
-    mediaList.forEach(function(m,i){
-      var tb=document.createElement("div");tb.style.cssText="width:60px;height:75px;border-radius:10px;overflow:hidden;flex-shrink:0;cursor:pointer;border:2px solid "+(i===0?"#b8860b":"#e4ddd2")+";background:#ece7df;position:relative";
-      if(m.type==="img"){
-        var ti=document.createElement("img");ti.src=m.src;ti.style.cssText="width:100%;height:100%;object-fit:cover";tb.appendChild(ti);
-      } else {
-        var vidIcon=document.createElement("div");vidIcon.style.cssText="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#111;color:#fff;font-size:24px";vidIcon.textContent="▶";tb.appendChild(vidIcon);
-      }
-      tb.onclick=(function(media,thumbEl){
-        return function(){
-          // Update borders on all thumbs
-          thumbRow.querySelectorAll("div").forEach(function(t){t.style.borderColor="#e4ddd2";});
-          thumbEl.style.borderColor="#b8860b";
-          var mi=document.getElementById("mainMedia");
-          var mv=document.getElementById("mainVid");
-          var mf=document.getElementById("mainFrame");
-          if(mi)mi.style.display="none";
-          if(mv){mv.style.display="none";if(mv.pause)mv.pause();}
-          if(mf)mf.style.display="none";
-          if(media.type==="img"){
-            if(mi){mi.src=media.src;mi.style.display="block";mi.onclick=function(){openZoom(media.src,"Foto");};}
-          } else if(media.type==="vid"){
-            if(mv){mv.src=media.src;mv.style.display="block";}
-          } else if(media.type==="youtube"){
-            var mff=document.getElementById("mainFrame");
-            if(!mff){mff=document.createElement("iframe");mff.id="mainFrame";mff.allow="autoplay";mff.allowFullscreen=true;mff.style.cssText="width:100%;aspect-ratio:16/9;border:none;border-radius:16px;display:none";mediaBox.appendChild(mff);}
-            mff.src=media.src+"?autoplay=1";mff.style.display="block";
-          }
-        };
-      })(m,tb);
-      thumbRow.appendChild(tb);
-    });
-    sh.appendChild(thumbRow);
+    var prevBtn=document.createElement("button");prevBtn.type="button";
+    prevBtn.style.cssText="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.4);border:none;color:#fff;font-size:18px;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center";
+    prevBtn.textContent="‹";prevBtn.onclick=function(){goSlide(swipeIdx-1,mediaList);};mediaBox.appendChild(prevBtn);
+    var nextBtn=document.createElement("button");nextBtn.type="button";
+    nextBtn.style.cssText="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.4);border:none;color:#fff;font-size:18px;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center";
+    nextBtn.textContent="›";nextBtn.onclick=function(){goSlide(swipeIdx+1,mediaList);};mediaBox.appendChild(nextBtn);
   }
   var h3=document.createElement("div");h3.style.cssText="font-family:serif;font-size:22px;font-weight:700;margin-bottom:8px";h3.textContent=p.name;sh.appendChild(h3);
   var prRow=document.createElement("div");prRow.style.cssText="display:flex;align-items:center;margin-bottom:12px";
