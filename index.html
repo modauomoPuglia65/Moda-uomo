@@ -865,11 +865,113 @@ function renderPrList(){
     var nm=document.createElement("div");nm.style.cssText="font-weight:700;font-size:12px";nm.textContent=p.name;meta.appendChild(nm);
     var dt=document.createElement("div");dt.className="sml";dt.textContent="E"+p.price.toFixed(2)+" - "+p.cat+(p.stock?" - "+p.stock+"pz":"");meta.appendChild(dt);
     d.appendChild(meta);
-    var xb=document.createElement("button");xb.type="button";xb.className="xbtn";xb.textContent="x";
-    xb.onclick=(function(pid){return function(){var cIds=ls("p",[]).map(function(x){return x.id;});if(cIds.indexOf(pid)>-1){ss("p",ls("p",[]).filter(function(x){return x.id!==pid;}));}else{var h=ls("h",[]);h.push(pid);ss("h",h);}renderGrid();renderPrList();renderStats();toast("Eliminato");};})(p.id);
-    d.appendChild(xb);box.appendChild(d);
+    var btnRow=document.createElement("div");btnRow.style.cssText="display:flex;gap:6px;flex-shrink:0";
+    // Edit button - only for custom products
+    var cIds=ls("p",[]).map(function(x){return x.id;});
+    if(cIds.indexOf(p.id)>-1){
+      var eb=document.createElement("button");eb.type="button";
+      eb.style.cssText="width:28px;height:28px;border:none;border-radius:50%;background:var(--g);color:#fff;cursor:pointer;font-size:13px;flex-shrink:0";
+      eb.textContent="✏️";
+      eb.onclick=(function(pid){return function(){openEditProd(pid);};})(p.id);
+      btnRow.appendChild(eb);
+    }
+    var xb=document.createElement("button");xb.type="button";xb.className="xbtn";xb.textContent="×";
+    xb.onclick=(function(pid){return function(){
+      if(!confirm("Eliminare questo prodotto?"))return;
+      var cIds2=ls("p",[]).map(function(x){return x.id;});
+      if(cIds2.indexOf(pid)>-1){ss("p",ls("p",[]).filter(function(x){return x.id!==pid;}));}
+      else{var h=ls("h",[]);h.push(pid);ss("h",h);}
+      renderGrid();renderPrList();renderStats();toast("Eliminato");
+    };})(p.id);
+    btnRow.appendChild(xb);
+    d.appendChild(btnRow);box.appendChild(d);
   });
 }
+function openEditProd(pid){
+  var saved=ls("p",[]);
+  var p=saved.find(function(x){return x.id===pid;});
+  if(!p){toast("Prodotto non trovabile!");return;}
+  var sh=document.getElementById("sh");
+  sh.innerHTML="";
+  var hdl=document.createElement("div");hdl.className="hdl";sh.appendChild(hdl);
+  var ttl=document.createElement("div");ttl.style.cssText="font-family:serif;font-size:20px;font-weight:900;margin-bottom:16px;padding:0 16px";ttl.textContent="✏️ Modifica Prodotto";sh.appendChild(ttl);
+  var wrap=document.createElement("div");wrap.style.cssText="padding:0 16px";sh.appendChild(wrap);
+  // Preview foto
+  if(p.imgs&&p.imgs.length){
+    var pv=document.createElement("img");pv.src=p.imgs[0];pv.style.cssText="width:100%;max-height:160px;object-fit:cover;border-radius:14px;margin-bottom:10px";wrap.appendChild(pv);
+  }
+  // New photo upload
+  var phLbl=document.createElement("label");phLbl.style.cssText="display:block;width:100%;padding:12px;border:2px dashed #ccc;border-radius:14px;background:var(--soft);font-size:13px;font-weight:700;color:var(--mu);cursor:pointer;text-align:center;margin-bottom:10px";
+  phLbl.textContent="📷 Sostituisci foto";
+  var phInp=document.createElement("input");phInp.type="file";phInp.accept="image/*";phInp.multiple=true;phInp.style.display="none";
+  var newPhs=[];
+  phInp.onchange=function(){
+    newPhs=[];var files=Array.from(this.files);if(!files.length)return;
+    var done=0;
+    files.forEach(function(file,idx){
+      var r=new FileReader();
+      r.onload=function(e){
+        newPhs.push(e.target.result);
+        if(idx===0&&pv){pv.src=e.target.result;}
+        if(++done===files.length){phLbl.style.borderColor="#27ae60";toast(done+" foto pronte!");}
+      };r.readAsDataURL(file);
+    });
+  };
+  phLbl.appendChild(phInp);wrap.appendChild(phLbl);
+  // Name
+  var nmI=document.createElement("input");nmI.className="ai";nmI.placeholder="Nome prodotto *";nmI.value=p.name||"";wrap.appendChild(nmI);
+  // Price row
+  var prRow=document.createElement("div");prRow.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px";
+  var prI=document.createElement("input");prI.className="ai";prI.type="number";prI.step="0.01";prI.inputMode="decimal";prI.placeholder="Prezzo *";prI.value=p.price||"";prI.style.marginBottom="0";
+  var opI=document.createElement("input");opI.className="ai";opI.type="number";opI.step="0.01";opI.inputMode="decimal";opI.placeholder="Prezzo vecchio";opI.value=p.oldPrice||"";opI.style.marginBottom="0";
+  prRow.appendChild(prI);prRow.appendChild(opI);wrap.appendChild(prRow);
+  // Stock
+  var stI=document.createElement("input");stI.className="ai";stI.type="number";stI.placeholder="Pezzi disponibili";stI.value=p.stock||"";wrap.appendChild(stI);
+  // Category
+  var cats=[["camicie-lino","Camicie Lino"],["camicie-cotone","Camicie Cotone"],["camicie-rigato","Camicie Rigato"],["camicie-fantasia","Camicie Fantasia"],["maglioni","Maglioni"],["pantaloni","Pantaloni"],["giacche","Giacche"],["accessori","Accessori"]];
+  var ctS=document.createElement("select");ctS.className="ai";
+  cats.forEach(function(c){var o=document.createElement("option");o.value=c[0];o.textContent=c[1];if(c[0]===p.cat)o.selected=true;ctS.appendChild(o);});
+  wrap.appendChild(ctS);
+  // Flags
+  var flagRow=document.createElement("div");flagRow.style.cssText="display:flex;gap:8px;margin-bottom:14px";
+  var bN=document.createElement("button");bN.type="button";bN.className="flt";bN.textContent="🆕 Novità";if(p.isNew)bN.classList.add("on");bN.onclick=function(){this.classList.toggle("on");};
+  var bS=document.createElement("button");bS.type="button";bS.className="flt";bS.textContent="🏷️ Saldo";if(p.isSale)bS.classList.add("on");bS.onclick=function(){this.classList.toggle("on");};
+  flagRow.appendChild(bN);flagRow.appendChild(bS);wrap.appendChild(flagRow);
+  // Save button
+  var saveB=document.createElement("button");saveB.type="button";saveB.className="btn bg";saveB.textContent="✅ Salva Modifiche";
+  saveB.onclick=function(){
+    var name=nmI.value.trim();
+    var price=parseFloat(prI.value);
+    if(!name){toast("Inserisci il nome!");return;}
+    if(!price||price<=0){toast("Inserisci il prezzo!");return;}
+    var updated=ls("p",[]).map(function(x){
+      if(x.id!==pid)return x;
+      return{
+        id:x.id,name:name,price:price,
+        oldPrice:parseFloat(opI.value)||0,
+        stock:parseInt(stI.value)||null,
+        cat:ctS.value,
+        isNew:bN.classList.contains("on"),
+        isSale:bS.classList.contains("on"),
+        imgs:newPhs.length?newPhs:(x.imgs||[]),
+        img:x.img||"",
+        sizes:x.sizes||[],
+        colors:x.colors||[],
+        desc:x.desc||"",
+        vidUrl:x.vidUrl||""
+      };
+    });
+    ss("p",updated);
+    closeOv();curF="tutti";
+    renderGrid();renderPrList();renderStats();
+    toast("✅ Prodotto modificato!");
+  };
+  wrap.appendChild(saveB);
+  var clsB=document.createElement("button");clsB.type="button";clsB.className="btn bs";clsB.textContent="Annulla";clsB.onclick=closeOv;wrap.appendChild(clsB);
+  document.getElementById("ov").classList.add("on");
+  history.pushState({ov:1},"","");
+}
+
 function restoreAll(){ss("h",[]);renderGrid();renderPrList();renderStats();toast("Ripristinati!");}
 function adminOut(){aLog=false;goPage(0,document.querySelector(".tabs button"));}
 function renderStats(){document.getElementById("stg").innerHTML="<div class='stb'><div class='stn'>"+allP().length+"</div><div style='font-size:11px;color:var(--mu)'>Prodotti</div></div><div class='stb'><div class='stn'>"+ords.length+"</div><div style='font-size:11px;color:var(--mu)'>Ordini</div></div><div class='stb'><div class='stn'>"+wish.length+"</div><div style='font-size:11px;color:var(--mu)'>Preferiti</div></div><div class='stb'><div class='stn'>"+cart.length+"</div><div style='font-size:11px;color:var(--mu)'>Carrello</div></div>";}
