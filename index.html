@@ -269,6 +269,13 @@ a{color:inherit;text-decoration:none}
     <div style="text-align:center;font-size:11px;color:var(--mu)">Il tuo codice</div>
     <div id="loyCode" style="font-family:serif;font-size:24px;font-weight:900;color:var(--g);text-align:center;margin-bottom:14px;letter-spacing:2px"></div>
     <a href="tel:+393711267591" class="btn bg">Chiama per aggiungere punti</a>
+    <div style="background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px">
+      <div style="font-weight:700;margin-bottom:10px">👕 Le mie preferenze</div>
+      <div style="font-size:13px;color:var(--mu);margin-bottom:8px">Taglia preferita — selezionata automaticamente</div>
+      <div id="prefSzBtns" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px"></div>
+      <div style="font-size:13px;color:var(--mu);margin-bottom:8px">Colore preferito</div>
+      <div id="prefClBtns" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    </div>
   </div>
   <div class="panel"><div class="ptit">Storico Ordini</div><div id="ordDiv"></div></div>
 <div class="panel">
@@ -690,6 +697,14 @@ function openProd(id){
   // Sizes - auto-select if only one
   var hasSz=p.sizes&&p.sizes.length>0;
   var hasCl=p.colors&&p.colors.length>0;
+  // Load saved preferences
+  var prefSz=ls("prefSz","");
+  var prefCl=ls("prefCl","");
+  // Pre-select if available in this product
+  if(hasSz&&prefSz&&p.sizes.indexOf(prefSz)>-1) _sz=prefSz;
+  else _sz=null;
+  if(hasCl&&prefCl&&p.colors.indexOf(prefCl)>-1) _cl=prefCl;
+  else _cl=null;
   var szRow=document.createElement("div");szRow.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px";if(!hasSz)szRow.style.display="none";
   var szLbl=document.createElement("div");szLbl.style.cssText="font-weight:700;font-size:13px";szLbl.textContent="Taglia";szRow.appendChild(szLbl);
   var szGuide=document.createElement("button");szGuide.type="button";szGuide.style.cssText="background:none;border:none;color:var(--g);font-size:12px;font-weight:700;cursor:pointer;text-decoration:underline";szGuide.textContent="📏 Guida taglie";szGuide.onclick=function(){openSizeGuide();};szRow.appendChild(szGuide);
@@ -720,7 +735,17 @@ function openProd(id){
   }
   // Buttons
   var addB=document.createElement("button");addB.type="button";addB.className="btn bg";addB.textContent="Aggiungi al carrello";
-  addB.onclick=function(){var nSz=p.sizes&&p.sizes.length>0;var nCl=p.colors&&p.colors.length>0;if(nSz&&!_sz){toast("Scegli la taglia!");return;}if(nCl&&!_cl){toast("Scegli il colore!");return;}cart.push({id:p.id,sz:_sz||"-",cl:_cl||"-",q:1});ss("c",cart);updCnt();closeOv();toast("Aggiunto al carrello!");};
+  addB.onclick=function(){
+    var nSz=p.sizes&&p.sizes.length>0;
+    var nCl=p.colors&&p.colors.length>0;
+    if(nSz&&!_sz){toast("Scegli la taglia!");return;}
+    if(nCl&&!_cl){toast("Scegli il colore!");return;}
+    // Save preferred size and color for next time
+    if(_sz) ss("prefSz",_sz);
+    if(_cl) ss("prefCl",_cl);
+    cart.push({id:p.id,sz:_sz||"-",cl:_cl||"-",q:1});
+    ss("c",cart);updCnt();closeOv();toast("Aggiunto al carrello!");
+  };
   sh.appendChild(addB);
   var waB=document.createElement("button");waB.type="button";waB.className="btn bgr";waB.textContent="📅 Prenota al mercato";waB.onclick=function(){closeOv();setTimeout(function(){openBooking(p.name,p.price.toFixed(2));},200);};sh.appendChild(waB);
   var telB=document.createElement("a");telB.href="tel:+393711267591";telB.className="btn bs";telB.textContent="Chiama";sh.appendChild(telB);
@@ -820,9 +845,40 @@ function renderLoy(){
   document.getElementById("loyBar").style.width=((pts%10)/10*100)+"%";
   var msg=["Primo acquisto!","Ottimo!","Bene!","Quasi meta","Ottimo!","A meta!","Bravissimo!","Solo 3!","Solo 2!","Solo 1!","Hai un omaggio!"];
   document.getElementById("loyMsg").textContent=msg[Math.min(pts%10,10)];
+  renderPrefBtns();
   var stBox=document.getElementById("stamps");stBox.innerHTML="";
   for(var i=0;i<10;i++){var s=document.createElement("div");s.style.cssText="aspect-ratio:1;border-radius:50%;border:2px solid "+(i<pts%10?"#c9a84c;background:#c9a84c":"#333;background:#1a1a1a")+";display:grid;place-items:center;font-size:16px";s.textContent=i<pts%10?"⭐":"";stBox.appendChild(s);}
 }
+function renderPrefBtns(){
+  var szBox=document.getElementById("prefSzBtns");
+  var clBox=document.getElementById("prefClBtns");
+  if(!szBox||!clBox) return;
+  var curSz=ls("prefSz","");
+  var curCl=ls("prefCl","");
+  var SA2=["S","M","L","XL","XXL","XXXL"];
+  var AC2=["Bianco","Celeste","Nero","Blu","Rosso","Verde","Grigio","Beige","Bordeaux","Militare"];
+  szBox.innerHTML="";
+  SA2.forEach(function(s){
+    var b=document.createElement("button");b.type="button";b.className="opt";b.textContent=s;
+    if(s===curSz)b.classList.add("on");
+    b.onclick=function(){
+      szBox.querySelectorAll(".opt").forEach(function(x){x.classList.remove("on");});
+      this.classList.add("on");ss("prefSz",s);toast("Taglia "+s+" salvata!");
+    };
+    szBox.appendChild(b);
+  });
+  clBox.innerHTML="";
+  AC2.forEach(function(c){
+    var b=document.createElement("button");b.type="button";b.className="opt";b.textContent=c;
+    if(c===curCl)b.classList.add("on");
+    b.onclick=function(){
+      clBox.querySelectorAll(".opt").forEach(function(x){x.classList.remove("on");});
+      this.classList.add("on");ss("prefCl",c);toast("Colore "+c+" salvato!");
+    };
+    clBox.appendChild(b);
+  });
+}
+
 function renderOrds(){var box=document.getElementById("ordDiv");if(!ords.length){box.innerHTML="<p>Nessun ordine ancora.</p>";return;}box.innerHTML=ords.slice(0,10).map(function(o){return"<div style='background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px'><div style='display:flex;justify-content:space-between;margin-bottom:4px'><b>"+o.date+"</b><b style='color:var(--g)'>"+o.total+"</b></div><div style='font-size:13px;color:var(--mu)'>"+o.items.join(", ")+"</div></div>";}).join("");}
 function renderCal(){var cal=document.getElementById("calDiv");if(cal.innerHTML)return;MR.forEach(function(m){var a=document.createElement("a");a.href="https://maps.google.com/?q="+m.lat+","+m.lng;a.target="_blank";a.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--soft);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;color:inherit;text-decoration:none";a.innerHTML="<div><div style='font-weight:700;font-size:13px'>"+m.g+"</div><div style='font-size:12px;color:var(--mu)'>"+m.n+"</div></div><span>map</span>";cal.appendChild(a);});}
 function renderBach(){var d=document.getElementById("bachDiv");d.innerHTML="";ls("ann",[]).forEach(function(a){var el=document.createElement("div");el.style.cssText="background:var(--card);border:1px solid var(--line);border-left:4px solid var(--g);border-radius:14px;padding:14px;margin-bottom:12px";el.innerHTML="<b>"+esc(a.title)+"</b><p style='font-size:13px;color:var(--mu);margin-top:6px'>"+esc(a.text)+"</p>";d.appendChild(el);});}
