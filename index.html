@@ -19,6 +19,19 @@
 <meta name="twitter:description" content="Camicie lino, cotone e fantasia ai mercati di Taranto e Brindisi.">
 <link rel="canonical" href="https://modauomopuglia65.github.io/Moda-uomo">
 <meta name="theme-color" content="#b8860b">
+<!-- OneSignal Push Notifications -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "YOUR_ONESIGNAL_APP_ID",
+      safari_web_id: "web.onesignal.auto.YOUR_ID",
+      notifyButton: { enable: false },
+      allowLocalhostAsSecureOrigin: true,
+    });
+  });
+</script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -457,6 +470,21 @@ a{color:inherit;text-decoration:none}
     </div>
     <button type="button" class="btn bg" onclick="shareReferral()">📲 Condividi codice referral</button>
   </div>
+  <div class="panel">
+    <div class="ptit">🔔 Notifiche Push</div>
+    <p style="font-size:13px;color:var(--mu);margin-bottom:12px">Avvisa tutti i clienti quando aggiungi nuovi prodotti o offerte!</p>
+    <div id="notifStatus" style="background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px;font-size:13px"></div>
+    <button type="button" class="btn bg" onclick="enableNotifs()" id="notifBtn">🔔 Attiva notifiche clienti</button>
+    <div style="margin-top:14px">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--mu);font-weight:700;margin-bottom:8px">Invia notifica manuale</div>
+      <input class="ai" id="notifTitle" placeholder="Titolo es: Nuova collezione!">
+      <input class="ai" id="notifMsg" placeholder="Messaggio es: 3 nuove camicie lino da 29.90">
+      <button type="button" class="btn bg" onclick="sendNotif()">📢 Invia a tutti i clienti</button>
+    </div>
+    <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:10px;margin-top:10px;font-size:12px;color:#856404">
+      ⚙️ Per attivare: registrati su <b>onesignal.com</b> → crea app → copia il tuo App ID → sostituisci YOUR_ONESIGNAL_APP_ID nel codice
+    </div>
+  </div>
   <div class="panel"><button type="button" class="btn br" onclick="adminOut()">Esci dall admin</button></div>
 </div>
 
@@ -876,6 +904,20 @@ function renderPrefBtns(){
       this.classList.add("on");ss("prefCl",c);toast("Colore "+c+" salvato!");
     };
     clBox.appendChild(b);
+  });
+}
+
+function renderNotifStatus(){
+  var box=document.getElementById("notifStatus");
+  if(!box) return;
+  if(!window.OneSignal){
+    box.innerHTML='⚙️ OneSignal non ancora configurato — <a href="https://onesignal.com" target="_blank" style="color:var(--g)">registrati gratis</a>';
+    return;
+  }
+  OneSignalDeferred.push(function(OS){
+    var perm=OS.Notifications.permission;
+    if(perm){box.innerHTML="✅ Notifiche configurate e attive";}
+    else{box.innerHTML="⏳ In attesa che i clienti attivino le notifiche";}
   });
 }
 
@@ -1596,6 +1638,46 @@ function openBooking(prodName, prodPrice){
 }
 
 // SERVICE WORKER - MODALITA OFFLINE
+// NOTIFICHE PUSH
+function enableNotifs(){
+  if(!window.OneSignal){
+    toast("OneSignal non configurato ancora!");
+    document.getElementById("notifStatus").innerHTML="❌ Configura prima OneSignal (vedi istruzioni sotto)";
+    return;
+  }
+  OneSignalDeferred.push(function(OS){
+    OS.Notifications.requestPermission().then(function(perm){
+      if(perm){
+        toast("✅ Notifiche attivate!");
+        document.getElementById("notifStatus").innerHTML="✅ Notifiche attive — i clienti riceveranno avvisi";
+        document.getElementById("notifBtn").textContent="✅ Notifiche attive";
+        document.getElementById("notifBtn").style.background="#27ae60";
+      } else {
+        toast("❌ Permesso negato");
+        document.getElementById("notifStatus").innerHTML="❌ Cliente ha negato il permesso";
+      }
+    });
+  });
+}
+function sendNotif(){
+  var title=document.getElementById("notifTitle").value.trim();
+  var msg=document.getElementById("notifMsg").value.trim();
+  if(!title||!msg){toast("Inserisci titolo e messaggio!");return;}
+  if(!window.OneSignal){toast("OneSignal non configurato!");return;}
+  // OneSignal REST API call (requires server - use WhatsApp instead for now)
+  toast("Per inviare notifiche usa la dashboard su onesignal.com");
+  window.open("https://app.onesignal.com","_blank");
+}
+// Auto-ask permission when user visits (non-admin)
+function askNotifPermission(){
+  if(!window.OneSignal||!ls("visited","0")) return;
+  setTimeout(function(){
+    OneSignalDeferred.push(function(OS){
+      OS.Notifications.requestPermission();
+    });
+  }, 5000);
+}
+
 if("serviceWorker" in navigator && location.protocol !== "file:" && location.hostname !== "www.claudeusercontent.com"){
   navigator.serviceWorker.register("/sw.js").then(function(reg){
     // Force update check on every load
@@ -1639,6 +1721,8 @@ updateOnlineStatus();
 applySeason();
 renderGrid();
 initGallery();
+askNotifPermission();
+renderNotifStatus();
 updCnt();
 renderBach();
 renderLoy();
