@@ -134,7 +134,18 @@ a{color:inherit;text-decoration:none}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
 .toast{transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
-</style>
+</style><script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "30d0b42f-687a-4c74-be39-77281e501cff",
+      notifyButton: {
+        enable: true,
+      },
+    });
+  });
+</script>
 </head>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ClothingStore","name":"Moda Uomo Puglia","description":"Abbigliamento uomo ai mercati di Puglia. Camicie lino cotone fantasia da 29.90 euro.","url":"https://modauomopuglia65.github.io/Moda-uomo","telephone":"+393711267591","priceRange":"EUR 29.90","areaServed":["Taranto","Brindisi","Fasano","San Vito dei Normanni","Crispiano","Avetrana","Francavilla Fontana"],"openingHours":["Mo-Sa 08:00-14:00"]}
